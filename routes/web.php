@@ -1,11 +1,11 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryLubricantController;
 use App\Http\Controllers\DistributorController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\QMController;
 use App\Http\Controllers\SalesManagerController;
 use App\Http\Controllers\SubCategoryLubricantController;
 use App\Http\Controllers\UserController;
@@ -36,11 +36,12 @@ Route::get('waiting', [MainController::class, 'waiting'])->name('waiting');
 Route::middleware(['auth', 'user-access:1', 'check-verified'])->group(function () {
     Route::get('/dashboard/user', [MainController::class, 'dashboardUser'])->name('dashboard.user');
     Route::get('/sales/view_distributor', [SalesManagerController::class, 'viewDistributor'])->name('sales.distributor.index');
-
     Route::get('sales/view_complaint', [SalesManagerController::class, 'viewComplaint'])->name('sales.complaint.index');
     Route::get('sales/detail_complaint/{id}', [SalesManagerController::class, 'detailComplaint'])->name('sales.complaint.detail');
+    Route::put('qm/updatestatuscomplaint/{id}', [QMController::class, 'updateComplaintStatus'])->name('qm.update.status');
     Route::get('sales/add_complaint', [SalesManagerController::class, 'addComplaint'])->name('sales.complaint.add');
     Route::post('sales/save_complaint', [SalesManagerController::class, 'saveComplaint'])->name('sales.complaint.save');
+    Route::delete('sales/delete_complaint/{id}', [SalesManagerController::class, 'deleteComplaint'])->name('sales.complaint.delete');
 });
 Route::middleware(['auth', 'user-access:2'])->group(function () {
     Route::get('/dashboard/admin',  [MainController::class, 'dashboardAdmin'])->name('dashboard.admin');
@@ -99,6 +100,8 @@ Route::middleware(['auth', 'user-access:2'])->group(function () {
 });
 Route::middleware(['auth', 'user-access:3'])->group(function () {
     Route::get('/dashboard/qm',  [MainController::class, 'dashboardQualityManager'])->name('dashboard.qm');
+    Route::get('qm/view_complaint', [QMController::class, 'viewComplaint'])->name('qm.complaint.index');
+
 
 
 });

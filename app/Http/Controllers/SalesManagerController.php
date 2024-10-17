@@ -6,7 +6,9 @@ use App\Models\Distributor;
 use Carbon\Carbon;
 use App\Models\CategoryComplaints;
 use App\Models\ComplaintFile;
+use App\Models\ComplaintInteraction;
 use App\Models\Complaints;
+use App\Models\ComplaintStatus;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -16,29 +18,35 @@ class SalesManagerController extends Controller
     public function viewDistributor()
     {
         $user = Auth::user();
+        $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
         $distributors = Distributor::where('company_distributor_id', $user->distributor_id)->get();
-        return view('pages.role_user.distributor.distributor', compact('distributors', 'user'));
+        return view('pages.role_user.distributor.distributor', compact('distributors', 'user', 'currentDate'));
     }
     public function viewComplaint()
     {
         $user = Auth::user();
+        $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
         $distributors = Distributor::where('company_distributor_id', $user->distributor_id)->get();
-        $complaints = Complaints::with(['distributor', 'categories'])->get();
-        return view('pages.role_user.complaint.complaint', compact('user', 'distributors', 'complaints'));
+        $complaints = Complaints::with(['distributor', 'categories', 'currentStatus'])->get();
+        return view('pages.role_user.complaint.complaint', compact('user', 'distributors', 'complaints', 'currentDate'));
     }
     public function detailComplaint($id)
     {
         $user = Auth::user();
+        $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
         $distributors = Distributor::where('company_distributor_id', $user->distributor_id)->get();
         $complaint = Complaints::with(['distributor', 'categories'])->findOrFail($id);
-        return view('pages.role_user.complaint.detail_complaint', compact('user', 'distributors', 'complaint'));
+        $status = ComplaintStatus::whereIn('id', [$complaint->current_status_id, 2, 3])->get();
+        $history = ComplaintInteraction::where('complaint_id', $id)->get();
+        return view('pages.role_user.complaint.detail_complaint', compact('user', 'distributors', 'complaint', 'currentDate', 'status', 'history'));
     }
     public function addComplaint()
     {
         $user = Auth::user();
+        $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
         $categoryComplaints = CategoryComplaints::all();
         $distributors = Distributor::where('company_distributor_id', $user->distributor_id)->get();
-        return view('pages.role_user.complaint.add_complaint', compact('user', 'distributors', 'categoryComplaints'));
+        return view('pages.role_user.complaint.add_complaint', compact('user', 'distributors', 'categoryComplaints', 'currentDate'));
     }
     public function saveComplaint(Request $request)
     {
@@ -55,13 +63,6 @@ class SalesManagerController extends Controller
             'complaint_category_ids' => 'required|array',
             'complaint_category_ids.*' => 'exists:category_complaints,id',
             'files.*' => 'mimes:jpg,jpeg,png,mp4,mov,avi|max:10240',
-            'supporting_document' => 'nullable|mimes:pdf|max:2048', // Validasi untuk dokumen pendukung
-
-
-        ], [
-            'distributor_id.required' => 'Distributor wajib dipilih salah satu',
-            'batch_number.required' => 'Batch Number wajib diisi',
-            'complaint_title.required' => 'Judul permasalahan wajib diisi',
             'complaint_description.required' => 'Deskripsi permasalahan wajib diisi',
             'complaint_hopeful_solution.required' => 'Solusi yang diharapkan wajib diisi',
             'complaint_category_ids.required' => 'Kategori komplain wajib dipilih',
@@ -79,10 +80,9 @@ class SalesManagerController extends Controller
             'complaint_description' => $validated['complaint_description'],
             'complaint_hopeful_solution' => $validated['complaint_hopeful_solution'],
             'supporting_document' => $request->file('supporting_document') ? $request->file('supporting_document')->store('supporting_document', 'public') : null,
-            'created_at' => Carbon::now()->timezone('Asia/Jakarta'), // Pastikan waktu sesuai zona waktu
-
+            'current_status_id' => 1,
+            'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
         ]);
-
         $categories = $request->complaint_category_ids;
         foreach ($categories as $categoryId) {
             $otherCategoryName = null;
@@ -102,8 +102,22 @@ class SalesManagerController extends Controller
                 ]);
             }
         }
-
+        ComplaintInteraction::create([
+            'complaint_id' => $complaint->id,
+            'user_id' => $userId,
+            'complaint_status_id' => 1,
+            'title' => 'Aduan Diajukan',
+            'notes' => 'Aduan telah diajukan dan menunggu diproses.',
+            'supporting_document_path' => $request->file('supporting_document') ? $request->file('supporting_document')->store('supporting_document', 'public') : null,
+        ]);
         return redirect()->route('sales.complaint.index')
             ->with('success', 'Komplain berhasil disimpan!');
     }
+    public function deleteComplaint($id){
+        $complaint = Complaints::findOrFail($id);
+        $complaint->delete();
+        return redirect()->route('sales.complaint.index')
+            ->with('success', 'Komplain berhasil dihapus!');
+    }
+
 }

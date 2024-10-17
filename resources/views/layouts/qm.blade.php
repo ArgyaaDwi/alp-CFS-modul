@@ -105,7 +105,7 @@
                 <li class="nav-item dropdown user-menu">
                     <a href="" class="nav-link bg-white dropdown-toggle " data-toggle="dropdown"
                         style="background-color: #ffffff; ">
-                        <span class="d-none d-md-inline mr-2">{{ $user->name }}</span>
+                        <span class="d-none d-md-inline mr-2">{{ $qm->name }}</span>
                         <img src="{{ asset('images/user.jpg') }}" class="user-image img-circle elevation-2"
                             alt="User Image">
                     </a>
@@ -113,8 +113,8 @@
                         <li class="user-header">
                             <img src="{{ asset('images/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
                             <p>
-                                {{ $user->name }}
-                                <small>{{ $user->email }}</small>
+                                {{ $qm->name }}
+                                <small>{{ $qm->email }}</small>
                             </p>
                         </li>
                         <li class="user-footer">
@@ -149,30 +149,29 @@
                         <img src="{{ asset('images/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="" class="d-block">{{ $user->name }}</a>
+                        <a href="" class="d-block">{{ $qm->name }}</a>
                     </div>
                 </div>
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ route('dashboard.user') }}" class="nav-link">
+                            <a href="{{ route('dashboard.qm') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-bars-progress"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </a>
                         </li>
-
                         <li class="nav-header">Kelola</li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="{{ route('sales.distributor.index') }}" class="nav-link">
                                 <i class="nav-icon fa-regular fa-building"></i>
                                 <p>Distributor</p>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
-                            <a href="{{route('sales.complaint.index')}}" class="nav-link">
+                            <a href="{{route('qm.complaint.index')}}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Feedback</p>
                             </a>
@@ -183,11 +182,7 @@
         </aside>
         <div class="content-wrapper">
             @yield('content')
-
-
         </div>
-
-
         <footer class="main-footer">
             <div class="text-center d-none d-sm-block">
                 <strong>Copyright &copy; 2024 <a href="https://alppetro.co.id">ALP Petro Industry</a>.</strong> All

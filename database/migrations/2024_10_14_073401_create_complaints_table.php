@@ -16,9 +16,13 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('distributor_id');
             $table->unsignedBigInteger('main_distributor_id');
+            $table->unsignedBigInteger('current_status_id');
+            $table->string('batch_number');
+            $table->string('supporting_document');
             $table->text('complaint_title');
             $table->text('complaint_description');
             $table->text('complaint_hopeful_solution');
+            $table->foreign('current_status_id')->references('id')->on('complaint_status')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('distributor_id')->references('id')->on('distributors')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('main_distributor_id')->references('id')->on('main_distributors')->onDelete('cascade')->onUpdate('cascade');

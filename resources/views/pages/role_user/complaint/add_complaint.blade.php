@@ -19,7 +19,6 @@
             }
         }
         let fileArray = [];
-
         function addImages() {
             let files = document.getElementById('images').files;
             let previewContainer = document.getElementById('imagePreviewContainer');
@@ -43,7 +42,6 @@
                 reader.readAsDataURL(file);
             });
         }
-
         function toggleOtherInput() {
             const otherCheckbox = document.getElementById('category_other');
             const otherCategoryContainer = document.getElementById('otherCategoryContainer');
