@@ -1,4 +1,4 @@
-@extends('layouts.sales')
+@extends('layouts.qm')
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />
@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}"> <i
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard.qm') }}"> <i
                                     class="nav-icon fa-solid fa-house"></i>
                             </a></li>
                         <li class="breadcrumb-item active">Aduan</li>
@@ -41,9 +41,6 @@
     <section class="content">
         <div class="card mx-3">
             <div class="card-body table-responsive">
-                <div class="mb-3">
-                    <a href="{{ route('sales.complaint.add') }}" class="btn btn-outline-primary">+ Tambah Aduan</a>
-                </div>
                 <table class="stripe-responsive" id="myTable">
                     <thead style="border: 1px solid black">
                         <tr>
@@ -53,6 +50,7 @@
                             <th>Created By</th>
                             <th>Created At</th>
                             <th>Status</th>
+                            <th>Tindakan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -77,17 +75,21 @@
                                 <td>{{ Carbon\Carbon::parse($val->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}</td>
                                 <td>{{ $val->currentStatus->status_name ?? 'Tidak ada status' }}</td>
                                 <td>
+                                    @if ($val->current_status_id == 1)
+                                    <button type="button" disabled class="btn btn-outline-success btn-sm">Perlu Tindakan</button>
+                                    @else
+                                        <span>-</span>
+                                    @endif
+                                </td>
+                                <td>
                                     <form action="{{ route('sales.complaint.delete', $val->id) }}" method="POST" id="delete-form-{{ $val->id }}">
                                         @csrf
                                         @method('DELETE')
                                         <div class="d-flex gap-2">
-                                            <a href="{{ route('sales.complaint.detail', $val->id) }}" class="btn btn-outline-info">
+                                            <a href="{{ route('qm.complaint.detail', $val->id) }}" class="btn btn-outline-info">
                                                 <i class="fa-regular fa-eye"></i>
                                             </a>
                                             @auth
-                                                <a href="" class="btn btn-warning mx-1">
-                                                    <i class="fa-regular fa-pen-to-square"></i>
-                                                </a>
                                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                                     data-bs-target="#confirmDeleteModal-{{ $val->id }}">
                                                     <i class="fa-solid fa-trash-can"></i>

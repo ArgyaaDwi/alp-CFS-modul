@@ -1,4 +1,4 @@
-@extends('layouts.sales')
+@extends('layouts.qm')
 @push('scripts')
     <script type="text/javascript">
         function showImageModal(imageUrl) {
@@ -10,9 +10,6 @@
     </script>
 @endpush
 @push('styles')
-    <style>
-
-    </style>
 @endpush
 @section('content')
     <section class="content-header">
@@ -23,10 +20,9 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.user') }}"><i
-                                    class="fa-solid fa-house"></i></a>
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard.qm') }}"><i class="fa-solid fa-house"></i></a>
                         </li>
-                        <li class="breadcrumb-item"><a href="{{ route('sales.complaint.index') }}"
+                        <li class="breadcrumb-item"><a href="{{ route('qm.complaint.index') }}"
                                 style="text-color: black">Feedback</a></li>
                         <li class="breadcrumb-item"><span>{{ $complaint->id }}</span>
                         </li>
@@ -74,7 +70,7 @@
                                                         @endif
                                                     @endforeach
                                             </p>
-                                            <p>Status Aduan: {{ $complaint->currentStatus->status_name }}</p>
+                                            <p>Status Aduan: {{$complaint->currentStatus->status_name}}</p>
                                             <h5>Judul Aduan: {{ $complaint->complaint_title }}</h5>
                                             <label for="">Deskripsi</label>
                                             <textarea name="" id="" cols="30" rows="5" class="form-control" disabled>{{ $complaint->complaint_description }}</textarea>
@@ -117,10 +113,8 @@
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-outline-secondary"
                                                                 data-dismiss="modal">Tutup</button>
-                                                            <a id="downloadLink" href="#" download
-                                                                class="btn btn-primary"><i
-                                                                    class="fa-solid fa-download"></i>
-                                                                Download Gambar</a>
+                                                                <a id="downloadLink" href="#" download
+                                                                class="btn btn-primary"><i class="fa-solid fa-download"></i> Download Gambar</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -131,25 +125,82 @@
                                             <p class="text-muted text-md mt-2"><b>Terakhir Diperbarui:
                                                 </b>{{ Carbon\Carbon::parse($complaint->updated_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}
                                                 / {{ $complaint->user->name }}</p>
-                                            <a href="{{ route('sales.complaint.index') }}"
+                                            <a href="{{ route('qm.complaint.index') }}"
                                                 class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left"></i>
                                                 Kembali</a>
-                                            @if ($complaint->current_status_id == 7 || $complaint->current_status_id == 1)
-                                                <a href="{{ route('sales.complaint.edit', $complaint->id) }}" class="btn btn-primary"><i
-                                                        class="fa-regular fa-pen-to-square"></i> Perbarui Data</a>
-                                            @endif
-
+                                            {{-- <a href="" class="btn btn-primary"><i
+                                                    class="fa-regular fa-pen-to-square"></i> Perbarui Data</a> --}}
+                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                data-target="#exampleModal"><i class="fa-regular fa-pen-to-square"></i>
+                                                Update Status</button>
+                                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Perbarui Status
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('qm.update.status', $complaint->id) }}"
+                                                                method="POST" enctype="multipart/form-data">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="form-group">
+                                                                    <label for="id_distributor"
+                                                                        class="form-label">Status</label>
+                                                                    <select class="form-control" id="id_status"
+                                                                        name="complaint_status_id">
+                                                                        <option value="" class="text-center">.::
+                                                                            Pilih Status ::.</option>
+                                                                        @forelse ($status as $item)
+                                                                            <option value="{{ $item->id }}"
+                                                                                {{ $complaint->current_status_id == $item->id ? 'selected' : '' }}>
+                                                                                {{ $item->status_name }}</option>
+                                                                        @empty
+                                                                            <option value="">Status tidak tersedia
+                                                                            </option>
+                                                                        @endforelse
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label">Catatan:</label>
+                                                                    <textarea class="form-control" id="message-text" name="notes"></textarea>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="supporting_document"
+                                                                        class="form-label">Dokumen Pendukung (PDF)</label>
+                                                                    <input class="form-control" type="file"
+                                                                        id="supporting_document"
+                                                                        name="supporting_document" accept=".pdf">
+                                                                    <i class="fas fa-info-circle"></i> (Opsional) Hanya
+                                                                    file PDF yang diperbolehkan.
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-outline-secondary"
+                                                                        data-dismiss="modal">Tutup</button>
+                                                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="tab-pane fade mx-1" id="history" role="tabpanel"
                                             aria-labelledby="history-tab">
-                                            <h5 class="mt-3"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat
+                                            <h5 class="mt-3 mb-3"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat
                                                 Aktivitas Aduan</h5>
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     @forelse ($history as $item)
                                                         <div class="timeline">
                                                             <div>
-                                                                {{-- <i class="fas fa-envelope bg-blue"></i> --}}
                                                                 <div class="timeline-item">
                                                                     <span class="time"><i class="fas fa-clock"></i>
                                                                         {{ Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}</span>
@@ -161,8 +212,7 @@
                                                                             {{ $item->complaintStatus->status_name }}</span><br>
                                                                         <span>{{ $item->complaintStatus->status_description }}</span><br>
                                                                         <span class=" "><i
-                                                                                class="fa-solid fa-pencil"></i> Catatan:
-                                                                            <br></span>
+                                                                            class="fa-solid fa-pencil"></i> Catatan: <br></span>
                                                                         {{ $item->notes }}
                                                                     </div>
                                                                     <div class="timeline-footer">
@@ -186,6 +236,7 @@
                                                     @endforelse
 
                                                 </div>
+
 
                                             </div>
                                         </div>

@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryLubricantController;
 use App\Http\Controllers\DistributorController;
+use App\Http\Controllers\FGMController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\QMController;
@@ -38,9 +39,14 @@ Route::middleware(['auth', 'user-access:1', 'check-verified'])->group(function (
     Route::get('/sales/view_distributor', [SalesManagerController::class, 'viewDistributor'])->name('sales.distributor.index');
     Route::get('sales/view_complaint', [SalesManagerController::class, 'viewComplaint'])->name('sales.complaint.index');
     Route::get('sales/detail_complaint/{id}', [SalesManagerController::class, 'detailComplaint'])->name('sales.complaint.detail');
-    Route::put('qm/updatestatuscomplaint/{id}', [QMController::class, 'updateComplaintStatus'])->name('qm.update.status');
+
+
+
     Route::get('sales/add_complaint', [SalesManagerController::class, 'addComplaint'])->name('sales.complaint.add');
     Route::post('sales/save_complaint', [SalesManagerController::class, 'saveComplaint'])->name('sales.complaint.save');
+
+    Route::get('sales/edit_complaint/{id}', [SalesManagerController::class, 'editComplaint'])->name('sales.complaint.edit');
+    Route::put('sales/update_complaint/{id}', [SalesManagerController::class, 'updateComplaint'])->name('sales.complaint.update');
     Route::delete('sales/delete_complaint/{id}', [SalesManagerController::class, 'deleteComplaint'])->name('sales.complaint.delete');
 });
 Route::middleware(['auth', 'user-access:2'])->group(function () {
@@ -101,10 +107,12 @@ Route::middleware(['auth', 'user-access:2'])->group(function () {
 Route::middleware(['auth', 'user-access:3'])->group(function () {
     Route::get('/dashboard/qm',  [MainController::class, 'dashboardQualityManager'])->name('dashboard.qm');
     Route::get('qm/view_complaint', [QMController::class, 'viewComplaint'])->name('qm.complaint.index');
-
-
-
+    ROute::get('qm/detail_complaint/{id}', [QMController::class, 'detailComplaint'])->name('qm.complaint.detail');
+    Route::put('qm/updatestatuscomplaint/{id}', [QMController::class, 'updateComplaintStatus'])->name('qm.update.status');
 });
 Route::middleware(['auth', 'user-access:4'])->group(function () {
     Route::get('/dashboard/fgm',  [MainController::class, 'dashboardFGM'])->name('dashboard.fgm');
+    Route::get('fgm/view_complaint', [FGMController::class, 'viewComplaint'])->name('fgm.complaint.index');
+    Route::get('fgm/detail_complaint/{id}', [FGMController::class, 'detailComplaint'])->name('fgm.complaint.detail');
+    Route::put('fgm/updatestatuscomplaint/{id}', [FGMController::class, 'updateComplaintStatus'])->name('fgm.update.status');
 });

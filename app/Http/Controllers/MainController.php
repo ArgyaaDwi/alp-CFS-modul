@@ -27,14 +27,14 @@ class MainController extends Controller
     public function dashboardQualityManager()
     {
 
-        $qm = Auth::user();
+        $user = Auth::user();
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
-        return view('pages.role_qm.dashboard', compact('qm', 'currentDate'));
+        return view('pages.role_qm.dashboard', compact('user', 'currentDate'));
     }
     public function dashboardFGM()
     {
-        $fgm = Auth::user();
+        $user = Auth::user();
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
-        return view('pages.role_fgm.dashboard', compact('fgm', 'currentDate'));
+        return view('pages.role_fgm.dashboard', compact('user', 'currentDate'));
     }
 }

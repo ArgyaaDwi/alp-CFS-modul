@@ -156,13 +156,14 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ route('dashboard.qm') }}" class="nav-link">
+                            <a href="{{ route('dashboard.fgm') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-bars-progress"></i>
                                 <p>
                                     Dashboard
                                 </p>
                             </a>
                         </li>
+
                         <li class="nav-header">Kelola</li>
                         {{-- <li class="nav-item">
                             <a href="{{ route('sales.distributor.index') }}" class="nav-link">
@@ -171,7 +172,7 @@
                             </a>
                         </li> --}}
                         <li class="nav-item">
-                            <a href="{{route('qm.complaint.index')}}" class="nav-link">
+                            <a href="{{route('fgm.complaint.index')}}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Feedback</p>
                             </a>
@@ -182,7 +183,11 @@
         </aside>
         <div class="content-wrapper">
             @yield('content')
+
+
         </div>
+
+
         <footer class="main-footer">
             <div class="text-center d-none d-sm-block">
                 <strong>Copyright &copy; 2024 <a href="https://alppetro.co.id">ALP Petro Industry</a>.</strong> All

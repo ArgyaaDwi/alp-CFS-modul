@@ -113,6 +113,17 @@ class SalesManagerController extends Controller
         return redirect()->route('sales.complaint.index')
             ->with('success', 'Komplain berhasil disimpan!');
     }
+    public function editComplaint($id){
+        $user = Auth::user();
+        $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
+        $categoryComplaints = CategoryComplaints::all();
+
+
+        $complaint = Complaints::findOrFail($id);
+        $selectedCategoryIds = $complaint->categories->pluck('id')->toArray();
+        $distributors = Distributor::all();
+        return view('pages.role_user.complaint.edit_complaint', compact('complaint', 'distributors', 'categoryComplaints', 'user', 'currentDate', 'selectedCategoryIds'));
+    }
     public function deleteComplaint($id){
         $complaint = Complaints::findOrFail($id);
         $complaint->delete();

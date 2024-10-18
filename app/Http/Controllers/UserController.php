@@ -58,7 +58,7 @@ class UserController extends Controller
             $profile_pic = $request->file('profile_pic')->store('profile_pic', 'public');
             $profile_pic_name = basename($profile_pic);
         } else {
-            $profile_pic_name = null; // Jika tidak ada file yang diunggah
+            $profile_pic_name = null;
         }
         User::create([
             'name' => $validated['name'],
@@ -145,8 +145,6 @@ class UserController extends Controller
         return redirect()->route('admin.user.index')
             ->with('info', 'Status <strong style="color:blue;">' . e($users->name) . '</strong> tidak berubah.');
     }
-
-
     public function deleteUser($id)
     {
         $user = User::where('id', $id)->first();

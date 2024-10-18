@@ -1,5 +1,10 @@
-<h1>Halo {{ $fgm->name }} ({{ $fgm->email }}) ini adalah dashboard FGM</h1>
-<form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit">Logout</button>
-</form>
+@extends('layouts.fgm')
+@section('content')
+    <div class="p-3">
+        <h1>Halo {{ $user->name }} ({{ $user->email }}) ini adalah dashboard FGM</h1>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+@endsection
