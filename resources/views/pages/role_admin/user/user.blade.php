@@ -18,7 +18,7 @@
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2 mx-0">
+            <div class="row mb-2">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {!! session('success') !!}
@@ -32,7 +32,6 @@
                         {!! session('error') !!}
                     </div>
                 @endif
-
                 <div class="col-sm-6">
                     <h4 class="m-0"><b>Kelola User</b></h4>
                 </div>
@@ -89,7 +88,7 @@
                                         </form>
                                     @endif
                                 </td>
-                                <td>{{ $val->distributor ? $val->distributor->company_name : '-' }}</td>
+                                <td>{{ $val->distributor ? $val->distributor->distributor_name : '-' }}</td>
                                 <td>
                                     {!! $val->is_active == 1
                                         ? '<button type="button" disabled class="btn btn-outline-success btn-sm">Active</button>'

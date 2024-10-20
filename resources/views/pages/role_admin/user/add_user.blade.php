@@ -86,7 +86,7 @@
         </div>
     </div>
     <section class="content">
-        <div class="card mx-2">
+        <div class="card mx-3">
             <div class="card-body">
                 <form action="{{ route('admin.user.save') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -100,21 +100,9 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="id_distributor" class="form-label">Nama Distributor</label>
-                            <select class="form-control" id="id_distributor" name="distributor_id">
-                                <option value="" class="text-center">.:: Pilih Distributor ::.</option>
-                                @forelse ($distributors as $item)
-                                    <option value="{{ $item->id }}">{{ $item->company_name }}</option>
-                                @empty
-                                    <option value="">Distributor tidak tersedia</option>
-                                @endforelse
-                            </select>
-                            <i class="fas fa-info-circle"></i> Pilih distributor jika untuk role user.
-                        </div>
-                        <div class="col-md-6">
                             <label for="role_id" class="form-label">Role</label>
                             <select class="form-control" id="role_id" name="role_id">
-                                <option value="" class="text-center">.:: Pilih Role ::.</option>
+                                <option value="{{ old('role_id') }}" class="text-center">.:: Pilih Role ::.</option>
                                 @forelse ($roles as $item)
                                     <option value="{{ $item->id }}">{{ $item->role_name }}</option>
                                 @empty
@@ -124,6 +112,18 @@
                             @error('role_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_distributor" class="form-label">Nama Distributor</label>
+                            <select class="form-control" id="id_distributor" name="distributor_id">
+                                <option value="{{ old('distributor_id') }}" class="text-center">.:: Pilih Distributor ::.</option>
+                                @forelse ($distributors as $item)
+                                    <option value="{{ $item->id }}">{{ $item->distributor_name }}</option>
+                                @empty
+                                    <option value="">Distributor tidak tersedia</option>
+                                @endforelse
+                            </select>
+                            <small class="text-muted"><i class="fas fa-info-circle"></i> Pilih distributor jika rolenya Sales Manager</small>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -165,10 +165,10 @@
                         <div class="form-group">
                             <label for="address">Alamat</label>
                             <textarea class="form-control" id="address" name="address" rows="3" placeholder="Masukkan Alamat">{{ old('address') }}</textarea>
+                            @error('address')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
-                        @error('address')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -208,8 +208,9 @@
                         <label for="profile_picture" class="form-label">Profile</label>
                         <input class="form-control" type="file" id="profile_picture" name="profile_pic"
                             accept=".jpg,.jpeg,.png" onchange="previewImage(this)">
-                        <i class="fas fa-info-circle"></i> (Opsional) Gunakan gambar rasio 1:1 untuk hasil yang maksimal
-                        dengan maks ukuran 1MB [JPG, JPEG, PNG] .
+                            <small class="text-muted"><i class="fas fa-info-circle"></i> (Opsional) Gunakan gambar rasio 1:1 untuk hasil yang maksimal
+                                dengan maks ukuran 1MB [JPG, JPEG, PNG]</small>
+
                     </div>
                     <div class="avatar-preview mb-3">
                         <div id="imagePreview"></div>

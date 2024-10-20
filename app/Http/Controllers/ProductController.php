@@ -13,17 +13,17 @@ class ProductController extends Controller
 {
     public function viewProductLubricant()
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $products = Product::with(['categoryLubricant', 'subCategoryLubricant'])->get();
-        return view('pages.role_admin.product.product', compact('admin', 'products'));
+        return view('pages.role_admin.product.product', compact('user', 'products'));
     }
 
     public function addProductLubricant()
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $categoryLubricants = CategoryLubricant::all();
         $subCategoryLubricants = SubCategoryLubricant::all();
-        return view('pages.role_admin.product.add_product', compact('admin', 'categoryLubricants', 'subCategoryLubricants'));
+        return view('pages.role_admin.product.add_product', compact('user', 'categoryLubricants', 'subCategoryLubricants'));
     }
     public function saveProductLubricant(Request $request)
     {
@@ -69,19 +69,19 @@ class ProductController extends Controller
     }
     public function detailProductLubricant($id)
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $products = Product::with(['categoryLubricant', 'subCategoryLubricant'])->find($id);
 
-        return view('pages.role_admin.product.detail_product', compact('admin', 'products'));
+        return view('pages.role_admin.product.detail_product', compact('user', 'products'));
     }
 
     public function editProductLubricant($id)
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $products = Product::with(['categoryLubricant', 'subCategoryLubricant'])->find($id);
         $categoryLubricants = CategoryLubricant::all();
         $subCategoryLubricants = SubCategoryLubricant::all();
-        return view('pages.role_admin.product.edit_product', compact('admin', 'products', 'categoryLubricants', 'subCategoryLubricants'));
+        return view('pages.role_admin.product.edit_product', compact('user', 'products', 'categoryLubricants', 'subCategoryLubricants'));
     }
     public function updateProductLubricant(Request $request, $id)
     {

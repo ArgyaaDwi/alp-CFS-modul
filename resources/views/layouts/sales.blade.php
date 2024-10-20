@@ -156,7 +156,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                         data-accordion="false">
                         <li class="nav-item">
-                            <a href="{{ route('dashboard.user') }}" class="nav-link">
+                            <a href="{{ route('dashboard.sales') }}" class="nav-link">
                                 <i class="nav-icon fa-solid fa-bars-progress"></i>
                                 <p>
                                     Dashboard

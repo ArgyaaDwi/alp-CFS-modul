@@ -71,7 +71,7 @@
                                                         @endif
                                                     @endforeach
                                             </p>
-                                            <p>Status Aduan: {{$complaint->currentStatus->status_name}}</p>
+                                            <p>Status Aduan: {{ $complaint->currentStatus->status_name }}</p>
                                             <h5>Judul Aduan: {{ $complaint->complaint_title }}</h5>
                                             <label for="">Deskripsi</label>
                                             <textarea name="" id="" cols="30" rows="5" class="form-control" disabled>{{ $complaint->complaint_description }}</textarea>
@@ -114,9 +114,10 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-outline-secondary"
-                                                            data-dismiss="modal">Tutup</button>
+                                                                data-dismiss="modal">Tutup</button>
                                                             <a id="downloadLink" href="#" download
-                                                                class="btn btn-primary"><i class="fa-solid fa-download"></i>
+                                                                class="btn btn-primary"><i
+                                                                    class="fa-solid fa-download"></i>
                                                                 Download Gambar</a>
                                                         </div>
                                                     </div>
@@ -133,7 +134,7 @@
                                                 Kembali</a>
                                             {{-- <a href="" class="btn btn-primary"><i
                                                     class="fa-regular fa-pen-to-square"></i> Perbarui Data</a> --}}
-                                            @if ( $complaint->current_status_id == 4)
+                                            @if ($complaint->current_status_id == 4)
                                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                                     data-target="#exampleModal"><i
                                                         class="fa-regular fa-pen-to-square"></i>
@@ -189,9 +190,12 @@
                                                                     file PDF yang diperbolehkan.
                                                                 </div>
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-outline-secondary"
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-secondary"
                                                                         data-dismiss="modal">Tutup</button>
-                                                                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                                                                    <button type="submit" class="btn btn-primary"><i
+                                                                            class="fa-solid fa-floppy-disk"></i>
+                                                                        Simpan</button>
                                                                 </div>
                                                             </form>
                                                         </div>
@@ -225,7 +229,7 @@
                                                                     </div>
                                                                     <div class="timeline-footer">
                                                                         @if ($item->supporting_document != null)
-                                                                            <button class="btn btn-primary my-2 btn-sm"><a
+                                                                            <button class="btn btn-info my-2 btn-sm"><a
                                                                                     class="text-white"
                                                                                     href="{{ asset('storage/' . $item->supporting_document) }}"
                                                                                     target="_blank"><i
@@ -242,7 +246,12 @@
                                                     @empty
                                                         <p class="text-center">Tidak ada riwayat aktivitas
                                                     @endforelse
-
+                                                    @if ($complaint->current_status_id == 4)
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-toggle="modal" data-target="#exampleModal"><i
+                                                                class="fa-regular fa-pen-to-square"></i>
+                                                            Update Status</button>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>

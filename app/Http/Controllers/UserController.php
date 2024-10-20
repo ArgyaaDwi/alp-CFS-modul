@@ -7,27 +7,28 @@ use App\Models\Distributor;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\MainDistributor;
 
 class UserController extends Controller
 {
     public function viewUser()
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $users = User::with(['distributor', 'role'])->get();
-        return view('pages.role_admin.user.user', compact('users', 'admin'));
+        return view('pages.role_admin.user.user', compact('users', 'user'));
     }
     public function detailUser($id)
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $users = User::with(['distributor', 'role'])->find($id);
-        return view('pages.role_admin.user.detail_user', compact('users', 'admin'));
+        return view('pages.role_admin.user.detail_user', compact('users', 'user'));
     }
     public function addUser()
     {
         $roles = Role::all();
-        $admin = Auth::user();
-        $distributors = Distributor::all();
-        return view('pages.role_admin.user.add_user', compact('admin', 'distributors', 'roles'));
+        $user = Auth::user();
+        $distributors = MainDistributor::all();
+        return view('pages.role_admin.user.add_user', compact('user',  'distributors', 'roles'));
     }
     public function saveUser(Request $request)
     {
@@ -76,11 +77,11 @@ class UserController extends Controller
     }
     public function editUser($id)
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $users = User::with(['distributor', 'role'])->find($id);
         $roles = Role::all();
-        $distributors = Distributor::all();
-        return view('pages.role_admin.user.edit_user', compact('users', 'admin', 'distributors', 'roles'));
+        $distributors = MainDistributor::all();
+        return view('pages.role_admin.user.edit_user', compact('users', 'user', 'distributors', 'roles'));
     }
     public function updateUser(Request $request, $id)
     {
@@ -102,13 +103,16 @@ class UserController extends Controller
             'is_verified.required' => 'Pilih salah satu',
             'is_active.required' => 'Pilih salah satu',
         ]);
-        $distributorId = $request->distributor_id ?? null;
         $user = User::find($id);
-        $password = $request->password ? bcrypt($request->password) : $user->password;
-        User::where('id', $id)->update([
+        if ($request->filled('password')) {
+            $password = bcrypt($request->password);
+        } else {
+            $password = $user->password;
+        }
+        $user->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'distributor_id' => $distributorId,
+            'distributor_id' => $request->distributor_id ?? null,
             'role_id' => $validated['role_id'],
             'no_telephone' => $validated['no_telephone'],
             'address' => $validated['address'],

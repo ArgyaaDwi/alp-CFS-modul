@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\User;
+use App\Models\MainDistributor;
 
 class AuthController extends Controller
 {
@@ -92,7 +93,7 @@ class AuthController extends Controller
         if (Auth::check()) {
             return $this->redirectToDashboard();
         }
-        $distributors = Distributor::all();
+        $distributors = MainDistributor::all();
 
         return view('auth.register', compact('distributors'));
     }
@@ -122,8 +123,7 @@ class AuthController extends Controller
             'distributor_id' => $request->distributor_id,
             'no_telephone' => $request->no_telephone,
         ]);
-        dd(vars: $user);
-        // Auth::login($user);
+        // dd(vars: $user);
         return redirect('/dashboard/user')->with('success', 'Registrasi berhasil.');
     }
 
@@ -139,7 +139,7 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         if ($user->role_id == 1) {
-            return redirect('/dashboard/user');
+            return redirect('/dashboard/sales');
         } else if ($user->role_id == 2) {
             return redirect('/dashboard/admin');
         } else if ($user->role_id == 3) {

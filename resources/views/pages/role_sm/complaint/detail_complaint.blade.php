@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.user') }}"><i
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard.sales') }}"><i
                                     class="fa-solid fa-house"></i></a>
                         </li>
                         <li class="breadcrumb-item"><a href="{{ route('sales.complaint.index') }}"
@@ -135,10 +135,10 @@
                                                 class="btn btn-outline-secondary"><i class="fa-solid fa-chevron-left"></i>
                                                 Kembali</a>
                                             @if ($complaint->current_status_id == 7 || $complaint->current_status_id == 1)
-                                                <a href="{{ route('sales.complaint.edit', $complaint->id) }}" class="btn btn-primary"><i
-                                                        class="fa-regular fa-pen-to-square"></i> Perbarui Data</a>
+                                                <a href="{{ route('sales.complaint.edit', $complaint->id) }}"
+                                                    class="btn btn-primary"><i class="fa-regular fa-pen-to-square"></i>
+                                                    Perbarui Data</a>
                                             @endif
-
                                         </div>
                                         <div class="tab-pane fade mx-1" id="history" role="tabpanel"
                                             aria-labelledby="history-tab">
@@ -167,7 +167,7 @@
                                                                     </div>
                                                                     <div class="timeline-footer">
                                                                         @if ($item->supporting_document != null)
-                                                                            <button class="btn btn-primary my-2 btn-sm"><a
+                                                                            <button class="btn btn-info my-2 btn-sm"><a
                                                                                     class="text-white"
                                                                                     href="{{ asset('storage/' . $item->supporting_document) }}"
                                                                                     target="_blank"><i
@@ -184,9 +184,12 @@
                                                     @empty
                                                         <p class="text-center">Tidak ada riwayat aktivitas
                                                     @endforelse
-
+                                                    @if ($complaint->current_status_id == 7 || $complaint->current_status_id == 1)
+                                                        <a href="{{ route('sales.complaint.edit', $complaint->id) }}"
+                                                            class="btn btn-primary"><i
+                                                                class="fa-regular fa-pen-to-square"></i> Perbarui Data</a>
+                                                    @endif
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.sales')
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
@@ -16,6 +16,12 @@
         $(document).ready(function() {
             $('#company_type_id').select2({
                 placeholder: ".:: Pilih Tipe ::.",
+                allowClear: true
+            });
+        });
+        $(document).ready(function() {
+            $('#main_distributor_id').select2({
+                placeholder: ".:: Pilih Main Distributor ::.",
                 allowClear: true
             });
         });
@@ -47,13 +53,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0"><b>Tambah Distributor</b></h1>
+                    <h4 class="m-0"><b>Tambah Distributor</b></h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}"> <i
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard.sales') }}"> <i
                                     class="nav-icon fa-solid fa-house"></i></a></li>
-                        <li class="breadcrumb-item "><a href="{{ route('admin.distributor.index') }}">Distributor</a></li>
+                        <li class="breadcrumb-item "><a href="{{ route('sales.distributor.index') }}">Distributor</a></li>
                         <li class="breadcrumb-item active">Tambah Distributor</li>
                     </ol>
                 </div>
@@ -61,13 +67,13 @@
         </div>
     </div>
     <section class="content">
-        <div class="card mx-2">
+        <div class="card mx-3">
             <div class="card-body">
-                <form action="{{ route('admin.distributor.save') }}" method="POST">
+                <form action="{{ route('sales.distributor.save') }}" method="POST">
                     @csrf
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="company_type_id" class="form-label">Tipe</label>
+                            <label for="company_type_id" class="form-label">Tipe Perusahaan</label>
                             <select class="form-control" id="company_type_id" name="company_type_id">
                                 <option value="" class="text-center">.:: Pilih Tipe ::.</option>
                                 @forelse ($company_type as $item)
@@ -88,7 +94,6 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -153,12 +158,10 @@
                             <label for="company_website" class="form-label">Website Perusahaan</label>
                             <input type="text" value="{{ old('company_website') }}" name="company_website"
                                 class="form-control" placeholder="Masukkan Website Perusahaan">
-                            @error('company_website')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
+                                <small class="text-muted"><i class="fas fa-info-circle"></i> Masukkan URL Website jika ada</small>
                         </div>
                     </div>
-                    <a href="{{ route('admin.distributor.index') }}" class="btn btn-secondary"><i
+                    <a href="{{ route('sales.distributor.index') }}" class="btn btn-secondary"><i
                             class="fa-solid fa-chevron-left"></i> Kembali</a>
                     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i>
                         Simpan</button>

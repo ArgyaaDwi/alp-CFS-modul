@@ -4,13 +4,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0"><b>Edit Sub Kategori</b></h1>
+                    <h4 class="m-0"><b>Edit Sub Kategori</b></h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}"> <i
                                     class="nav-icon fa-solid fa-house"></i></a></li>
-                        <li class="breadcrumb-item "><a href="{{ route('admin.category.index') }}">Sub Kategori</a></li>
+                        <li class="breadcrumb-item "><a href="{{ route('admin.subcategory.index') }}">Sub Kategori</a></li>
                         <li class="breadcrumb-item active">Edit Sub Kategori {{ $subCategoryLubricants->sub_category_name }}
                         </li>
                     </ol>
@@ -19,7 +19,7 @@
         </div>
     </div>
     <section class="content">
-        <div class="card mx-2">
+        <div class="card mx-3">
             <div class="card-body">
                 <form action="{{ route('admin.subcategory.update', $subCategoryLubricants->id) }}" method="POST">
                     @method('PUT')

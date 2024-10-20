@@ -11,18 +11,18 @@ class MainController extends Controller
     {
         return view('pages.waiting');
     }
-    public function dashboardUser()
+    public function dashboardSalesManager()
     {
         $user = Auth::user();
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
-        return view('pages.role_user.dashboard', compact('user', 'currentDate'));
+        return view('pages.role_sm.dashboard', compact('user', 'currentDate'));
     }
     public function dashboardAdmin()
     {
 
-        $admin = Auth::user();
+        $user = Auth::user();
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
-        return view( 'pages.role_admin.dashboard', compact('admin', 'currentDate'));
+        return view( 'pages.role_admin.dashboard', compact('user',  'currentDate'));
     }
     public function dashboardQualityManager()
     {

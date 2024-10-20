@@ -18,7 +18,7 @@
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2 mx-0">
+            <div class="row mb-2">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {!! session('success') !!}

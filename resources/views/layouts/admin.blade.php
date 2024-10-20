@@ -110,7 +110,7 @@
                 <li class="nav-item dropdown user-menu">
                     <a href="" class="nav-link bg-white dropdown-toggle " data-toggle="dropdown"
                         style="background-color: #ffffff; ">
-                        <span class="d-none d-md-inline mr-2">{{ $admin->name }}</span>
+                        <span class="d-none d-md-inline mr-2">{{ $user->name }}</span>
                         <img src="{{ asset('images/user.jpg') }}" class="user-image img-circle elevation-2"
                             alt="User Image">
                     </a>
@@ -118,8 +118,8 @@
                         <li class="user-header">
                             <img src="{{ asset('images/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
                             <p>
-                                {{ $admin->name }}
-                                <small>{{ $admin->email }}</small>
+                                {{ $user->name }}
+                                <small>{{ $user->email }}</small>
                             </p>
                         </li>
                         <li class="user-footer">
@@ -154,7 +154,7 @@
                         <img src="{{ asset('images/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="" class="d-block">{{ $admin->name }}</a>
+                        <a href="" class="d-block">{{ $user->name }}</a>
                     </div>
                 </div>
                 <nav class="mt-2">
@@ -185,9 +185,9 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="" class="nav-link">
+                                    <a href="{{ route('admin.user.index') }}" class="nav-link">
                                         <i class="nav-icon fa-regular fa-user"></i>
-                                        <p>Karyawan</p>
+                                        <p>User</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
@@ -230,7 +230,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link">
+                            <a href="{{route('admin.complaint.index')}}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Feedback</p>
                             </a>

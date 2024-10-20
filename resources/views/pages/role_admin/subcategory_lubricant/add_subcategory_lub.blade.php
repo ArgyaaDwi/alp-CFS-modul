@@ -10,7 +10,7 @@
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}"> <i
                                     class="nav-icon fa-solid fa-house"></i></a></li>
-                        <li class="breadcrumb-item "><a href="{{ route('admin.category.index') }}">Sub Kategori</a></li>
+                        <li class="breadcrumb-item "><a href="{{ route('admin.subcategory.index') }}">Sub Kategori</a></li>
                         <li class="breadcrumb-item active">Tambah Sub Kategori</li>
                     </ol>
                 </div>

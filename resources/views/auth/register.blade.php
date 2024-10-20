@@ -57,7 +57,7 @@
                             <select class="form-control" id="id_distributor" name="distributor_id">
                                 <option value="" class="text-center">.:: Pilih Distributor ::.</option>
                                 @forelse ($distributors as $item)
-                                    <option value="{{ $item->id }}">{{ $item->company_name }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->distributor_name }}</option>
                                 @empty
                                     <option value="">Distributor tidak tersedia</option>
                                 @endforelse

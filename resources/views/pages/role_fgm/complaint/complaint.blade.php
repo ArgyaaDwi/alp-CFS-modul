@@ -46,6 +46,7 @@
                         <tr>
                             <th>No. </th>
                             <th>Distributor</th>
+                            <th>Main Distributor</th>
                             <th>Kategori</th>
                             <th>Created By</th>
                             <th>Created At</th>
@@ -59,6 +60,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $val->distributor->company_name }}</td>
+                                <td>{{ $val->distributor->companyDistributor->distributor_name }}</td>
                                 <td>
                                     @foreach ($val->categories as $category)
                                         @if ($category->id == 4 && $category->pivot->other_category_name)

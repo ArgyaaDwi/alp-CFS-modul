@@ -18,7 +18,7 @@
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2 mx-0">
+            <div class="row mb-2">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {!! session('success') !!}
@@ -32,7 +32,6 @@
                         {!! session('error') !!}
                     </div>
                 @endif
-
                 <div class="col-sm-6">
                     <h4 class="m-0"><b>Kelola Kategori</b></h4>
                 </div>
@@ -85,7 +84,7 @@
                                                 data-bs-target="#confirmDeleteModal-{{ $val->id }}">
                                                 <i class="fa-solid fa-trash-can"></i>
                                             </button>
-                                        
+
                                     </form>
                                 </td>
                                 <div class="modal fade" id="confirmDeleteModal-{{ $val->id }}" tabindex="-1"

@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1><b>Detail Karyawan</b></h1>
+                    <h4><b>Detail Karyawan</b></h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -21,7 +21,7 @@
         </div>
     </section>
     <section class="content">
-        <div class="card mx-2">
+        <div class="card mx-3">
             <div class="card-header">
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -50,8 +50,14 @@
                                                 @else
                                                     <span class="badge badge-pill badge-danger">Nonaktif</span>
                                                 @endif
-                                                <p class="text-muted text-sm"><b>Role: {{ $users->role->role_name }}</b>
-                                                </p>
+                                                @if ($users->distributor_id != null)
+                                                    <p class="text-muted text-sm"><b>Role: {{ $users->role->role_name }}
+                                                            {{ $users->distributor->distributor_name }}</b>
+                                                    </p>
+                                                @else
+                                                    <p class="text-muted text-sm"><b>Role: {{ $users->role->role_name }}
+                                                        </b></p>
+                                                @endif
                                                 <ul class="ml-4 mb-0 fa-ul text-muted">
                                                     <li class="small"><span class="fa-li"><i
                                                                 class="fa-solid fa-location-dot"></i></i></span>
@@ -79,7 +85,7 @@
                                                 @else
                                                     <img src="{{ asset('storage/profile_pic/' . $users->profile_pic) }}"
                                                         alt="{{ $users->name }}" class="img-circle img-fluid"
-                                                        width="170">
+                                                        width="170" height="170" style="object-fit: contain">
                                                 @endif
                                             </div>
                                         </div>

@@ -114,7 +114,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0"><b>Edit Produk</b></h1>
+                    <h4 class="m-0"><b>Edit Produk</b></h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -128,7 +128,7 @@
         </div>
     </div>
     <section class="content">
-        <div class="card mx-2">
+        <div class="card mx-3">
             <div class="card-body">
                 <form action="{{ route('admin.product.update', $products->id) }}" method="POST"
                     enctype="multipart/form-data">
@@ -179,15 +179,6 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                        {{-- <div class="col-md-6">
-                            <label for="sub_category_lubricant_id" class="form-label">Sub Kategori</label>
-                            <select class="form-control" id="sub_category_lubricant_id" name="sub_category_lubricant_id">
-                                <option value="">.:: Pilih Sub Kategori ::.</option>
-                            </select>
-                            @error('sub_category_lubricant_id')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div> --}}
                     </div>
                     <div class="mb-3">
                         <div class="form-group">

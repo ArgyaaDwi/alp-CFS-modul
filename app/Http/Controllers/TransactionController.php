@@ -11,15 +11,15 @@ class TransactionController extends Controller
 {
     public function viewTransaction()
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $transactions = Transaction::with(['detailTransaction', 'user', 'city'])->get();
-        return view('pages.role_admin.transaction.transaction', compact('admin', 'transactions'));
+        return view('pages.role_admin.transaction.transaction', compact('user', 'transactions'));
     }
     public function detailTransaction($id)
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $transactions = Transaction::with(['detailTransaction', 'user', 'city'])->find($id);
-        return view('pages.role_admin.transaction.detail_transaction', compact('admin', 'transactions'));
+        return view('pages.role_admin.transaction.detail_transaction', compact('user', 'transactions'));
     }
     // public function generatePDF($id)
     // {

@@ -9,7 +9,7 @@ class Distributor extends Model
 {
     use HasFactory;
     protected $table = 'distributors';
-    protected $fillable = ['company_type_id', 'company_name', 'company_province_id', 'company_city_id', 'company_address', 'company_phone', 'company_email', 'company_website'];
+    protected $fillable = ['company_type_id', 'company_name', 'company_distributor_id', 'company_province_id', 'company_city_id', 'company_address', 'company_phone', 'company_email', 'company_website'];
 
     public function user()
     {

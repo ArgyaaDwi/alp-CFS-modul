@@ -9,6 +9,10 @@ use App\Models\ComplaintFile;
 use App\Models\ComplaintInteraction;
 use App\Models\Complaints;
 use App\Models\ComplaintStatus;
+use App\Models\MainDistributor;
+use App\Models\Province;
+use App\Models\Regency;
+use App\Models\CompanyType;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -20,16 +24,126 @@ class SalesManagerController extends Controller
         $user = Auth::user();
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
         $distributors = Distributor::where('company_distributor_id', $user->distributor_id)->get();
-        return view('pages.role_user.distributor.distributor', compact('distributors', 'user', 'currentDate'));
+        return view('pages.role_sm.distributor.distributor', compact('distributors', 'user', 'currentDate'));
+    }
+    public function detailDistributor($id)
+    {
+        $user = Auth::user();
+        $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
+        $distributors = Distributor::with(['companyType', 'companyProvince', 'companyCity'])->find($id);
+        return view('pages.role_sm.distributor.detail_distributor', compact('distributors', 'user', 'currentDate'));
+    }
+
+    public function addDistributor()
+    {
+        $user = Auth::user();
+        $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
+        $company_type = CompanyType::all();
+        $company_province = Province::all();
+        $company_city = Regency::all();
+        $distributors = MainDistributor::all();
+        return view('pages.role_sm.distributor.add_distributor',  compact('user',  'company_type', 'company_province', 'company_city', 'distributors', 'currentDate'));
+    }
+    public function saveDistributor(Request $request)
+    {
+        $user = Auth::user();
+        $validated =  $request->validate([
+            'company_type_id' => 'required',
+            'company_name' => 'required|string|max:255',
+            'company_province_id' => 'required',
+            'company_city_id' => 'required',
+            'company_address' => 'required',
+            'company_phone' => 'required',
+            'company_email' => 'required|string|email|max:255|unique:distributors',
+        ], [
+            'company_type_id.required' => 'Pilih salah satu tipe perusahaan',
+            'company_name.required' => 'Nama perusahaan wajib diisi',
+            'company_province_id.required' => 'Pilih salah satu provinsi',
+            'company_city_id.required' => 'Pilih salah satu kota',
+            'company_address.required' => 'Alamat wajib diisi',
+            'company_phone.required' => 'No. Telepon wajib diisi',
+            'company_email.required' => 'Email wajib diisi',
+            'company_email.unique' => 'Email ini sudah terdaftar',
+        ]);
+        Distributor::create([
+            'company_type_id' => $validated['company_type_id'],
+            'company_name' => $validated['company_name'],
+            'company_distributor_id' => $user->distributor_id,
+            'company_province_id' => $validated['company_province_id'],
+            'company_city_id' => $validated['company_city_id'],
+            'company_address' => $validated['company_address'],
+            'company_phone' => $validated['company_phone'],
+            'company_email' => $validated['company_email'],
+            'company_website' => $validated['company_website'] ?? null
+        ]);
+        return redirect()->route('sales.distributor.index')->with('success', 'Berhasil menambahkan <strong style="color:green;">' . $validated['company_name'] . '</strong> ke distributor');
+    }
+    public function editDistributor($id)
+    {
+        $user = Auth::user();
+        $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
+        $distributors = Distributor::with(['companyType', 'companyProvince', 'companyCity', 'companyDistributor'])->find($id);
+        $company_type = CompanyType::all();
+        $company_province = Province::all();
+        $company_city = Regency::all();
+        $companyDistributor = MainDistributor::all();
+        return view('pages.role_sm.distributor.edit_distributor', compact('user', 'distributors', 'company_type', 'company_province', 'company_city', 'companyDistributor', 'currentDate'));
+    }
+
+    public function updateDistributor(Request $request, $id)
+    {
+        $validated =  $request->validate([
+            'company_type_id' => 'required',
+            'company_name' => 'required|string|max:255',
+            'company_province_id' => 'required',
+            'company_city_id' => 'required',
+            'company_address' => 'required',
+            'company_phone' => 'required',
+            'company_email' => 'required|string|email|max:255|unique:distributors,company_email,' . $id,
+        ], [
+            'company_type_id.required' => 'Pilih salah satu tipe perusahaan',
+            'company_name.required' => 'Nama perusahaan wajib diisi',
+            'company_province_id.required' => 'Pilih salah satu provinsi',
+            'company_city_id.required' => 'Pilih salah satu kota',
+            'company_address.required' => 'Alamat wajib diisi',
+            'company_phone.required' => 'No. Telepon wajib diisi',
+            'company_email.required' => 'Email wajib diisi',
+            'company_email.unique' => 'Email ini sudah terdaftar',
+        ]);
+        $distributor = Distributor::find($id);
+        $distributor->update([
+            'company_type_id' => $validated['company_type_id'],
+            'company_name' => $validated['company_name'],
+            'company_province_id' => $validated['company_province_id'],
+            'company_city_id' => $validated['company_city_id'],
+            'company_address' => $validated['company_address'],
+            'company_phone' => $validated['company_phone'],
+            'company_email' => $validated['company_email'],
+            'company_website' => $request->company_website ?? null
+        ]);
+        return redirect()->route('sales.distributor.index')->with('success', 'Berhasil mengubah <strong style="color:green;">' . $validated['company_name'] . '</strong> distributor');
+    }
+    public function deleteDistributor($id)
+    {
+        $distributor = Distributor::where('id', $id)->first();
+        if (!$distributor) {
+            return redirect()->route('admin.distributor.index')->with('error', 'Distributor tidak ditemukan.');
+        }
+        Distributor::where('id', $id)->delete();
+        return redirect()->route('sales.distributor.index')->with('success', 'Berhasil menghapus <strong style="color:green;">' . e($distributor->company_name) . '</strong> dari distributor');
     }
     public function viewComplaint()
     {
         $user = Auth::user();
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
-        $distributors = Distributor::where('company_distributor_id', $user->distributor_id)->get();
-        $complaints = Complaints::with(['distributor', 'categories', 'currentStatus'])->get();
-        return view('pages.role_user.complaint.complaint', compact('user', 'distributors', 'complaints', 'currentDate'));
+        $distributorIds = Distributor::where('company_distributor_id', $user->distributor_id)
+                            ->pluck('id');
+        $complaints = Complaints::with(['distributor', 'categories', 'currentStatus'])
+                        ->whereIn('distributor_id', $distributorIds)
+                        ->get();    
+        return view('pages.role_sm.complaint.complaint', compact('user', 'distributorIds', 'complaints', 'currentDate'));
     }
+
     public function detailComplaint($id)
     {
         $user = Auth::user();
@@ -38,7 +152,7 @@ class SalesManagerController extends Controller
         $complaint = Complaints::with(['distributor', 'categories'])->findOrFail($id);
         $status = ComplaintStatus::whereIn('id', [$complaint->current_status_id, 2, 3])->get();
         $history = ComplaintInteraction::where('complaint_id', $id)->get();
-        return view('pages.role_user.complaint.detail_complaint', compact('user', 'distributors', 'complaint', 'currentDate', 'status', 'history'));
+        return view('pages.role_sm.complaint.detail_complaint', compact('user', 'distributors', 'complaint', 'currentDate', 'status', 'history'));
     }
     public function addComplaint()
     {
@@ -46,7 +160,7 @@ class SalesManagerController extends Controller
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
         $categoryComplaints = CategoryComplaints::all();
         $distributors = Distributor::where('company_distributor_id', $user->distributor_id)->get();
-        return view('pages.role_user.complaint.add_complaint', compact('user', 'distributors', 'categoryComplaints', 'currentDate'));
+        return view('pages.role_sm.complaint.add_complaint', compact('user', 'distributors', 'categoryComplaints', 'currentDate'));
     }
     public function saveComplaint(Request $request)
     {
@@ -113,7 +227,8 @@ class SalesManagerController extends Controller
         return redirect()->route('sales.complaint.index')
             ->with('success', 'Komplain berhasil disimpan!');
     }
-    public function editComplaint($id){
+    public function editComplaint($id)
+    {
         $user = Auth::user();
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
         $categoryComplaints = CategoryComplaints::all();
@@ -122,13 +237,13 @@ class SalesManagerController extends Controller
         $complaint = Complaints::findOrFail($id);
         $selectedCategoryIds = $complaint->categories->pluck('id')->toArray();
         $distributors = Distributor::all();
-        return view('pages.role_user.complaint.edit_complaint', compact('complaint', 'distributors', 'categoryComplaints', 'user', 'currentDate', 'selectedCategoryIds'));
+        return view('pages.role_sm.complaint.edit_complaint', compact('complaint', 'distributors', 'categoryComplaints', 'user', 'currentDate', 'selectedCategoryIds'));
     }
-    public function deleteComplaint($id){
+    public function deleteComplaint($id)
+    {
         $complaint = Complaints::findOrFail($id);
         $complaint->delete();
         return redirect()->route('sales.complaint.index')
             ->with('success', 'Komplain berhasil dihapus!');
     }
-
 }

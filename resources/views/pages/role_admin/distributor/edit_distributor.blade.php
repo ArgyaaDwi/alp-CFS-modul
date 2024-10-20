@@ -19,6 +19,12 @@
                 allowClear: true
             });
         });
+        $(document).ready(function() {
+            $('#main_distributor_id').select2({
+                placeholder: ".:: Pilih Main Distributor ::.",
+                allowClear: true
+            });
+        });
     </script>
     <script script script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @endpush
@@ -47,7 +53,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0"><b>Edit Distributor</b></h1>
+                    <h4 class="m-0"><b>Edit Distributor</b></h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -61,14 +67,14 @@
         </div>
     </div>
     <section class="content">
-        <div class="card mx-2">
+        <div class="card mx-3">
             <div class="card-body">
                 <form action="{{ route('admin.distributor.update', $distributors->id) }}" method="POST">
                     @method('PUT')
                     @csrf
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="company_type_id" class="form-label">Tipe</label>
+                            <label for="company_type_id" class="form-label">Tipe Perusahaan</label>
                             <select class="form-control" id="company_type_id" name="company_type_id">
                                 <option value="" class="text-center">.:: Pilih Tipe ::.</option>
                                 @forelse ($company_type as $item)
@@ -84,6 +90,24 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
+                            <label for="main_distributor_id" class="form-label">Main Distributor</label>
+                            <select class="form-control" id="main_distributor_id" name="company_distributor_id">
+                                <option value="" class="text-center">.:: Pilih Tipe ::.</option>
+                                @forelse ($companyDistributor as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ $distributors->company_distributor_id == $item->id ? 'selected' : '' }}>
+                                        {{ $item->distributor_name }}</option>
+                                @empty
+                                    <option value="">Main Distributor tidak tersedia</option>
+                                @endforelse
+                            </select>
+                            @error('company_distributor_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-group">
                             <label for="name" class="form-label">Nama Perusahaan</label>
                             <input type="text" value="{{ $distributors->company_name }}" name="company_name"
                                 class="form-control" placeholder="Masukkan Nama Perusahaan">
@@ -91,7 +115,6 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -160,6 +183,8 @@
                             <label for="company_website" class="form-label">Website Perusahaan</label>
                             <input type="text" value="{{ $distributors->company_website }}" name="company_website"
                                 class="form-control" placeholder="Masukkan Website Perusahaan">
+                            <small class="text-muted"><i class="fas fa-info-circle"></i> Masukkan URL Website jika
+                                ada</small>
                             @error('company_website')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror

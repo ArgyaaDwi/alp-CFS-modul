@@ -11,16 +11,16 @@ class SubCategoryLubricantController extends Controller
 {
     public function viewSubCategoryLubricant()
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $subCategoryLubricants = SubCategoryLubricant::with('categoryLubricant')->get();
-        return view('pages.role_admin.subcategory_lubricant.subcategory_lub', compact('admin', 'subCategoryLubricants'));
+        return view('pages.role_admin.subcategory_lubricant.subcategory_lub', compact('user',  'subCategoryLubricants'));
     }
 
     public function addSubCategoryLubricant()
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $categoryLubricants = CategoryLubricant::all();
-        return view('pages.role_admin.subcategory_lubricant.add_subcategory_lub', compact('categoryLubricants', 'admin'));
+        return view('pages.role_admin.subcategory_lubricant.add_subcategory_lub', compact('categoryLubricants', 'user'));
     }
     public function saveSubCategoryLubricant(Request $request)
     {
@@ -46,10 +46,10 @@ class SubCategoryLubricantController extends Controller
     }
     public function editSubCategoryLubricant($id)
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $subCategoryLubricants = SubCategoryLubricant::with('categoryLubricant')->find($id);
         $categoryLubricants = CategoryLubricant::all();
-        return view('pages.role_admin.subcategory_lubricant.edit_subcategory_lub', compact('subCategoryLubricants', 'categoryLubricants', 'admin'));
+        return view('pages.role_admin.subcategory_lubricant.edit_subcategory_lub', compact('subCategoryLubricants', 'categoryLubricants', 'user'));
     }
 
     public function updateSubCategoryLubricant(Request $request, $id)

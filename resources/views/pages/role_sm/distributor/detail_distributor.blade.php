@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.sales')
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
@@ -8,10 +8,10 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}"><i
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard.sales') }}"><i
                                     class="fa-solid fa-house"></i></a>
                         </li>
-                        <li class="breadcrumb-item"><a href="{{ route('admin.distributor.index') }}"
+                        <li class="breadcrumb-item"><a href="{{ route('sales.distributor.index') }}"
                                 style="text-color: black">Distributor</a></li>
                         <li class="breadcrumb-item"><span>{{ $distributors->company_name }}</span>
                         </li>
@@ -50,9 +50,9 @@
                             href="{{ $distributors->company_website ?? '-' }}">{{ $distributors->company_website ?? '-' }}</a>
                     </li>
                 </ul>
-                <a href="{{ route('admin.distributor.index') }}" class="btn btn-outline-secondary"><i
+                <a href="{{ route('sales.distributor.index') }}" class="btn btn-outline-secondary"><i
                         class="fa-solid fa-chevron-left"></i> Kembali</a>
-                <a href="{{ route('admin.distributor.edit', $distributors->id) }}" class="btn btn-primary"><i
+                <a href="{{ route('sales.distributor.edit', $distributors->id) }}" class="btn btn-primary"><i
                         class="fa-regular fa-pen-to-square"></i> Perbarui Data</a>
             </div>
         </div>

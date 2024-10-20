@@ -19,6 +19,7 @@
             }
         }
         let fileArray = [];
+
         function addImages() {
             let files = document.getElementById('images').files;
             let previewContainer = document.getElementById('imagePreviewContainer');
@@ -42,6 +43,7 @@
                 reader.readAsDataURL(file);
             });
         }
+
         function toggleOtherInput() {
             const otherCheckbox = document.getElementById('category_other');
             const otherCategoryContainer = document.getElementById('otherCategoryContainer');
@@ -104,21 +106,21 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0"><b>Buat Aduan</b></h1>
+                    <h4 class="m-0"><b>Edit Aduan</b></h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.user') }}"><i
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard.sales') }}"><i
                                     class="nav-icon fa-solid fa-house"></i></a></li>
                         <li class="breadcrumb-item "><a href="{{ route('sales.complaint.index') }}">Aduan</a></li>
-                        <li class="breadcrumb-item active">Buat Aduan</li>
+                        <li class="breadcrumb-item active">Edit Aduan</li>
                     </ol>
                 </div>
             </div>
         </div>
     </div>
     <section class="content">
-        <div class="card mx-2">
+        <div class="card mx-3">
             <div class="card-body">
                 <form action="{{ route('sales.complaint.save') }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -128,7 +130,9 @@
                             <select class="form-control" id="id_distributor" name="distributor_id">
                                 <option value="" class="text-center">.:: Pilih Distributor ::.</option>
                                 @forelse ($distributors as $item)
-                                    <option value="{{ $item->id }}">{{ $item->company_name }}</option>
+                                    <option value="{{ $item->id }}"
+                                        {{ $complaint->distributor_id == $item->id ? 'selected' : '' }}>
+                                        {{ $item->company_name }}</option>
                                 @empty
                                     <option value="">Distributor tidak tersedia</option>
                                 @endforelse
@@ -139,8 +143,8 @@
                         </div>
                         <div class="col-md-6">
                             <label for="batch_number" class="form-label">Batch</label>
-                            <input type="text" value="{{ old('batch_number') }}" name="batch_number" class="form-control"
-                                placeholder="Masukkan Nomor Batch">
+                            <input type="text" name="batch_number" class="form-control"
+                                value="{{ $complaint->batch_number }}">
                             @error('batch_number')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -152,8 +156,9 @@
                             @foreach ($categoryComplaints as $category)
                                 @if ($category->id != 4)
                                     <div class="form-check me-3">
-                                        <input class="form-check-input " type="checkbox" name="complaint_category_ids[]"
-                                            id="category_{{ $category->id }}" value="{{ $category->id }}">
+                                        <input class="form-check-input" type="checkbox" name="complaint_category_ids[]"
+                                            id="category_{{ $category->id }}" value="{{ $category->id }}"
+                                            {{ in_array($category->id, $selectedCategoryIds) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="category_{{ $category->id }}">
                                             {{ $category->category_name }}
                                         </label>
@@ -162,7 +167,8 @@
                             @endforeach
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="complaint_category_ids[]"
-                                    id="category_other" value="4" onclick="toggleOtherInput()">
+                                    id="category_other" value="4" onclick="toggleOtherInput()"
+                                    {{ in_array(4, $selectedCategoryIds) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="category_other">Lainnya</label>
                             </div>
                         </div>
@@ -179,8 +185,7 @@
                     <div class="mb-3">
                         <div class="form-group">
                             <label for="complaint_title">Judul Masalah</label>
-                            <textarea class="form-control" id="address" name="complaint_title" rows="2"
-                                placeholder="Masukkan Deskripsi Masalah">{{ old('complaint_title') }}</textarea>
+                            <textarea class="form-control" id="address" name="complaint_title" rows="2">{{ $complaint->complaint_title }}</textarea>
                             @error('complaint_title')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -189,8 +194,7 @@
                     <div class="mb-3">
                         <div class="form-group">
                             <label for="complaint_description">Deskripsi Masalah</label>
-                            <textarea class="form-control" id="address" name="complaint_description" rows="5"
-                                placeholder="Masukkan Deskripsi Masalah">{{ old('complaint_description') }}</textarea>
+                            <textarea class="form-control" id="address" name="complaint_description" rows="5">{{ $complaint->complaint_description }}</textarea>
                             @error('complaint_description')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -199,8 +203,7 @@
                     <div class="mb-3">
                         <div class="form-group">
                             <label for="complaint_hopeful_solution">Harapan</label>
-                            <textarea class="form-control" id="address" name="complaint_hopeful_solution" rows="3"
-                                placeholder="Masukkan Harapan Solusi">{{ old('complaint_hopeful_solution') }}</textarea>
+                            <textarea class="form-control" id="address" name="complaint_hopeful_solution" rows="3">{{ $complaint->complaint_hopeful_solution }}</textarea>
                             @error('complaint_hopeful_solution')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -216,9 +219,16 @@
                     <div class="avatar-preview mb-3" id="imagePreviewContainer"></div> --}}
                     <div class="mb-3">
                         <label for="supporting_document" class="form-label">Dokumen Pendukung (PDF)</label>
+                        @if ($complaint->supporting_document)
+                            <div class="mb-2">
+                                <a href="{{ asset('storage/' . $complaint->supporting_document) }}" target="_blank">
+                                    <i class="fa-regular fa-eye"></i> Lihat Dokumen Pendukung
+                                </a>
+                            </div>
+                        @endif
                         <input class="form-control" type="file" id="supporting_document" name="supporting_document"
                             accept=".pdf">
-                        <i class="fas fa-info-circle"></i> (Opsional) Hanya file PDF yang diperbolehkan.
+                        <i class="fas fa-info-circle my-1"></i> Pilih dokumen pendukung baru jika ingin memperbarui
                         @error('supporting_document')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -232,7 +242,8 @@
                     </div>
                     <a href="{{ route('sales.complaint.index') }}" class="btn btn-secondary"><i
                             class="fa-solid fa-chevron-left"></i> Kembali</a>
-                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i>
+                        Simpan</button>
                 </form>
             </div>
         </div>

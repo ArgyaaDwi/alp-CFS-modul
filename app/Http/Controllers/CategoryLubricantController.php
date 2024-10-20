@@ -11,15 +11,15 @@ class CategoryLubricantController extends Controller
 {
     public function viewCategoryLubricant()
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $categories = CategoryLubricant::all();
-        return view('pages.role_admin.category_lubricant.category_lub', compact('admin', 'categories'));
+        return view('pages.role_admin.category_lubricant.category_lub', compact('user',   'categories'));
     }
     public function addCategoryLubricant()
     {
-        $admin = Auth::user();
+        $user = Auth::user();
 
-        return view('pages.role_admin.category_lubricant.add_category_lub', compact('admin'));
+        return view('pages.role_admin.category_lubricant.add_category_lub', compact('user'));
     }
     public function saveCategoryLubricant(Request $request)
     {
@@ -41,9 +41,9 @@ class CategoryLubricantController extends Controller
     }
     public function editCategoryLubricant($id)
     {
-        $admin = Auth::user();
+        $user = Auth::user();
         $categories = CategoryLubricant::find($id);
-        return view('pages.role_admin.category_lubricant.edit_category_lub', compact('admin', 'categories'));
+        return view('pages.role_admin.category_lubricant.edit_category_lub', compact('user', var_names: 'categories'));
     }
     public function updateCategoryLubricant(Request $request, $id)
     {

@@ -18,7 +18,7 @@
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2 mx-0">
+            <div class="row mb-2">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {!! session('success') !!}
@@ -48,9 +48,8 @@
                     <thead style="border: 1px solid black">
                         <tr>
                             <th>No. </th>
-                            <th>ID</th>
                             <th>Nama</th>
-                            <th>Provinsi</th>
+                            <th>Main Distributor</th>
                             <th>Kota</th>
                             <th>Kontak Perusahaan</th>
                             <th>Email</th>
@@ -61,9 +60,8 @@
                         @forelse ($distributors as $val)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $val->id }}</td>
                                 <td>{{ $val->company_name }}</td>
-                                <td>{{ $val->companyProvince->province_name }}</td>
+                                <td>{{ $val->companyDistributor->distributor_name }}</td>
                                 <td>{{ $val->companyCity->city_name }}</td>
                                 <td>{{ $val->company_phone }}</td>
                                 <td>{{ $val->company_email }}</td>
