@@ -2,6 +2,16 @@
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />
+    <style>
+        th {
+            border-top: 1px solid #dddddd;
+            /* border-bottom: 1px solid #dddddd; */
+            border-right: 1px solid #dddddd;
+        }
+        th:first-child {
+            border-left: 1px solid #dddddd;
+        }
+    </style>
 @endpush
 @push('scripts')
     <script>
@@ -44,8 +54,8 @@
                 <div class="mb-3">
                     <a href="{{ route('sales.distributor.add') }}" class="btn btn-outline-primary">+ Tambah Distributor</a>
                 </div>
-                <table class="stripe-responsive" id="myTable">
-                    <thead style="border: 1px solid black">
+                <table class="cell-border" id="myTable">
+                    <thead>
                         <tr>
                             <th>No. </th>
                             <th>Nama</th>
@@ -65,14 +75,15 @@
                                 <td>{{ $val->companyCity->city_name }}</td>
                                 <td>{{ $val->company_phone }}</td>
                                 <td>{{ $val->company_email }}</td>
-                                </td>
+                                
                                 <td>
                                     <form action="{{ route('sales.distributor.delete', $val->id) }}" method="POST"
                                         id="delete-form-{{ $val->id }}">
                                         @csrf
                                         @method('DELETE')
                                         <div class="d-flex gap-2">
-                                            <a href="{{ route('sales.distributor.detail', $val->id) }}" class="btn btn-outline-info">
+                                            <a href="{{ route('sales.distributor.detail', $val->id) }}"
+                                                class="btn btn-outline-info">
                                                 <i class="fa-regular fa-eye"></i>
                                             </a>
                                             @auth
@@ -117,7 +128,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3">No Data</td>
+                                <td colspan="7" class="text-center">No Data</td>
                             </tr>
                         @endforelse
                     </tbody>

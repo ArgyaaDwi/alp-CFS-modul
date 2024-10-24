@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,6 +29,7 @@
         align-items: center;
         justify-content: center;
     }
+
     .spinner {
         border: 16px solid rgba(189, 189, 189, 0.1);
         width: 100px;
@@ -36,6 +38,7 @@
         border-left-color: rgb(255, 232, 117);
         animation: spin 1s ease infinite;
     }
+
     @keyframes spin {
         0% {
             transform: rotate(0deg);
@@ -96,7 +99,7 @@
                 <li class="nav-item">
                     <span class="nav-link" style="color: black;">
                         <strong>
-                          {{ $currentDate ?? 'Unknown Day' }}
+                            {{ $currentDate ?? 'Unknown Day' }}
                         </strong>
                     </span>
                 </li>
@@ -118,7 +121,8 @@
                             </p>
                         </li>
                         <li class="user-footer">
-                            <a href="" class="btn btn-outline-info  rounded btn-flat ">Profil</a>
+                            <a href="{{ route('qm.profile') }}"
+                                class="btn btn-outline-info  rounded btn-flat ">Profil</a>
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-danger rounded btn-flat float-right">
@@ -171,7 +175,7 @@
                             </a>
                         </li> --}}
                         <li class="nav-item">
-                            <a href="{{route('qm.complaint.index')}}" class="nav-link">
+                            <a href="{{ route('qm.complaint.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Feedback</p>
                             </a>

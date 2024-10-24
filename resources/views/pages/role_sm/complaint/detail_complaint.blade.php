@@ -96,7 +96,7 @@
                                                     <video width="320" height="240" controls>
                                                         <source src="{{ asset('storage/' . $file->file_path) }}"
                                                             type="video/mp4">
-                                                        Your browser does not support the video tag.
+                                                    Your browser does not support the video tag.
                                                     </video>
                                                 @endif
                                             @endforeach

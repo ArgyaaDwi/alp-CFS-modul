@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ComplaintMail;
 use App\Models\Distributor;
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\CategoryComplaints;
 use App\Models\ComplaintFile;
 use App\Models\ComplaintInteraction;
@@ -14,11 +16,51 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\CompanyType;
 use Illuminate\Support\Facades\Auth;
-
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class SalesManagerController extends Controller
 {
+    public function viewProfile()
+    {
+        $user = Auth::user();
+        $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
+        return view('pages.role_sm.profile.profile', compact('user', 'currentDate'));
+    }
+    public function editProfile()
+    {
+        $user = Auth::user();
+        $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
+        return view('pages.role_sm.profile.edit_profile', compact('user', 'currentDate'));
+    }
+    public function updateProfile(Request $request)
+    {
+        $user = User::find(Auth::id());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'no_telephone' => 'required',
+            'address' => 'required',
+        ], [
+            'name.required' => 'Nama tidak boleh kosong.',
+            'no_telephone.required' => 'No. Telepon tidak boleh kosong.',
+            'address.required' => 'Alamat tidak boleh kosong.',
+            'name.max' => 'Nama tidak boleh melebihi 255 karakter.',
+        ]);
+        $user->update([
+            'name' => $request->name,
+            'no_telephone' => $request->no_telephone,
+            'address' => $request->address,
+        ]);
+        return redirect()->route('sales.profile')->with('success', 'Profil berhasil diperbarui.');
+    }
+    public function changePassword()
+    {
+        $user = Auth::user();
+        $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
+        return view('pages.role_sm.profile.change_password', data: compact('user', 'currentDate'));
+    }
     public function viewDistributor()
     {
         $user = Auth::user();
@@ -137,10 +179,10 @@ class SalesManagerController extends Controller
         $user = Auth::user();
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
         $distributorIds = Distributor::where('company_distributor_id', $user->distributor_id)
-                            ->pluck('id');
+            ->pluck('id');
         $complaints = Complaints::with(['distributor', 'categories', 'currentStatus'])
-                        ->whereIn('distributor_id', $distributorIds)
-                        ->get();    
+            ->whereIn('distributor_id', $distributorIds)
+            ->get();
         return view('pages.role_sm.complaint.complaint', compact('user', 'distributorIds', 'complaints', 'currentDate'));
     }
 
@@ -224,6 +266,7 @@ class SalesManagerController extends Controller
             'notes' => 'Aduan telah diajukan dan menunggu diproses.',
             'supporting_document_path' => $request->file('supporting_document') ? $request->file('supporting_document')->store('supporting_document', 'public') : null,
         ]);
+        Mail::to('ferdinandargya@gmail.com')->send(new ComplaintMail($user, $complaint, $request->file('supporting_document')));
         return redirect()->route('sales.complaint.index')
             ->with('success', 'Komplain berhasil disimpan!');
     }

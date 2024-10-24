@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryLubricantController;
@@ -35,8 +36,17 @@ Route::post('/register',  [AuthController::class, 'registerProcess'])->name('reg
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/waiting', [MainController::class, 'waiting'])->name('waiting');
 
+Route::get('/email', function () {
+    return view('email.comp');
+});
+
 Route::middleware(['auth', 'user-access:1', 'check-verified'])->group(function () {
     Route::get('/dashboard/sales', [MainController::class, 'dashboardSalesManager'])->name('dashboard.sales');
+    // Route untuk kebutuhan kelola profile
+    Route::get('sales/view_profile', [SalesManagerController::class, 'viewProfile'])->name('sales.profile');
+    Route::get('sales/edit_profile', [SalesManagerController::class, 'editProfile'])->name('sales.profile.edit');
+    Route::put('sales/edit_profile', [SalesManagerController::class, 'updateProfile'])->name('sales.profile.update');
+    Route::get('sales/change_password', [SalesManagerController::class, 'changePassword'])->name('sales.password');
     // Route untuk kebutuhan kelola distributor
     Route::get('/sales/view_distributor', [SalesManagerController::class, 'viewDistributor'])->name('sales.distributor.index');
     Route::get('/sales/detail_distributor/{id}', [SalesManagerController::class, 'detailDistributor'])->name('sales.distributor.detail');
@@ -114,12 +124,23 @@ Route::middleware(['auth', 'user-access:2'])->group(function () {
 Route::middleware(['auth', 'user-access:3'])->group(function () {
     Route::get('/dashboard/qm',  [MainController::class, 'dashboardQualityManager'])->name('dashboard.qm');
     Route::get('qm/view_complaint', [QMController::class, 'viewComplaint'])->name('qm.complaint.index');
-    ROute::get('qm/detail_complaint/{id}', [QMController::class, 'detailComplaint'])->name('qm.complaint.detail');
+    Route::get('qm/detail_complaint/{id}', [QMController::class, 'detailComplaint'])->name('qm.complaint.detail');
     Route::put('qm/updatestatuscomplaint/{id}', [QMController::class, 'updateComplaintStatus'])->name('qm.update.status');
+    // Route untuk kebutuhan kelola profile
+    Route::get('qm/view_profile', [QMController::class, 'viewProfile'])->name('qm.profile');
+    Route::get('qm/edit_profile', [QMController::class, 'editProfile'])->name('qm.profile.edit');
+    Route::put('qm/edit_profile', [QMController::class, 'updateProfile'])->name('qm.profile.update');
+    Route::get('qm/change_password', [QMController::class, 'changePassword'])->name('qm.password');
+
 });
 Route::middleware(['auth', 'user-access:4'])->group(function () {
     Route::get('/dashboard/fgm',  [MainController::class, 'dashboardFGM'])->name('dashboard.fgm');
     Route::get('fgm/view_complaint', [FGMController::class, 'viewComplaint'])->name('fgm.complaint.index');
     Route::get('fgm/detail_complaint/{id}', [FGMController::class, 'detailComplaint'])->name('fgm.complaint.detail');
     Route::put('fgm/updatestatuscomplaint/{id}', [FGMController::class, 'updateComplaintStatus'])->name('fgm.update.status');
+    // Route untuk kebutuhan kelola profile
+    Route::get('fgm/view_profile', [FGMController::class, 'viewProfile'])->name('fgm.profile');
+    Route::get('fgm/edit_profile', [FGMController::class, 'editProfile'])->name('fgm.profile.edit');
+    Route::put('fgm/edit_profile', [FGMController::class, 'updateProfile'])->name('fgm.profile.update');
+    Route::get('fgm/change_password', [FGMController::class, 'changePassword'])->name('fgm.password');
 });

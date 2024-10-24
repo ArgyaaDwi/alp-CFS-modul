@@ -118,7 +118,7 @@
                             </p>
                         </li>
                         <li class="user-footer">
-                            <a href="" class="btn btn-outline-info  rounded btn-flat ">Profil</a>
+                            <a href="{{route('fgm.profile')}}" class="btn btn-outline-info  rounded btn-flat ">Profil</a>
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-danger rounded btn-flat float-right">

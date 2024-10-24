@@ -43,7 +43,6 @@
                                     <option value="">Role tidak tersedia</option>
                                 @endforelse
                             </select>
-
                             @error('role_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -62,7 +61,6 @@
                             </select>
                             <small class="text-muted"><i class="fas fa-info-circle"></i> Pilih distributor jika rolenya
                                 Sales Manager</small>
-
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -105,7 +103,6 @@
                                 <label class="form-check-label" for="is_verified2">Unverified</label>
                             </div>
                         </div>
-
                         <div class="col-md-6">
                             <label for="is_active" class="form-label">Status</label>
                             <div class="form-check form-check-inline">

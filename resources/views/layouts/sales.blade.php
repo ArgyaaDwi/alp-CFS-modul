@@ -49,7 +49,6 @@
     a {
         text-decoration: none;
     }
-
     table.data table.dataTable thead th {
         background-color: #FFF455;
         color: black;
@@ -118,7 +117,7 @@
                             </p>
                         </li>
                         <li class="user-footer">
-                            <a href="" class="btn btn-outline-info  rounded btn-flat ">Profil</a>
+                            <a href="{{route('sales.profile')}}" class="btn btn-outline-info  rounded btn-flat ">Profil</a>
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-danger rounded btn-flat float-right">
@@ -149,7 +148,7 @@
                         <img src="{{ asset('images/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="" class="d-block">{{ $user->name }}</a>
+                        <a href="{{route('sales.profile')}}" class="d-block">{{ $user->name }}</a>
                     </div>
                 </div>
                 <nav class="mt-2">

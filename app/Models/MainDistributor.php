@@ -12,4 +12,7 @@ class MainDistributor extends Model
     public function distributors(){
         return $this->hasMany(Distributor::class, 'company_distributor_id', 'id');
     }
+    public function complaint(){
+        return $this->hasMany(Complaints::class, 'main_distributor_id', 'id');
+    }
 }

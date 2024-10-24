@@ -2,6 +2,17 @@
 @push('styles')
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />
+    <style>
+        th {
+            border-top: 1px solid #dddddd;
+            /* border-bottom: 1px solid #dddddd; */
+            border-right: 1px solid #dddddd;
+        }
+
+        th:first-child {
+            border-left: 1px solid #dddddd;
+        }
+    </style>
 @endpush
 @push('scripts')
     <script>
@@ -44,10 +55,11 @@
                 <div class="mb-3">
                     <a href="{{ route('sales.complaint.add') }}" class="btn btn-outline-primary">+ Tambah Aduan</a>
                 </div>
-                <table class="stripe-responsive" id="myTable">
-                    <thead style="border: 1px solid black">
+                <table class="cell-border" id="myTable">
+                    <thead>
                         <tr>
                             <th>No. </th>
+                            <th>CFS Ticket</th>
                             <th>Distributor</th>
                             <th>Main Distributor</th>
                             <th>Kategori</th>
@@ -61,6 +73,7 @@
                         @forelse ($complaints as $val)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $val->complaint_ticket }}</td>
                                 <td>{{ $val->distributor->company_name }}</td>
                                 <td>{{ $val->distributor->companyDistributor->distributor_name }}</td>
                                 <td>
@@ -75,24 +88,27 @@
                                         @endif
                                     @endforeach
                                 </td>
-                                <td>{{$val->user->name}}</td>
-                                <td>{{ Carbon\Carbon::parse($val->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}</td>
+                                <td>{{ $val->user->name }}</td>
+                                <td>{{ Carbon\Carbon::parse($val->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}
+                                </td>
                                 <td>{{ $val->currentStatus->status_name ?? 'Tidak ada status' }}</td>
                                 <td>
-                                    <form action="{{ route('sales.complaint.delete', $val->id) }}" method="POST" id="delete-form-{{ $val->id }}">
+                                    <form action="{{ route('sales.complaint.delete', $val->id) }}" method="POST"
+                                        id="delete-form-{{ $val->id }}">
                                         @csrf
                                         @method('DELETE')
                                         <div class="d-flex gap-2">
-                                            <a href="{{ route('sales.complaint.detail', $val->id) }}" class="btn btn-outline-info">
+                                            <a href="{{ route('sales.complaint.detail', $val->id) }}"
+                                                class="btn btn-outline-info">
                                                 <i class="fa-regular fa-eye"></i>
                                             </a>
                                             @auth
-                                            @if ($val->currentStatus->id == 7 || $val->current_status_id == 1)
-
-                                            <a href="{{ route('sales.complaint.edit', $val->id) }}" class="btn btn-warning mx-1">
-                                                <i class="fa-regular fa-pen-to-square"></i>
-                                            </a>
-                                            @endif
+                                                @if ($val->currentStatus->id == 7 || $val->current_status_id == 1)
+                                                    <a href="{{ route('sales.complaint.edit', $val->id) }}"
+                                                        class="btn btn-warning mx-1">
+                                                        <i class="fa-regular fa-pen-to-square"></i>
+                                                    </a>
+                                                @endif
                                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                                     data-bs-target="#confirmDeleteModal-{{ $val->id }}">
                                                     <i class="fa-solid fa-trash-can"></i>
@@ -130,7 +146,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3">No Data</td>
+                                <td colspan="9" class="text-center">No Data</td>
                             </tr>
                         @endforelse
                     </tbody>

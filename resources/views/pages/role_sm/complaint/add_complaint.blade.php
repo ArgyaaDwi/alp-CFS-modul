@@ -19,6 +19,7 @@
             }
         }
         let fileArray = [];
+
         function addImages() {
             let files = document.getElementById('images').files;
             let previewContainer = document.getElementById('imagePreviewContainer');
@@ -42,6 +43,7 @@
                 reader.readAsDataURL(file);
             });
         }
+
         function toggleOtherInput() {
             const otherCheckbox = document.getElementById('category_other');
             const otherCategoryContainer = document.getElementById('otherCategoryContainer');
@@ -103,6 +105,11 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {!! session('error') !!}
+                    </div>
+                @endif
                 <div class="col-sm-6">
                     <h4 class="m-0"><b>Buat Aduan</b></h4>
                 </div>
@@ -232,7 +239,8 @@
                     </div>
                     <a href="{{ route('sales.complaint.index') }}" class="btn btn-secondary"><i
                             class="fa-solid fa-chevron-left"></i> Kembali</a>
-                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i>
+                        Simpan</button>
                 </form>
             </div>
         </div>
