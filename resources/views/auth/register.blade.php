@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <title>Register</title>
+    <link rel="icon" type="image/jpg" href="{{ asset('images/logoalp.jpg') }}">
     <style>
         .select2-container .select2-selection--single {
             height: calc(2.25rem + 2px);
@@ -29,6 +30,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container py-5">
         <div class="row justify-content-center align-items-center">
@@ -50,7 +52,8 @@
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label">Nama Lengkap</label>
-                            <input type="text" value="{{ old('name') }}" name="name" class="form-control" placeholder="Masukkan Nama Lengkap">
+                            <input type="text" id="name" value="{{ old('name') }}" name="name" class="form-control"
+                                placeholder="Masukkan Nama Lengkap" autocomplete="on">
                         </div>
                         <div class="mb-3">
                             <label for="id_distributor" class="form-label">Nama Distributor</label>
@@ -65,26 +68,32 @@
                         </div>
                         <div class="mb-3">
                             <label for="no_telephone" class="form-label">No. Telepon</label>
-                            <input type="number" value="{{ old('no_telephone') }}" name="no_telephone" class="form-control" placeholder="Masukkan No. Telepon">
+                            <input type="number" id="no_telephone" value="{{ old('no_telephone') }}" name="no_telephone"
+                                class="form-control" placeholder="Masukkan No. Telepon">
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" value="{{ old('email') }}" name="email" class="form-control" placeholder="Masukkan Email">
+                            <input type="email" id="email" value="{{ old('email') }}" name="email" class="form-control"
+                                placeholder="Masukkan Email" autocomplete="off">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" placeholder="Masukkan Password Minimal 6 Karakter">
+                            <input type="password" id="password" name="password" class="form-control"
+                                placeholder="Masukkan Password Minimal 6 Karakter">
                         </div>
                         <div class="mb-3">
                             <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                            <input type="password" name="password_confirmation" class="form-control" placeholder="Masukkan Password Kembali">
+                            <input type="password" id="password_confirmation" name="password_confirmation" class="form-control"
+                                placeholder="Masukkan Password Kembali">
                         </div>
                         <div class="mb-3 d-grid">
-                            <button name="submit" type="submit" class="btn btn-warning p-2"><strong>Daftar</strong></button>
+                            <button name="submit" type="submit"
+                                class="btn btn-warning p-2"><strong>Daftar</strong></button>
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
                             <p class="mb-0 font-weight-bold">Sudah punya akun?</p>
-                            <a href="{{ route('login') }}" class="mx-2 text-decoration-none"><strong style="color: rgb(148, 144, 43)">Login</strong></a>
+                            <a href="{{ route('login') }}" class="mx-2 text-decoration-none"><strong
+                                    style="color: rgb(148, 144, 43)">Login</strong></a>
                             <p class="mb-0">sekarang</p>
                         </div>
                     </form>

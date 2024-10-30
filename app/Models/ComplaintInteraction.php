@@ -16,6 +16,7 @@ class ComplaintInteraction extends Model
         'complaint_status_id',
         'notes',
         'supporting_document',
+        'supporting_url',
         'created_at',
         'updated_at',
     ];

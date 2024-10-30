@@ -75,7 +75,6 @@
                                 <td>{{ $val->companyCity->city_name }}</td>
                                 <td>{{ $val->company_phone }}</td>
                                 <td>{{ $val->company_email }}</td>
-                                
                                 <td>
                                     <form action="{{ route('sales.distributor.delete', $val->id) }}" method="POST"
                                         id="delete-form-{{ $val->id }}">
@@ -114,7 +113,7 @@
                                                 Distributor?
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn btn-outline-secondary"
                                                     data-bs-dismiss="modal">Batal</button>
                                                 <button type="button" class="btn btn-danger"
                                                     onclick="document.getElementById('delete-form-{{ $val->id }}').submit();">

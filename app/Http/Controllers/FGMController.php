@@ -49,7 +49,7 @@ class FGMController extends Controller
     {
         $user = Auth::user();
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
-        return view('pages.role_qm.profile.change_password', data: compact('user', 'currentDate'));
+        return view('pages.role_fgm.profile.change_password', data: compact('user', 'currentDate'));
     }
 
     public function viewComplaint()
@@ -89,6 +89,7 @@ class FGMController extends Controller
             'user_id' => $user->id,
             'notes' => $validated['notes'],
             'supporting_document' => $filePath,
+            'supporting_url' => $request->supporting_url ? $request->supporting_url : null,
             'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
         ]);
         $complaint->update([

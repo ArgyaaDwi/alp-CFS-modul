@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Laporan Feedback Baru</title>
 </head>
+
 <body>
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -15,7 +17,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="center" style="padding-top:-10px; padding-bottom: 10px; font-size: 20px; color: black;">
+                        <td align="center"
+                            style="padding-top:-10px; padding-bottom: 10px; font-size: 20px; color: black;">
                             <strong>ALP Insight</strong>
                         </td>
                     </tr>
@@ -49,4 +52,5 @@
         </tr>
     </table>
 </body>
+
 </html>

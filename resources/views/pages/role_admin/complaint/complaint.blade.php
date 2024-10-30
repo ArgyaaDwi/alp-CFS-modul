@@ -41,7 +41,7 @@
     <section class="content">
         <div class="card mx-3">
             <div class="card-body table-responsive">
-                <table class="stripe-responsive" id="myTable">
+                <table class="cell-border" id="myTable">
                     <thead style="border: 1px solid black">
                         <tr>
                             <th>No. </th>

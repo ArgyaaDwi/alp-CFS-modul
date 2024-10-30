@@ -82,6 +82,16 @@
         color: inherit !important;
         box-shadow: none !important;
     }
+
+    th {
+        border-top: 1px solid #dddddd;
+        /* border-bottom: 1px solid #dddddd; */
+        border-right: 1px solid #dddddd;
+    }
+
+    th:first-child {
+        border-left: 1px solid #dddddd;
+    }
 </style>
 
 <body class="hold-transition sidebar-mini">
@@ -210,7 +220,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{ route('admin.transaction.index') }}" class="nav-link">
-                                     <i class="nav-icon fa-solid fa-file-invoice-dollar"></i>
+                                        <i class="nav-icon fa-solid fa-file-invoice-dollar"></i>
                                         <p>Transaksi</p>
                                     </a>
                                 </li>
@@ -230,7 +240,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('admin.complaint.index')}}" class="nav-link">
+                            <a href="{{ route('admin.complaint.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Feedback</p>
                             </a>

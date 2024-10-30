@@ -11,40 +11,50 @@ class Complaints extends Model
     use HasFactory;
     protected $table = 'complaints';
     protected $guarded = ['id'];
-    protected $fillable = ['user_id', 'distributor_id', 'batch_number', 'main_distributor_id', 'complaint_ticket', 'complaint_category_id', 'complaint_title', 'complaint_description', 'complaint_hopeful_solution', 'supporting_document', 'current_status_id', 'created_at', 'updated_at'];
-    // public static function boot(){
-    //     static::creating(function($complaint){
-    //         $complaint->complaint_ticker
-    //     })
-    // }
+    protected $fillable = [
+        'user_id',
+        'distributor_id',
+        'batch_number',
+        'main_distributor_id',
+        'complaint_ticket',
+        'complaint_category_id',
+        'complaint_title',
+        'complaint_description',
+        'complaint_hopeful_solution',
+        'supporting_document',
+        'supporting_url',
+        'current_status_id',
+        'created_at',
+        'updated_at'
+    ];
     public static function boot()
     {
         parent::boot();
         static::creating(function ($complaint) {
             $month = Carbon::now()->format('m');
             $year = Carbon::now()->format('Y');
-
-            // Ambil komplain terbaru dalam bulan dan tahun yang sama
             $latestComplaint = self::whereMonth('created_at', '=', Carbon::now()->month)
                 ->whereYear('created_at', '=', Carbon::now()->year)
                 ->orderBy('created_at', 'desc')
                 ->first();
 
-            // Dapatkan sequence hanya dari bagian yang relevan (sebelum "/")
             $sequence = 1;
             if ($latestComplaint) {
                 $ticketParts = explode('/', $latestComplaint->complaint_ticket);
                 $sequence = (int)$ticketParts[1] + 1;
             }
-
-            // Generate tiket dengan format yang benar
             $complaint->complaint_ticket = 'CFS/' . $sequence . '/' . $month . '/ALP/' . $year;
         });
     }
 
     public function categories()
     {
-        return $this->belongsToMany(CategoryComplaints::class, 'pivot_category_complaint', 'complaint_id', 'category_complaint_id');
+        return $this->belongsToMany(
+            CategoryComplaints::class,
+            'pivot_category_complaint',
+            'complaint_id',
+            'category_complaint_id'
+        )->withPivot('other_category_name');
     }
     public function distributor()
     {
@@ -69,5 +79,9 @@ class Complaints extends Model
     public function mainDistributor()
     {
         return $this->belongsTo(MainDistributor::class, 'main_distributor_id', 'id');
+    }
+    public function pivot()
+    {
+        return $this->belongsToMany(CategoryComplaints::class, 'pivot_category_complaint', 'complaint_id', 'category_complaint_id');
     }
 }

@@ -53,7 +53,7 @@
                 <div class="mb-3">
                     <a href="{{ route('admin.product.add') }}" class="btn btn-outline-primary">+ Tambah Produk</a>
                 </div>
-                <table class="stripe-responsive" id="myTable">
+                <table class="cell-border" id="myTable">
                     <thead style="border: 1px solid black">
                         <tr>
                             <th>No. </th>

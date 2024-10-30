@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">KonfirmasiPassword Baru</label>
+                                    <label for="inputName" class="col-sm-2 col-form-label">Konfirmasi Password Baru</label>
                                     <div class="col-sm-10">
                                         <input type="email" class="form-control" id="inputName" name="name"
                                             placeholder="Masukkan Konfirmasi Password Baru">

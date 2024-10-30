@@ -52,7 +52,7 @@
                 <div class="mb-3">
                     <a href="{{ route('admin.subcategory.add') }}" class="btn btn-outline-primary">+ Tambah Sub Kategori</a>
                 </div>
-                <table class="stripe-responsive" id="myTable">
+                <table class="cell-border" id="myTable">
                     <thead style="border: 1px solid black">
                         <tr>
                             <th>No. </th>

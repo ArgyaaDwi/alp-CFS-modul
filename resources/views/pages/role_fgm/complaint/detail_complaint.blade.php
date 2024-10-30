@@ -8,13 +8,29 @@
             imageModal.show();
         }
     </script>
+    <script>
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 2500);
+    </script>
 @endpush
 @push('styles')
+    <style>
+        .required:after {
+            content: ' *';
+            color: red;
+        }
+    </style>
 @endpush
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {!! session('success') !!}
+                    </div>
+                @endif
                 <div class="col-sm-6">
                     <h1><b>Detail Feedback</b></h1>
                 </div>
@@ -73,20 +89,26 @@
                                             </p>
                                             <p>Status Aduan: {{ $complaint->currentStatus->status_name }}</p>
                                             <h5>Judul Aduan: {{ $complaint->complaint_title }}</h5>
-                                            <label for="">Deskripsi</label>
-                                            <textarea name="" id="" cols="30" rows="5" class="form-control" disabled>{{ $complaint->complaint_description }}</textarea>
-                                            <label for="">Harapan</label>
-                                            <textarea name="" id="" cols="30" rows="5" class="form-control" disabled>{{ $complaint->complaint_hopeful_solution }}</textarea>
+                                            <label for="complaint_description">Deskripsi</label>
+                                            <textarea name="complaint_description" id="complaint_description" cols="30" rows="5" class="form-control"
+                                                disabled>{{ $complaint->complaint_description }}</textarea>
+                                            <label for="complaint_hopeful_solution">Harapan</label>
+                                            <textarea name="complaint_hopeful_solution" id="complaint_hopeful_solution" cols="30" rows="5"
+                                                class="form-control" disabled>{{ $complaint->complaint_hopeful_solution }}</textarea>
                                             @if ($complaint->supporting_document)
                                                 <button class="btn btn-info my-2"><a class="text-white"
                                                         href="{{ asset('storage/' . $complaint->supporting_document) }}"
                                                         target="_blank"><i class="fa-regular fa-eye"></i> Dokumen
                                                         Pendukung</a></button>
                                             @endif
+                                            @if ($complaint->supporting_url)
+                                                <p><i class="fa-solid fa-link"></i> URL Pendukung: <a
+                                                        href="{{ $complaint->supporting_url }}">{{ $complaint->supporting_url }}</a>
+                                                </p>
+                                            @endif
                                             <p>Bukti Foto:</p>
                                             @foreach ($complaint->files as $file)
                                                 @if (Str::endsWith($file->file_path, ['.jpg', '.jpeg', '.png', '.gif']))
-                                                    <!-- Thumbnail yang bisa diklik -->
                                                     <img src="{{ asset('storage/' . $file->file_path) }}" alt="Bukti Foto"
                                                         width="150" style="cursor: pointer;"
                                                         onclick="showImageModal('{{ asset('storage/' . $file->file_path) }}')">
@@ -140,7 +162,6 @@
                                                         class="fa-regular fa-pen-to-square"></i>
                                                     Update Status</button>
                                             @endif
-                                            <!-- Modal -->
                                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
@@ -154,13 +175,14 @@
                                                             </button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <form action="{{ route('qm.update.status', $complaint->id) }}"
+                                                            <form
+                                                                action="{{ route('fgm.update.status', $complaint->id) }}"
                                                                 method="POST" enctype="multipart/form-data">
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <div class="form-group">
-                                                                    <label for="id_distributor"
-                                                                        class="form-label">Status</label>
+                                                                    <label for="id_status"
+                                                                        class="form-label required">Status</label>
                                                                     <select class="form-control" id="id_status"
                                                                         name="complaint_status_id">
                                                                         <option value="" class="text-center">.::
@@ -177,8 +199,8 @@
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="message-text"
-                                                                        class="col-form-label">Catatan:</label>
-                                                                    <textarea class="form-control" id="message-text" name="notes"></textarea>
+                                                                        class="col-form-label required">Catatan:</label>
+                                                                    <textarea class="form-control" id="message-text" name="notes" placeholder="Masukkan catatan"></textarea>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="supporting_document"
@@ -186,8 +208,21 @@
                                                                     <input class="form-control" type="file"
                                                                         id="supporting_document"
                                                                         name="supporting_document" accept=".pdf">
-                                                                    <i class="fas fa-info-circle"></i> (Opsional) Hanya
-                                                                    file PDF yang diperbolehkan.
+                                                                    <small class="text-muted"><i
+                                                                            class="fas fa-info-circle"></i> (Opsional)
+                                                                        Hanya
+                                                                        file PDF yang diperbolehkan.</small>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="supporting_document"
+                                                                        class="form-label">URL Pendukung</label>
+                                                                    <input class="form-control" type="url"
+                                                                        id="supporting_document" name="supporting_url"
+                                                                        placeholder="Masukkan URL, contoh: https://example.com">
+                                                                    <small class="text-muted"><i
+                                                                            class="fas fa-info-circle"></i> (Opsional)
+                                                                        Masukkan URL pendukung
+                                                                        apabila ada.</small>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button"
@@ -226,6 +261,12 @@
                                                                                 class="fa-solid fa-pencil"></i> Catatan:
                                                                             <br></span>
                                                                         {{ $item->notes }}
+                                                                        @if ($item->supporting_url != null)
+                                                                            <p><i class="fa-solid fa-link"></i> URL
+                                                                                Pendukung: <a
+                                                                                    href="{{ $complaint->supporting_url }}">{{ $complaint->supporting_url }}</a>
+                                                                            </p>
+                                                                        @endif
                                                                     </div>
                                                                     <div class="timeline-footer">
                                                                         @if ($item->supporting_document != null)
@@ -246,12 +287,12 @@
                                                     @empty
                                                         <p class="text-center">Tidak ada riwayat aktivitas
                                                     @endforelse
-                                                    @if ($complaint->current_status_id == 4)
+                                                    {{-- @if ($complaint->current_status_id == 4)
                                                         <button type="button" class="btn btn-primary"
                                                             data-toggle="modal" data-target="#exampleModal"><i
                                                                 class="fa-regular fa-pen-to-square"></i>
                                                             Update Status</button>
-                                                    @endif
+                                                    @endif --}}
                                                 </div>
                                             </div>
                                         </div>

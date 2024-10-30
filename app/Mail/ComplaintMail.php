@@ -68,15 +68,12 @@ class ComplaintMail extends Mailable
     {
         $email = $this->view('email.new_complaint')
             ->subject('Laporan Feedback Baru');
-
-        // Lampirkan dokumen pendukung jika ada
         if ($this->supportingDocument) {
             $email->attach($this->supportingDocument->getRealPath(), [
                 'as' => 'DokumenPendukung.pdf',
                 'mime' => 'application/pdf',
             ]);
         }
-
         return $email;
     }
 }

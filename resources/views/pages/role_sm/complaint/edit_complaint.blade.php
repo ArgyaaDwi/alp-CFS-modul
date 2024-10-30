@@ -67,7 +67,7 @@
             });
         });
     </script>
-    <script script script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script  src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @endpush
 @push('styles')
     <style>
@@ -122,7 +122,8 @@
     <section class="content">
         <div class="card mx-3">
             <div class="card-body">
-                <form action="{{ route('sales.complaint.save') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('sales.complaint.update', $complaint->id) }}" method="POST" enctype="multipart/form-data">
+                    @method('PUT')
                     @csrf
                     <div class="row mb-3">
                         <div class="col-md-6">
@@ -172,7 +173,8 @@
                                 <label class="form-check-label" for="category_other">Lainnya</label>
                             </div>
                         </div>
-                        <i class="fas fa-info-circle"></i> Anda bisa memilih lebih dari 1 kategori
+                        <small class="text-muted"><i class="fas fa-info-circle"></i> Anda bisa memilih lebih dari 1
+                            kategori</small>
                         @error('complaint_category_ids')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -209,14 +211,6 @@
                             @enderror
                         </div>
                     </div>
-                    {{-- <div class="mb-3">
-                        <label for="images" class="form-label">Bukti Foto</label>
-                        <input class="form-control" type="file" id="images" multiple accept=".jpg,.jpeg,.png"
-                            onchange="addImages()">
-                        <i class="fas fa-info-circle"></i> (Opsional) Gunakan gambar rasio 1:1 untuk hasil yang maksimal
-                        dengan maks ukuran 1MB [JPG, JPEG, PNG].
-                    </div>
-                    <div class="avatar-preview mb-3" id="imagePreviewContainer"></div> --}}
                     <div class="mb-3">
                         <label for="supporting_document" class="form-label">Dokumen Pendukung (PDF)</label>
                         @if ($complaint->supporting_document)
@@ -228,7 +222,8 @@
                         @endif
                         <input class="form-control" type="file" id="supporting_document" name="supporting_document"
                             accept=".pdf">
-                        <i class="fas fa-info-circle my-1"></i> Pilih dokumen pendukung baru jika ingin memperbarui
+                        <small class="text-muted"><i class="fas fa-info-circle"></i> Pilih dokumen pendukung baru jika
+                            ingin memperbarui</small>
                         @error('supporting_document')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -237,9 +232,20 @@
                         <label for="files" class="form-label">Bukti Foto</label>
                         <input class="form-control" type="file" id="files" name="files[]" multiple
                             accept="image/*">
-                        {{-- <i class="fas fa-info-circle"></i> (Opsional) Gunakan gambar rasio 1:1 untuk hasil yang maksimal
-                        dengan maks ukuran 2MB [JPG, JPEG, PNG]. --}}
+                        @foreach ($complaint->files as $file)
+                            @if (Str::endsWith($file->file_path, ['.jpg', '.jpeg', '.png', '.gif']))
+                                <img src="{{ asset('storage/' . $file->file_path) }}" alt="Bukti Foto" width="150"
+                                    style="cursor: pointer;"
+                                    onclick="showImageModal('{{ asset('storage/' . $file->file_path) }}')">
+                            @elseif (Str::endsWith($file->file_path, ['.mp4', '.mov', '.avi']))
+                                <video width="320" height="240" controls>
+                                    <source src="{{ asset('storage/' . $file->file_path) }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            @endif
+                        @endforeach
                     </div>
+                    <small class="text-muted"><i class="fas fa-info-circle"></i> Upload gambar baru jika ingin mengganti</small><br><br>
                     <a href="{{ route('sales.complaint.index') }}" class="btn btn-secondary"><i
                             class="fa-solid fa-chevron-left"></i> Kembali</a>
                     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i>

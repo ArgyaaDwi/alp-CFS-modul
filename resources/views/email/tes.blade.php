@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Laporan Feedback Baru</title>
 </head>
-
 <body>
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
         <tr>
@@ -17,14 +15,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="center"
-                            style="padding-top:-10px; padding-bottom: 10px; font-size: 20px; color: black;">
+                        <td align="center" style="padding-top:-10px; padding-bottom: 10px; font-size: 20px; color: black;">
                             <strong>ALP Insight</strong>
                         </td>
                     </tr>
                     <tr>
                         <td align="center" style="padding: 10px; font-size: 18px;">
-                            Pemberitahuan
+                            Feedback Baru
                         </td>
                     </tr>
                     <tr>
@@ -32,17 +29,17 @@
                             <strong>CFS Ticket: 555555</strong><br>
                             <span style="color: black">Distributor terkait:
                                 555555</span><br><br>
-
-                            <span style="color: black">Yth. Adi Wijayanto</span><br>
-                            <span style="color: black">Kami informasikan bahwa aduan yang Anda sampaikan dengan nomor
-                                tiket [Nomor Tiket] telah mengalami perubahan status.</span><br><br>
-
-                            <span style="color: black">Status sekarang: <span
-                                    style="color: black; font-weight: bold">Revisi</span></span> <br> <br><span
-                                style="color: black">Untuk informasi lebih lanjut, Anda dapat masuk ke ALP Insight
-                                dan login ke akun Anda. <br>Sekian yang dapat kami sampaikan. Terima kasih.</span><br>
-                            <br>
-                            Status aduan feedback diperbarui pada:
+                            <span style="color: black"> Laporan feedback telah dibuat oleh555555 /
+                                555555<br><br>
+                            </span>
+                            <span style="font-weight: bold;font-size: 18px; color: black">Judul:
+                              555555<br></span>
+                            <span style="color: black"> Batch Number: 555555</span><br>
+                            <span style="color: black">Deskripsi:</span> <br> <span
+                                style="color: black">555555</span><br>
+                            <span style="color:black"></span> Harapan: <br><span
+                                style="color: black">555555</span> <br>
+                            Aduan dibuat pada:
                             <em>555555</em><br><br>
                             <span style="color: black"> Salam,<br>PT. ALP Petro Industry</span>
                         </td>
@@ -52,5 +49,4 @@
         </tr>
     </table>
 </body>
-
 </html>

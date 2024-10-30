@@ -4,6 +4,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />
 @endpush
 @push('scripts')
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();
@@ -12,13 +14,11 @@
             }, 4500);
         });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 @endpush
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2 mx-0">
+            <div class="row mb-2 ">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {!! session('success') !!}
@@ -41,10 +41,11 @@
     <section class="content">
         <div class="card mx-3">
             <div class="card-body table-responsive">
-                <table class="stripe-responsive" id="myTable">
+                <table class="cell-border" id="myTable">
                     <thead style="border: 1px solid black">
                         <tr>
                             <th>No. </th>
+                            <th>CFS Ticket</th>
                             <th>Distributor</th>
                             <th>Main Distributor</th>
                             <th>Kategori</th>
@@ -59,8 +60,9 @@
                         @forelse ($complaints as $val)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $val->complaint_ticket }}</td>
                                 <td>{{ $val->distributor->company_name }}</td>
-                                <td>{{$val->distributor->companyDistributor->distributor_name}}</td>
+                                <td>{{ $val->distributor->companyDistributor->distributor_name }}</td>
                                 <td>
                                     @foreach ($val->categories as $category)
                                         @if ($category->id == 4 && $category->pivot->other_category_name)
@@ -73,22 +75,36 @@
                                         @endif
                                     @endforeach
                                 </td>
-                                <td>{{$val->user->name}}</td>
-                                <td>{{ Carbon\Carbon::parse($val->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}</td>
+                                <td>{{ $val->user->name }}</td>
+                                <td>{{ Carbon\Carbon::parse($val->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}
+                                </td>
                                 <td>{{ $val->currentStatus->status_name ?? 'Tidak ada status' }}</td>
                                 <td>
-                                    @if ($val->current_status_id == 1)
-                                    <button type="button" disabled class="btn btn-outline-success btn-sm">Perlu Tindakan</button>
+                                    @if ($val->current_status_id == 1 || $val->current_status_id == 10)
+                                        <button type="button" disabled class="btn btn-outline-success btn-sm">Perlu
+                                            Verifikasi</button>
+                                    @elseif ($val->current_status_id == 2)
+                                        <button type="button" disabled class="btn btn-outline-secondary btn-sm">Perlu
+                                            Lanjut ke FGM</button>
+                                    @elseif($val->current_status_id == 9)
+                                        <button type="button" disabled class="btn btn-outline-secondary btn-sm">Perlu
+                                            Revisi dari FGM</button>
+                                    @elseif($val->current_status_id == 5)
+                                        <button type="button" disabled class="btn btn-outline-secondary btn-sm">Ajukan
+                                            close aduan
+                                        </button>
                                     @else
                                         <span>-</span>
                                     @endif
                                 </td>
                                 <td>
-                                    <form action="{{ route('sales.complaint.delete', $val->id) }}" method="POST" id="delete-form-{{ $val->id }}">
+                                    <form action="{{ route('sales.complaint.delete', $val->id) }}" method="POST"
+                                        id="delete-form-{{ $val->id }}">
                                         @csrf
                                         @method('DELETE')
                                         <div class="d-flex gap-2">
-                                            <a href="{{ route('qm.complaint.detail', $val->id) }}" class="btn btn-outline-info">
+                                            <a href="{{ route('qm.complaint.detail', $val->id) }}"
+                                                class="btn btn-outline-info">
                                                 <i class="fa-regular fa-eye"></i>
                                             </a>
                                             @auth
@@ -110,12 +126,12 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Apakah kamu yakin ingin menghapus aduan dengan ticket <span
-                                                    class="text-danger text-bold">{{ $val->batch_number }}</span> dari
-                                                Aduan?
+                                                Apakah kamu yakin ingin menghapus aduan Feedback dengan ticket <span
+                                                    class="text-danger text-bold">{{ $val->complaint_ticket }}</span> dari
+                                                Feedback?
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn btn-outline-secondary"
                                                     data-bs-dismiss="modal">Batal</button>
                                                 <button type="button" class="btn btn-danger"
                                                     onclick="document.getElementById('delete-form-{{ $val->id }}').submit();">
@@ -129,7 +145,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3">No Data</td>
+                                <td colspan="10" class="text-center">No Data</td>
                             </tr>
                         @endforelse
                     </tbody>

@@ -14,6 +14,11 @@ class CategoryComplaints extends Model
 
     public function complaints()
     {
-        return $this->belongsToMany(Complaints::class, 'pivot_category_complaint', 'category_complaint_id', 'complaint_id');
+        return $this->belongsToMany(
+            Complaints::class,
+            'pivot_category_complaint',
+            'category_complaint_id',
+            'complaint_id'
+        )->withPivot('other_category_name');
     }
 }

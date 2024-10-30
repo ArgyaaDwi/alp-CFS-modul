@@ -27,23 +27,23 @@
                         <div class="m-4">
                             <form class="form-horizontal">
                                 <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">Password Lama</label>
+                                    <label for="password" class="col-sm-2 col-form-label">Password Lama</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputName" name="name"
+                                        <input type="email" class="form-control" id="password" name="password"
                                             placeholder="Masukkan Password Lama">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">Password Baru</label>
+                                    <label for="new_password" class="col-sm-2 col-form-label">Password Baru</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputName" name="name"
+                                        <input type="email" class="form-control" id="new_password" name="new_password"
                                             placeholder="Masukkan Password Baru">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">KonfirmasiPassword Baru</label>
+                                    <label for="confirm_password" class="col-sm-2 col-form-label">Konfirmasi Password Baru</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputName" name="name"
+                                        <input type="email" class="form-control" id="confirm_password" name="confirm_password"
                                             placeholder="Masukkan Konfirmasi Password Baru">
                                     </div>
                                 </div>

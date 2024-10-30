@@ -30,6 +30,10 @@
 @endpush
 @push('styles')
     <style>
+        .required:after {
+            content: " *";
+            color: red;
+        }
         .select2-container .select2-selection--single {
             height: calc(2.25rem + 2px);
             padding: 0.375rem 0.75rem;
@@ -73,7 +77,7 @@
                     @csrf
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="company_type_id" class="form-label">Tipe Perusahaan</label>
+                            <label for="company_type_id" class="form-label required">Tipe Perusahaan</label>
                             <select class="form-control" id="company_type_id" name="company_type_id">
                                 <option value="" class="text-center">.:: Pilih Tipe ::.</option>
                                 @forelse ($company_type as $item)
@@ -87,9 +91,9 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="name" class="form-label">Nama Perusahaan</label>
-                            <input type="text" value="{{ old('company_name') }}" name="company_name" class="form-control"
-                                placeholder="Masukkan Nama Perusahaan">
+                            <label for="company_name" class="form-label required">Nama Distributor</label>
+                            <input type="text" value="{{ old('company_name') }}" id="company_name" name="company_name"
+                                class="form-control" placeholder="Masukkan Nama Perusahaan">
                             @error('company_name')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -97,7 +101,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="company_province_id" class="form-label">Provinsi</label>
+                            <label for="company_province_id" class="form-label required">Provinsi</label>
                             <select class="form-control" id="company_province_id" name="company_province_id">
                                 <option value="" class="text-center">.:: Pilih Provinsi ::.</option>
                                 @forelse ($company_province as $item)
@@ -111,7 +115,7 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="company_city_id" class="form-label">Kota</label>
+                            <label for="company_city_id" class="form-label required">Kota</label>
                             <select class="form-control" id="company_city_id" name="company_city_id">
                                 <option value="" class="text-center">.:: Pilih Kota ::.</option>
                                 @forelse ($company_city as $item)
@@ -127,16 +131,16 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="company_email" class="form-label">Email Perusahaan</label>
-                            <input type="email" value="{{ old('company_email') }}" name="company_email"
+                            <label for="company_email" class="form-label required">Email Distributor</label>
+                            <input type="email" id="company_email" value="{{ old('company_email') }}" name="company_email"
                                 class="form-control" placeholder="Masukkan Email Perusahaan">
                             @error('company_email')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="company_phone" class="form-label">Telepon Perusahaan</label>
-                            <input type="number" value="{{ old('company_phone') }}" name="company_phone"
+                            <label for="company_phone" class="form-label required">Telepon Distributor</label>
+                            <input type="number" id="company_phone" value="{{ old('company_phone') }}" name="company_phone"
                                 class="form-control" placeholder="Masukkan No. Telepon Perusahaan">
                             @error('company_phone')
                                 <small class="text-danger">{{ $message }}</small>
@@ -145,7 +149,7 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-group">
-                            <label for="company_address">Alamat</label>
+                            <label for="company_address" class="form-label required">Alamat</label>
                             <textarea class="form-control" id="company_address" name="company_address" rows="3"
                                 placeholder="Masukkan Alamat Perusahaan">{{ old('company_address') }}</textarea>
                             @error('company_address')
@@ -155,10 +159,11 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-group">
-                            <label for="company_website" class="form-label">Website Perusahaan</label>
-                            <input type="text" value="{{ old('company_website') }}" name="company_website"
+                            <label for="company_website" class="form-label">Website Distributor</label>
+                            <input type="text" id="company_website" value="{{ old('company_website') }}" name="company_website"
                                 class="form-control" placeholder="Masukkan Website Perusahaan">
-                                <small class="text-muted"><i class="fas fa-info-circle"></i> Masukkan URL Website jika ada</small>
+                            <small class="text-muted"><i class="fas fa-info-circle"></i> (Opsional) Masukkan link URL website distributor jika
+                                ada</small>
                         </div>
                     </div>
                     <a href="{{ route('sales.distributor.index') }}" class="btn btn-secondary"><i

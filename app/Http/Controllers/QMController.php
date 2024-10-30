@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class QMController extends Controller
 {
@@ -73,13 +74,13 @@ class QMController extends Controller
         $user = Auth::user();
         $validated = $request->validate([
             'complaint_status_id' => 'required|exists:complaint_status,id',
-            'notes' => 'nullable|string',
+            'notes' => 'required|string',
             'supporting_document' => 'nullable|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
         $complaint = Complaints::findOrFail($complaintId);
         $filePath = null;
         if ($request->hasFile('supporting_document')) {
-            $filePath = $request->file('supporting_document')->store('supporting_documents', 'public');
+            $filePath = $request->file('supporting_document')->store('supporting_document', 'public');
         }
         ComplaintInteraction::create([
             'complaint_id' => $complaint->id,
@@ -87,11 +88,40 @@ class QMController extends Controller
             'user_id' => $user->id,
             'notes' => $validated['notes'],
             'supporting_document' => $filePath,
+            'supporting_url' => $request->supporting_url ? $request->supporting_url : null,
             'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
         ]);
         $complaint->update([
             'current_status_id' => $validated['complaint_status_id'],
         ]);
         return redirect()->back()->with('success', 'Status aduan berhasil diperbarui!');
+    }
+    public function requestCloseComplaint($id)
+    {
+        DB::beginTransaction();
+        try {
+            Carbon::setLocale('id');
+            $user = Auth::user();
+            $userId = $user->id;
+            $complaint = Complaints::findOrFail($id);
+            $complaint->update([
+                'current_status_id' => 11
+            ]);
+            ComplaintInteraction::create([
+                'complaint_id' => $complaint->id,
+                'complaint_status_id' => 11,
+                'user_id' => $userId,
+                'notes' => 'Permintaan penutupan aduan telah diajukan, silahkan segera menyetujui apabila ingin menutup aduan ini.',
+                'supporting_document' => null,
+                'supporting_url' => null,
+                'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
+                'updated_at' => Carbon::now()->timezone('Asia/Jakarta'),
+            ]);
+            DB::commit();
+            return redirect()->back()->with('success', 'Status Aduan berhasil diubah menjadi permintaan close!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors('Gagal Memperbarui status komplain: ' . $e->getMessage());
+        }
     }
 }

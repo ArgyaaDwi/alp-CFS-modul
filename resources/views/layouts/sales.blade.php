@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ALP Insight</title>
-    <link rel="icon" type="image/jpg" href="images/logoalp.jpg">
+    <link rel="icon" type="image/jpg" href="{{ asset('images/logoalp.jpg') }}">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('template/plugins/fontawesome-free/css/all.min.css') }}">
@@ -28,6 +29,7 @@
         align-items: center;
         justify-content: center;
     }
+
     .spinner {
         border: 16px solid rgba(189, 189, 189, 0.1);
         width: 100px;
@@ -36,6 +38,7 @@
         border-left-color: rgb(255, 232, 117);
         animation: spin 1s ease infinite;
     }
+
     @keyframes spin {
         0% {
             transform: rotate(0deg);
@@ -49,6 +52,7 @@
     a {
         text-decoration: none;
     }
+
     table.data table.dataTable thead th {
         background-color: #FFF455;
         color: black;
@@ -95,7 +99,7 @@
                 <li class="nav-item">
                     <span class="nav-link" style="color: black;">
                         <strong>
-                          {{ $currentDate ?? 'Unknown Day' }}
+                            {{ $currentDate ?? 'Unknown Day' }}
                         </strong>
                     </span>
                 </li>
@@ -117,7 +121,8 @@
                             </p>
                         </li>
                         <li class="user-footer">
-                            <a href="{{route('sales.profile')}}" class="btn btn-outline-info  rounded btn-flat ">Profil</a>
+                            <a href="{{ route('sales.profile') }}"
+                                class="btn btn-outline-info  rounded btn-flat ">Profil</a>
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-danger rounded btn-flat float-right">
@@ -148,7 +153,7 @@
                         <img src="{{ asset('images/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="{{route('sales.profile')}}" class="d-block">{{ $user->name }}</a>
+                        <a href="{{ route('sales.profile') }}" class="d-block">{{ $user->name }}</a>
                     </div>
                 </div>
                 <nav class="mt-2">
@@ -171,7 +176,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('sales.complaint.index')}}" class="nav-link">
+                            <a href="{{ route('sales.complaint.index') }}" class="nav-link">
                                 <i class="nav-icon fas fa-comments"></i>
                                 <p>Feedback</p>
                             </a>
@@ -230,11 +235,12 @@
             }, 500); // Tambah delay untuk memastikan spinner tak tampil dobel
         };
     </script>
-
+    <script src="{{asset('template/plugins/chart.js/Chart.min.js')}}"></script>
+    <script src="{{asset('template/plugins/flot/jquery.flot.js')}}"></script>
     @stack('scripts')
-    <script>
+    {{-- <script>
         let table = new DataTable('#myTable');
-    </script>
+    </script> --}}
     <script src="https://kit.fontawesome.com/ba7a415507.js" crossorigin="anonymous"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>

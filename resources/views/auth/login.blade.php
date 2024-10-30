@@ -8,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <title>Login</title>
+    <link rel="icon" type="image/jpg" href="{{ asset('images/logoalp.jpg') }}">
 </head>
 
 <body>
@@ -20,7 +21,7 @@
                 <div class="border rounded px-5 py-5 shadow-lg">
                     <img class="d-block mx-auto" src="{{ asset('images/logoalp.jpg') }}" width="90px" alt="">
                     <h5 class="text-center mt-2 mb-3"><strong>ALP </strong>Insight</h5>
-                    <h3 class="text-left "><strong >Selamat Datang</strong></h3>
+                    <h3 class="text-left "><strong>Selamat Datang</strong></h3>
                     @if ($errors->any())
                         <div class="alert alert-danger mt-3">
                             <ul>
@@ -34,19 +35,21 @@
                         @csrf
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" value="{{ old('email') }}" name="email" class="form-control" placeholder="Masukkan Email Anda">
+                            <input type="email" id="email" value="{{ old('email') }}" name="email" class="form-control"
+                                placeholder="Masukkan Email Anda" autocomplete="on">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" placeholder="Masukkan Password">
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Masukkan Password">
                         </div>
                         <div class="mb-3 d-grid">
-                            <button name="submit" type="submit" class="p-2 btn btn-warning"><strong>Login</strong></button>
+                            <button name="submit" type="submit"
+                                class="p-2 btn btn-warning"><strong>Login</strong></button>
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
                             <p class="mb-0 font-weight-bold">Belum punya akun?</p>
-                            <a href="{{ route('register') }}"
-                                class="mx-2 text-decoration-none"><strong style="color: rgb(148, 144, 43)">Daftar</strong></a>
+                            <a href="{{ route('register') }}" class="mx-2 text-decoration-none"><strong
+                                    style="color: rgb(148, 144, 43)">Daftar</strong></a>
                             <p class="mb-0">sekarang</p>
                         </div>
                     </form>

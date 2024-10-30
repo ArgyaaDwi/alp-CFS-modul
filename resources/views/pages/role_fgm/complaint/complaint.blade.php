@@ -41,10 +41,11 @@
     <section class="content">
         <div class="card mx-3">
             <div class="card-body table-responsive">
-                <table class="stripe-responsive" id="myTable">
+                <table class="cell-border" id="myTable">
                     <thead style="border: 1px solid black">
                         <tr>
                             <th>No. </th>
+                            <th>CFS Ticket</th>
                             <th>Distributor</th>
                             <th>Main Distributor</th>
                             <th>Kategori</th>
@@ -59,6 +60,7 @@
                         @forelse ($complaints as $val)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $val->complaint_ticket }}</td>
                                 <td>{{ $val->distributor->company_name }}</td>
                                 <td>{{ $val->distributor->companyDistributor->distributor_name }}</td>
                                 <td>
@@ -113,12 +115,12 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Apakah kamu yakin ingin menghapus aduan dengan ticket <span
-                                                    class="text-danger text-bold">{{ $val->batch_number }}</span> dari
-                                                Aduan?
+                                                Apakah kamu yakin ingin menghapus aduan Feedback dengan ticket <span
+                                                    class="text-danger text-bold">{{ $val->complaint_ticket }}</span> dari
+                                                Feedback?
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
+                                                <button type="button" class="btn btn-outline-secondary"
                                                     data-bs-dismiss="modal">Batal</button>
                                                 <button type="button" class="btn btn-danger"
                                                     onclick="document.getElementById('delete-form-{{ $val->id }}').submit();">
@@ -132,7 +134,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3">No Data</td>
+                                <td colspan="10" class="text-center">No Data</td>
                             </tr>
                         @endforelse
                     </tbody>
