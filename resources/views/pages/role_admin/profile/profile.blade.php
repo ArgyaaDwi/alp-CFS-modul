@@ -1,4 +1,4 @@
-@extends('layouts.sales')
+@extends('layouts.admin')
 @push('scripts')
     <script>
         setTimeout(function() {
@@ -20,7 +20,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.sales') }}"> <i
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}"> <i
                                     class="nav-icon fa-solid fa-house"></i>
                             </a></li>
                         <li class="breadcrumb-item active">Halaman Profil</li>
@@ -40,8 +40,8 @@
                                     style="width: 160px">
                             </div>
                             <h3 class="profile-username text-center" style="font-size: 26px">{{ $user->name }}</h3>
-                            <p class="text-muted text-center" style="font-size: 18px">{{ $user->role->role_name }}
-                                {{ $user->distributor->distributor_name }}</p>
+                            {{-- <p class="text-muted text-center" style="font-size: 18px">{{ $user->role->role_name }}
+                                {{ $user->distributor->distributor_name }}</p> --}}
                             <div class="card-body mx-5">
                                 <strong style="font-size: 19px"><i class="fas fa-envelope mr-1"></i> Email</strong>
                                 <p style="font-size: 19px" class="text-muted">
@@ -55,11 +55,11 @@
                             <div class="row mx-5 mb-3 mt-3"
                                 style="display: flex; justify-content: center; align-items-center">
                                 <div class="col-3">
-                                    <a href="{{ route('sales.profile.edit') }}" class="btn btn-primary btn-block p-2"><b><i
+                                    <a href="{{ route('admin.profile.edit') }}" class="btn btn-primary btn-block p-2"><b><i
                                                 class="fa-regular fa-pen-to-square"></i> Update Data</b></a>
                                 </div>
                                 <div class="col-3 ">
-                                    <a href="{{ route('sales.password') }}"
+                                    <a href="{{ route('admin.password') }}"
                                         class="p-2 btn btn-outline-secondary btn-block"><b></b><i
                                             class="fa-solid fa-key"></i> Change Password</b></a>
                                 </div>

@@ -61,117 +61,126 @@
                             <th>Email</th>
                             <th>Role</th>
                             <th>Verifikasi</th>
-                            <th>Distributor</th>
+                            <th>Main Distributor</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($users as $val)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                {{-- <td>{{ $val->id }}</td> --}}
-                                <td>{{ $val->name }}</td>
-                                <td>{{ $val->email }}</td>
-                                <td>{{ $val->role ? $val->role->role_name : 'Role tidak ditemukan' }}</td>
-                                <td>
-                                    @if ($val->is_verified == 1)
-                                        <button type="button" disabled
-                                            class="btn btn-outline-success btn-sm">Verified</button>
-                                    @else
-                                        <form action="{{ route('admin.distributor.verification', $val->id) }}"
-                                            method="POST" style="display:inline;">
-                                            @csrf
-                                            @method('PUT')
-                                            <button type="submit" class="btn btn-outline-warning btn-sm">Waiting (Click to
-                                                Verify)</button>
-                                        </form>
-                                    @endif
-                                </td>
-                                <td>{{ $val->distributor ? $val->distributor->distributor_name : '-' }}</td>
-                                <td>
-                                    {!! $val->is_active == 1
-                                        ? '<button type="button" disabled class="btn btn-outline-success btn-sm">Active</button>'
-                                        : '<button type="button" disabled class="btn btn-outline-danger btn-sm">Inactive</button>' !!}
+                            @if ($val->role_id != 2)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    {{-- <td>{{ $val->id }}</td> --}}
+                                    <td>{{ $val->name }}</td>
+                                    <td>{{ $val->email }}</td>
+                                    <td>{{ $val->role ? $val->role->role_name : 'Role tidak ditemukan' }}</td>
+                                    <td>
+                                        @if ($val->is_verified == 1)
+                                            <button type="button" disabled
+                                                class="btn btn-outline-success btn-sm">Verified</button>
+                                        @else
+                                            <form action="{{ route('admin.distributor.verification', $val->id) }}"
+                                                method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('PUT')
+                                                <button type="submit" class="btn btn-outline-warning btn-sm">Waiting (Click
+                                                    to
+                                                    Verify)</button>
+                                            </form>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        {!! $val->distributor
+                                            ? $val->distributor->distributor_name
+                                            : '<span style="color: darkred">Tidak terikat pada Main Distributor</span>' !!}
+                                    </td>
 
-                                    <div class="dropdown d-inline">
-                                        <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
-                                            id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
-                                            style="background-color: rgb(58, 91, 123)">
-                                            <i class="fa-solid fa-gear"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <li>
-                                                <form action="{{ route('admin.distributor.updateStatus', $val->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <button type="submit" name="status" value="1"
-                                                        class="dropdown-item">Set Active</button>
-                                                </form>
-                                            </li>
-                                            <li>
-                                                <form action="{{ route('admin.distributor.updateStatus', $val->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <button type="submit" name="status" value="0"
-                                                        class="dropdown-item">Set Inactive</button>
-                                                </form>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                </td>
-                                <td>
-                                    <form action="{{ route('admin.user.delete', $val->id) }}" method="POST"
-                                        id="delete-form-{{ $val->id }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <div class="d-flex gap-2">
-                                            <a href="{{ route('admin.user.detail', $val->id) }}"
-                                                class="btn btn-outline-info">
-                                                <i class="fa-regular fa-eye"></i>
-                                            </a>
-                                            @auth
-                                                <a href="{{ route('admin.user.edit', $val->id) }}"
-                                                    class="btn btn-warning mx-1">
-                                                    <i class="fa-regular fa-pen-to-square"></i>
+                                    <td>
+                                        {!! $val->is_active == 1
+                                            ? '<button type="button" disabled class="btn btn-outline-success btn-sm">Active</button>'
+                                            : '<button type="button" disabled class="btn btn-outline-danger btn-sm">Inactive</button>' !!}
+
+                                        <div class="dropdown d-inline">
+                                            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button"
+                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false"
+                                                style="background-color: rgb(58, 91, 123)">
+                                                <i class="fa-solid fa-gear"></i>
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <form action="{{ route('admin.distributor.updateStatus', $val->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" name="status" value="1"
+                                                            class="dropdown-item">Set Active</button>
+                                                    </form>
+                                                </li>
+                                                <li>
+                                                    <form action="{{ route('admin.distributor.updateStatus', $val->id) }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <button type="submit" name="status" value="0"
+                                                            class="dropdown-item">Set Inactive</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('admin.user.delete', $val->id) }}" method="POST"
+                                            id="delete-form-{{ $val->id }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <div class="d-flex gap-2">
+                                                <a href="{{ route('admin.user.detail', $val->id) }}"
+                                                    class="btn btn-outline-info">
+                                                    <i class="fa-regular fa-eye"></i>
                                                 </a>
-                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#confirmDeleteModal-{{ $val->id }}">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                </button>
-                                            @endauth
-                                        </div>
-                                    </form>
-                                </td>
-                                <div class="modal fade" id="confirmDeleteModal-{{ $val->id }}" tabindex="-1"
-                                    aria-labelledby="confirmDeleteLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="confirmDeleteLabel">Konfirmasi Penghapusan</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
+                                                @auth
+                                                    <a href="{{ route('admin.user.edit', $val->id) }}"
+                                                        class="btn btn-warning mx-1">
+                                                        <i class="fa-regular fa-pen-to-square"></i>
+                                                    </a>
+                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#confirmDeleteModal-{{ $val->id }}">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                    </button>
+                                                @endauth
                                             </div>
-                                            <div class="modal-body">
-                                                Apakah kamu yakin ingin menghapus <span
-                                                    class="text-danger text-bold">{{ $val->name }}</span> dari user?
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Batal</button>
-                                                <button type="button" class="btn btn-danger"
-                                                    onclick="document.getElementById('delete-form-{{ $val->id }}').submit();">
-                                                    <i class="fa-solid fa-trash-can"></i>
-                                                    Hapus
-                                                </button>
+                                        </form>
+                                    </td>
+                                    <div class="modal fade" id="confirmDeleteModal-{{ $val->id }}" tabindex="-1"
+                                        aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="confirmDeleteLabel">Konfirmasi Penghapusan
+                                                    </h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Apakah kamu yakin ingin menghapus <span
+                                                        class="text-danger text-bold">{{ $val->name }}</span> dari user?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Batal</button>
+                                                    <button type="button" class="btn btn-danger"
+                                                        onclick="document.getElementById('delete-form-{{ $val->id }}').submit();">
+                                                        <i class="fa-solid fa-trash-can"></i>
+                                                        Hapus
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </tr>
+                                </tr>
+                            @endif
                         @empty
                             <tr>
                                 <td colspan="3">No Data</td>

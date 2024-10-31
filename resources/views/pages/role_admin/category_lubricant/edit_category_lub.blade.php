@@ -26,7 +26,7 @@
                     <div class="mb-3">
                         <div class="form-group">
                             <label for="category_name" class="form-label">Nama Kategori</label>
-                            <input type="text" value="{{ $categories->category_name }}" name="category_name"
+                            <input type="text" value="{{ $categories->category_name }}" id="category_name" name="category_name"
                                 class="form-control" placeholder="Masukkan Nama Kategori">
                             @error('category_name')
                                 <small class="text-danger">{{ $message }}</small>
@@ -36,7 +36,7 @@
                     <div class="mb-3">
                         <div class="form-group">
                             <label for="category_description">Deskripsi Kategori</label>
-                            <textarea class="form-control" id="company_address" name="category_description" rows="3"
+                            <textarea class="form-control" id="category_description" name="category_description" rows="3"
                                 placeholder="Masukkan Deskripsi Kategori">{{ $categories->category_description }}</textarea>
                             @error('category_description')
                                 <small class="text-danger">{{ $message }}</small>

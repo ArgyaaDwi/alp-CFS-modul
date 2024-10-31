@@ -1,4 +1,12 @@
 @extends('layouts.admin')
+@push('styles')
+    <style>
+        .required:after {
+            content: ' *';
+            color: red
+        }
+    </style>
+@endpush
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
@@ -24,8 +32,8 @@
                     @csrf
                     <div class="mb-3">
                         <div class="form-group">
-                            <label for="category_name" class="form-label">Nama Kategori</label>
-                            <input type="text" value="{{ old('category_name') }}" name="category_name"
+                            <label for="category_name" class="form-label required">Nama Kategori</label>
+                            <input type="text" value="{{ old('category_name') }}" id="category_name" name="category_name"
                                 class="form-control" placeholder="Masukkan Nama Kategori">
                             @error('category_name')
                                 <small class="text-danger">{{ $message }}</small>
@@ -34,8 +42,8 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-group">
-                            <label for="category_description">Deskripsi Kategori</label>
-                            <textarea class="form-control" id="company_address" name="category_description" rows="3"
+                            <label for="category_description" class="form-label required">Deskripsi Kategori</label>
+                            <textarea class="form-control" id="category_description" name="category_description" rows="3"
                                 placeholder="Masukkan Deskripsi Kategori">{{ old('category_description') }}</textarea>
                             @error('category_description')
                                 <small class="text-danger">{{ $message }}</small>

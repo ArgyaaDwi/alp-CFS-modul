@@ -43,7 +43,7 @@ class CategoryLubricantController extends Controller
     {
         $user = Auth::user();
         $categories = CategoryLubricant::find($id);
-        return view('pages.role_admin.category_lubricant.edit_category_lub', compact('user', var_names: 'categories'));
+        return view('pages.role_admin.category_lubricant.edit_category_lub', compact('user',  'categories'));
     }
     public function updateCategoryLubricant(Request $request, $id)
     {

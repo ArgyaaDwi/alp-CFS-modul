@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ALP Insight</title>
-    <link rel="icon" type="image/jpg" href="images/logoalp.jpg">
+    <link rel="icon" type="image/jpg" href="{{ asset('images/alpbg.png') }}">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <link rel="stylesheet" href="{{ asset('template/plugins/fontawesome-free/css/all.min.css') }}">
@@ -133,7 +133,7 @@
                             </p>
                         </li>
                         <li class="user-footer">
-                            <a href="" class="btn btn-outline-info  rounded btn-flat ">Profil</a>
+                            <a href="{{ route('admin.profile') }}" class="btn btn-outline-info  rounded btn-flat ">Profil</a>
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-danger rounded btn-flat float-right">
@@ -164,7 +164,7 @@
                         <img src="{{ asset('images/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="" class="d-block">{{ $user->name }}</a>
+                        <a href="{{ route('admin.profile') }}" class="d-block">{{ $user->name }}</a>
                     </div>
                 </div>
                 <nav class="mt-2">
@@ -301,9 +301,9 @@
     </script>
 
     @stack('scripts')
-    <script>
+    {{-- <script>
         let table = new DataTable('#myTable');
-    </script>
+    </script> --}}
     <script src="https://kit.fontawesome.com/ba7a415507.js" crossorigin="anonymous"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>

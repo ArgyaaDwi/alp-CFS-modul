@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryLubricantController;
@@ -67,6 +68,11 @@ Route::middleware(['auth', 'user-access:1', 'check-verified'])->group(function (
 });
 Route::middleware(['auth', 'user-access:2'])->group(function () {
     Route::get('/dashboard/admin',  [MainController::class, 'dashboardAdmin'])->name('dashboard.admin');
+    // Route untuk kebutuhan kelola profile
+    Route::get('admin/view_profile', [AdminController::class, 'viewProfile'])->name('admin.profile');
+    Route::get('admin/edit_profile', [AdminController::class, 'editProfile'])->name('admin.profile.edit');
+    Route::put('admin/edit_profile', [AdminController::class, 'updateProfile'])->name('admin.profile.update');
+    Route::get('admin/change_password', [AdminController::class, 'changePassword'])->name('admin.password');
     // Route untuk kebutuhan kelola user
     Route::get('admin/view_user', [UserController::class, 'viewUser'])->name('admin.user.index');
     Route::get('admin/detail_user/{id}', [UserController::class, 'detailUser'])->name('admin.user.detail');

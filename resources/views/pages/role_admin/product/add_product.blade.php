@@ -67,6 +67,10 @@
 @endpush
 @push('styles')
     <style>
+        .required:after{
+            content:" *";
+            color:red;
+        }
         .avatar-preview {
             width: 150px;
             height: 200px;
@@ -128,8 +132,8 @@
                 <form action="{{ route('admin.product.save') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
-                        <label for="product_name" class="form-label">Nama Produk</label>
-                        <input type="text" value="{{ old('product_name') }}" name="product_name" class="form-control"
+                        <label for="product_name" class="form-label required">Nama Produk</label>
+                        <input type="text" value="{{ old('product_name') }}" id="product_name" name="product_name" class="form-control"
                             placeholder="Masukkan Nama Produk">
                         @error('product_name')
                             <small class="text-danger">{{ $message }}</small>
@@ -137,7 +141,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="category_lubricant_id" class="form-label">Kategori</label>
+                            <label for="category_lubricant_id" class="form-label required">Kategori</label>
                             <select class="form-control" id="category_lubricant_id" name="category_lubricant_id">
                                 <option value="" class="text-center">.:: Pilih kategori ::.</option>
                                 @forelse ($categoryLubricants as $item)
@@ -151,7 +155,7 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="sub_category_lubricant_id" class="form-label">Sub Kategori</label>
+                            <label for="sub_category_lubricant_id" class="form-label required">Sub Kategori</label>
                             <select class="form-control" id="sub_category_lubricant_id" name="sub_category_lubricant_id">
                                 <option value="" class="text-center">.:: Pilih Sub Kategori ::.</option>
                             </select>
@@ -160,7 +164,7 @@
                                 kategori sesuai dengan kategori
                             </small>
                             @error('sub_category_lubricant_id')
-                                <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger d-block">{{ $message }}</small>
                             @enderror
                         </div>
                         {{-- <div class="col-md-6">
@@ -180,8 +184,8 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-group">
-                            <label for="product_price" class="form-label">Harga Produk</label>
-                            <input type="number" value="{{ old('product_price') }}" name="product_price"
+                            <label for="product_price" class="form-label required">Harga Produk</label>
+                            <input type="number" value="{{ old('product_price') }}" id="product_price" name="product_price"
                                 class="form-control" placeholder="Masukkan Harga Produk">
                             @error('product_price')
                                 <small class="text-danger">{{ $message }}</small>
@@ -191,7 +195,7 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-group">
-                            <label for="product_description">Deskripsi Produk</label>
+                            <label for="product_description" class="form-label required">Deskripsi Produk</label>
                             <textarea class="form-control" id="product_description" name="product_description" rows="3"
                                 placeholder="Masukkan Deskripsi Produk">{{ old('product_description') }}</textarea>
                             @error('product_description')
@@ -200,11 +204,11 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="product_image" class="form-label">Gambar Produk</label>
+                        <label for="product_image" class="form-label required">Gambar Produk</label>
                         <input class="form-control" type="file" id="product_image" name="product_image"
                             accept=".jpg,.jpeg,.png" onchange="previewImage(this)">
                         @error('product_image')
-                            <small class="text-danger">{{ $message }}</small>
+                            <small class="text-danger d-block">{{ $message }}</small>
                         @enderror
                         <small>
                             <i class="fas fa-info-circle"></i> Gambar maks ukuran 2MB [JPG, JPEG, PNG] .

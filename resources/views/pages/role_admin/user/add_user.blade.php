@@ -29,6 +29,10 @@
 @endpush
 @push('styles')
     <style>
+        .required:after {
+            content: ' *';
+            color: red;
+        }
         .avatar-preview {
             width: 150px;
             height: 150px;
@@ -91,8 +95,8 @@
                 <form action="{{ route('admin.user.save') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
-                        <label for="name" class="form-label">Nama Lengkap</label>
-                        <input type="text" value="{{ old('name') }}" name="name" class="form-control"
+                        <label for="name" class="form-label required">Nama Lengkap</label>
+                        <input type="text" value="{{ old('name') }}" name="name" id="name" class="form-control"
                             placeholder="Masukkan Nama">
                         @error('name')
                             <small class="text-danger">{{ $message }}</small>
@@ -100,7 +104,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="role_id" class="form-label">Role</label>
+                            <label for="role_id" class="form-label required">Role</label>
                             <select class="form-control" id="role_id" name="role_id">
                                 <option value="{{ old('role_id') }}" class="text-center">.:: Pilih Role ::.</option>
                                 @forelse ($roles as $item)
@@ -114,7 +118,7 @@
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="id_distributor" class="form-label">Nama Distributor</label>
+                            <label for="id_distributor" class="form-label">Nama Main Distributor</label>
                             <select class="form-control" id="id_distributor" name="distributor_id">
                                 <option value="{{ old('distributor_id') }}" class="text-center">.:: Pilih Distributor ::.</option>
                                 @forelse ($distributors as $item)
@@ -123,21 +127,21 @@
                                     <option value="">Distributor tidak tersedia</option>
                                 @endforelse
                             </select>
-                            <small class="text-muted"><i class="fas fa-info-circle"></i> Pilih distributor jika rolenya Sales Manager</small>
+                            <small class="text-muted"><i class="fas fa-info-circle"></i> Pilih main distributor jika rolenya Sales Manager</small>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" value="{{ old('email') }}" name="email" class="form-control"
+                            <label for="email" class="form-label required">Email</label>
+                            <input type="email" id="email" value="{{ old('email') }}" name="email" class="form-control"
                                 placeholder="Masukkan Email">
                             @error('email')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="no_telephone" class="form-label">No. Telepon</label>
-                            <input type="number" value="{{ old('no_telephone') }}" name="no_telephone"
+                            <label for="no_telephone" class="form-label required">No. Telepon</label>
+                            <input type="number" value="{{ old('no_telephone') }}" id="no_telephone" name="no_telephone"
                                 class="form-control" placeholder="Masukkan No. Telepon">
                             @error('no_telephone')
                                 <small class="text-danger">{{ $message }}</small>
@@ -146,15 +150,15 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" name="password" class="form-control" placeholder="Masukkan Password">
+                            <label for="password" class="form-label required">Password</label>
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Masukkan Password">
                             @error('password')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
-                            <input type="password" name="password_confirmation" class="form-control"
+                            <label for="password_confirmation" class="form-label required">Konfirmasi Password</label>
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="form-control"
                                 placeholder="Masukkan Password Kembali">
                             @error('password_confirmation')
                                 <small class="text-danger">{{ $message }}</small>
@@ -163,7 +167,7 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-group">
-                            <label for="address">Alamat</label>
+                            <label for="address" class="form-label required">Alamat</label>
                             <textarea class="form-control" id="address" name="address" rows="3" placeholder="Masukkan Alamat">{{ old('address') }}</textarea>
                             @error('address')
                                 <small class="text-danger">{{ $message }}</small>
@@ -172,7 +176,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="is_verified" class="form-label">Verifikasi</label>
+                            <label for="is_verified" class="form-label required">Verifikasi</label>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input ml-1 mt-1" type="radio" name="is_verified"
                                     id="is_verified1" value="1">
@@ -184,11 +188,11 @@
                                 <label class="form-check-label" for="is_verified2">Unverified</label>
                             </div>
                             @error('is_verified')
-                                <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger d-block">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="is_active" class="form-label">Status</label>
+                            <label for="is_active" class="form-label required">Status</label>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input ml-1 mt-1" type="radio" name="is_active"
                                     id="is_active1" value="1">
@@ -200,7 +204,7 @@
                                 <label class="form-check-label" for="is_active2">Tidak Aktif</label>
                             </div>
                             @error('is_active')
-                                <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger d-block">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>

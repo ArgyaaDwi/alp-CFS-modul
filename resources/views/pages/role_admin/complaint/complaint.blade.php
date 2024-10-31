@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.sales') }}"> <i
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}"> <i
                                     class="nav-icon fa-solid fa-house"></i>
                             </a></li>
                         <li class="breadcrumb-item active">Aduan</li>
@@ -45,6 +45,7 @@
                     <thead style="border: 1px solid black">
                         <tr>
                             <th>No. </th>
+                            <th>CFS Ticket</th>
                             <th>Distributor</th>
                             <th>Main Distributor</th>
                             <th>Kategori</th>
@@ -58,6 +59,7 @@
                         @forelse ($complaints as $val)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $val->complaint_ticket }}</td>
                                 <td>{{ $val->distributor->company_name }}</td>
                                 <td>{{ $val->distributor->companyDistributor->distributor_name }}</td>
                                 <td>

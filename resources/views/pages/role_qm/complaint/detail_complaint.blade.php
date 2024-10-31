@@ -56,7 +56,7 @@
                         <div class="col-12">
                             <div class="card bg-light d-flex flex-fill">
                                 <div class="card-header text-muted border-bottom-0">
-                                    <h4>{{ $complaint->complaint_ticket }} / {{ $complaint->id }}</h4>
+                                    <h4>{{ $complaint->complaint_ticket }} - {{ $complaint->id }}</h4>
                                 </div>
                                 <div class="card-body d-flex flex-column pt-3">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">

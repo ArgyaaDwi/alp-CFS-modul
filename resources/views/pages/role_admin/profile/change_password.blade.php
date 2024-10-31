@@ -8,10 +8,10 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ route('dashboard.sales') }}"> <i
+                        <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}"> <i
                                     class="nav-icon fa-solid fa-house"></i>
                             </a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('sales.profile') }}"> Halaman Profil
+                        <li class="breadcrumb-item"><a href="{{ route('admin.profile') }}"> Halaman Profil
                             </a></li>
                         <li class="breadcrumb-item active">Ganti Password</li>
                     </ol>
@@ -27,29 +27,30 @@
                         <div class="m-4">
                             <form class="form-horizontal">
                                 <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">Password Lama</label>
+                                    <label for="password" class="col-sm-2 col-form-label">Password Lama</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputName" name="name"
-                                            placeholder="Masukkan Password Lama">
+                                        <input type="email" class="form-control" id="password" name="name"
+                                            placeholder="Masukkan Password Lama" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">Password Baru</label>
+                                    <label for="new_password" class="col-sm-2 col-form-label">Password Baru</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputName" name="name"
-                                            placeholder="Masukkan Password Baru">
+                                        <input type="email" class="form-control" id="new_password" name="name"
+                                            placeholder="Masukkan Password Baru" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">KonfirmasiPassword Baru</label>
+                                    <label for="confirm_password" class="col-sm-2 col-form-label">Konfirmasi Password
+                                        Baru</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputName" name="name"
-                                            placeholder="Masukkan Konfirmasi Password Baru">
+                                        <input type="email" class="form-control" id="confirm_password" name="name"
+                                            placeholder="Masukkan Konfirmasi Password Baru" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="offset-sm-2 col-sm-10">
-                                        <a href="{{ route('sales.profile') }}" class="btn btn-secondary"><i
+                                        <a href="{{ route('admin.profile') }}" class="btn btn-secondary"><i
                                                 class="fa-solid fa-chevron-left"></i> Kembali</a>
                                         <button type="submit" class="btn btn-primary"><i
                                                 class="fa-solid fa-floppy-disk"></i>

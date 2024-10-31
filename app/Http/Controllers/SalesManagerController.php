@@ -249,7 +249,8 @@ class SalesManagerController extends Controller
                 'complaint_title' => $validated['complaint_title'],
                 'complaint_description' => $validated['complaint_description'],
                 'complaint_hopeful_solution' => $validated['complaint_hopeful_solution'],
-                'supporting_document' => $request->file('supporting_document') ? $request->file('supporting_document')->store('supporting_document', 'public') : null,
+                'supporting_document' => $request->file('supporting_document') ? $request->file('supporting_document')
+                    ->store('supporting_document', 'public') : null,
                 'supporting_url' => $request->supporting_url ?? null,
                 'current_status_id' => 1,
                 'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
@@ -278,19 +279,18 @@ class SalesManagerController extends Controller
                 'complaint_id' => $complaint->id,
                 'user_id' => $userId,
                 'complaint_status_id' => 1,
-                'notes' => 'Aduan telah diajukan dan menunggu diproses.',
-                'supporting_document' => $request->file('supporting_document') ? $request->file('supporting_document')->store('supporting_document', 'public') : null,
-                'supporting_url' => $request->supporting_url ?? null,
+                'notes' => 'Aduan Feedback telah diajukan dan menunggu diproses lebih lanjut.',
                 'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
                 'updated_at' => Carbon::now()->timezone('Asia/Jakarta'),
             ]);
-            Mail::to('ferdinandargya@gmail.com')->send(new ComplaintMail($user, $complaint, $request->file('supporting_document')));
+            Mail::to('ferdinandargya@gmail.com')->send(new ComplaintMail($user, $complaint, $request
+                ->file('supporting_document')));
             DB::commit();
             return redirect()->route('sales.complaint.index')
-                ->with('success', 'Komplain berhasil disimpan!');
+                ->with('success', 'Aduan Feedback berhasil diajukan!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors('Gagal menyimpan komplain: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Gagal membuat aduan Feedback: ' . $e->getMessage());
         }
     }
     public function saveComplaint1(Request $request)
@@ -335,7 +335,8 @@ class SalesManagerController extends Controller
             'complaint_title' => $validated['complaint_title'],
             'complaint_description' => $validated['complaint_description'],
             'complaint_hopeful_solution' => $validated['complaint_hopeful_solution'],
-            'supporting_document' => $request->file('supporting_document') ? $request->file('supporting_document')->store('supporting_document', 'public') : null,
+            'supporting_document' => $request->file('supporting_document') ? $request->file('supporting_document')
+                ->store('supporting_document', 'public') : null,
             'supporting_url' => $request->supporting_url ? $request->supporting_url : null,
             'current_status_id' => 1,
             'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
@@ -366,11 +367,13 @@ class SalesManagerController extends Controller
             'user_id' => $userId,
             'complaint_status_id' => 1,
             'notes' => 'Aduan telah diajukan dan menunggu diproses.',
-            'supporting_document' => $request->file('supporting_document') ? $request->file('supporting_document')->store('supporting_document', 'public') : null,
+            'supporting_document' => $request->file('supporting_document') ? $request->file('supporting_document')
+                ->store('supporting_document', 'public') : null,
             'supporting_url' => $request->supporting_url ? $request->supporting_url : null,
             'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
         ]);
-        Mail::to('ferdinandargya@gmail.com')->send(new ComplaintMail($user, $complaint, $request->file('supporting_document')));
+        Mail::to('ferdinandargya@gmail.com')->send(new ComplaintMail($user, $complaint, $request
+            ->file('supporting_document')));
         return redirect()->route('sales.complaint.index')
             ->with('success', 'Komplain berhasil disimpan!');
     }
@@ -379,12 +382,20 @@ class SalesManagerController extends Controller
         $user = Auth::user();
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
         $categoryComplaints = CategoryComplaints::all();
-
-
         $complaint = Complaints::findOrFail($id);
         $selectedCategoryIds = $complaint->categories->pluck('id')->toArray();
         $distributors = Distributor::all();
-        return view('pages.role_sm.complaint.edit_complaint', compact('complaint', 'distributors', 'categoryComplaints', 'user', 'currentDate', 'selectedCategoryIds'));
+        return view(
+            'pages.role_sm.complaint.edit_complaint',
+            compact(
+                'complaint',
+                'distributors',
+                'categoryComplaints',
+                'user',
+                'currentDate',
+                'selectedCategoryIds'
+            )
+        );
     }
     public function updateComplaint(Request $request, $id)
     {
@@ -443,6 +454,7 @@ class SalesManagerController extends Controller
             'complaint_status_id' => 10,
             'notes' => 'Aduan feedback telah direvisi. Periksa detail terbaru untuk tindak lanjut.',
             'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
+            'updated_at' => Carbon::now()->timezone('Asia/Jakarta'),
         ]);
         return redirect()->route('sales.complaint.index')
             ->with('success', 'Komplain berhasil direvisi!');

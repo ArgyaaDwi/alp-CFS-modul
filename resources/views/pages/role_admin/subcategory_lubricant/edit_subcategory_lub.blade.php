@@ -37,12 +37,16 @@
                                     <option value="">Kategori Pelumas tidak tersedia</option>
                                 @endforelse
                             </select>
+                            @error('category_lubricant_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="sub_category_name" class="form-label">Nama Sub Kategori</label>
                                 <input type="text" value="{{ $subCategoryLubricants->sub_category_name }}"
-                                    name="sub_category_name" class="form-control" placeholder="Masukkan Nama Sub Kategori">
+                                    id="sub_category_name" name="sub_category_name" class="form-control"
+                                    placeholder="Masukkan Nama Sub Kategori">
                                 @error('sub_category_name')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror

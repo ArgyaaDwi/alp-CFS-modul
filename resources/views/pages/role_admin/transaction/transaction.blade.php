@@ -18,7 +18,7 @@
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-2 mx-0">
+            <div class="row mb-2">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         {!! session('success') !!}
@@ -32,7 +32,6 @@
                         {!! session('error') !!}
                     </div>
                 @endif
-
                 <div class="col-sm-6">
                     <h4 class="m-0"><b>Kelola Transaksi</b></h4>
                 </div>
@@ -41,7 +40,7 @@
                         <li class="breadcrumb-item"><a href="{{ route('dashboard.admin') }}"> <i
                                     class="nav-icon fa-solid fa-house"></i>
                             </a></li>
-                        <li class="breadcrumb-item active">Transaki</li>
+                        <li class="breadcrumb-item active">Transaksi</li>
                     </ol>
                 </div>
             </div>
@@ -76,7 +75,7 @@
                                 <td>{{ $val->transaction_code }}</td>
                                 <td>{{ $val->total_amount }}</td>
                                 <td>{{ $val->user->name }}</td>
-                                <td>{{ $val->user->distributor->company_name }}</td>
+                                <td>{{ $val->user->distributor->distributor_name }}</td>
                                 <td>{{ $val->customer_company }}</td>
                                 <td>{{ $val->city->city_name }}</td>
                                 <td>{{ $val->created_at }}</td>

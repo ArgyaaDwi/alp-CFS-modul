@@ -108,8 +108,8 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-group">
-                            <label for="name" class="form-label">Nama Perusahaan</label>
-                            <input type="text" value="{{ $distributors->company_name }}" name="company_name"
+                            <label for="company_name" class="form-label">Nama Distributor</label>
+                            <input type="text" value="{{ $distributors->company_name }}" id="company_name" name="company_name"
                                 class="form-control" placeholder="Masukkan Nama Perusahaan">
                             @error('company_name')
                                 <small class="text-danger">{{ $message }}</small>
@@ -152,16 +152,16 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="company_email" class="form-label">Email Perusahaan</label>
-                            <input type="email" value="{{ $distributors->company_email }}" name="company_email"
+                            <label for="company_email" class="form-label">Email Distributor</label>
+                            <input type="email" id="company_email" value="{{ $distributors->company_email }}" name="company_email"
                                 class="form-control" placeholder="Masukkan Email Perusahaan">
                             @error('company_email')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="company_phone" class="form-label">Telepon Perusahaan</label>
-                            <input type="text" value="{{ $distributors->company_phone }}" name="company_phone"
+                            <label for="company_phone" class="form-label">Telepon Distributor</label>
+                            <input type="text" value="{{ $distributors->company_phone }}" id="company_phone" name="company_phone"
                                 class="form-control" placeholder="Masukkan No. Telepon Perusahaan">
                             @error('company_phone')
                                 <small class="text-danger">{{ $message }}</small>
@@ -180,9 +180,9 @@
                     </div>
                     <div class="mb-3">
                         <div class="form-group">
-                            <label for="company_website" class="form-label">Website Perusahaan</label>
-                            <input type="text" value="{{ $distributors->company_website }}" name="company_website"
-                                class="form-control" placeholder="Masukkan Website Perusahaan">
+                            <label for="company_website" class="form-label">Website Distributor</label>
+                            <input type="text" value="{{ $distributors->company_website }}" id="company_website" name="company_website"
+                                class="form-control" placeholder="Masukkan Website Distributor">
                             <small class="text-muted"><i class="fas fa-info-circle"></i> Masukkan URL Website jika
                                 ada</small>
                             @error('company_website')

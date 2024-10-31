@@ -28,7 +28,7 @@
                         </li>
                         <li class="breadcrumb-item"><a href="{{ route('admin.complaint.index') }}"
                                 style="text-color: black">Feedback</a></li>
-                        <li class="breadcrumb-item"><span>{{ $complaint->id }}</span>
+                        <li class="breadcrumb-item"><span>{{ $complaint->complaint_ticket }}</span>
                         </li>
                     </ol>
                 </div>
@@ -43,7 +43,7 @@
                         <div class="col-12">
                             <div class="card bg-light d-flex flex-fill">
                                 <div class="card-header text-muted border-bottom-0">
-                                    <h4>{{ $complaint->batch_number }} / {{ $complaint->id }}</h4>
+                                    <h4>{{ $complaint->complaint_ticket }} - {{ $complaint->id }}</h4>
                                 </div>
                                 <div class="card-body d-flex flex-column pt-3">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -76,15 +76,22 @@
                                             </p>
                                             <p>Status Aduan: {{ $complaint->currentStatus->status_name }}</p>
                                             <h5>Judul Aduan: {{ $complaint->complaint_title }}</h5>
-                                            <label for="">Deskripsi</label>
-                                            <textarea name="" id="" cols="30" rows="5" class="form-control" disabled>{{ $complaint->complaint_description }}</textarea>
-                                            <label for="">Harapan</label>
-                                            <textarea name="" id="" cols="30" rows="5" class="form-control" disabled>{{ $complaint->complaint_hopeful_solution }}</textarea>
+                                            <label for="complaint_description">Deskripsi</label>
+                                            <textarea name="complaint_description" id="complaint_description" cols="30" rows="5" class="form-control"
+                                                disabled>{{ $complaint->complaint_description }}</textarea>
+                                            <label for="complaint_hopeful_solution">Harapan</label>
+                                            <textarea name="complaint_hopeful_solution" id="complaint_hopeful_solution" cols="30" rows="5"
+                                                class="form-control" disabled>{{ $complaint->complaint_hopeful_solution }}</textarea>
                                             @if ($complaint->supporting_document)
                                                 <button class="btn btn-info my-2"><a class="text-white"
                                                         href="{{ asset('storage/' . $complaint->supporting_document) }}"
                                                         target="_blank"><i class="fa-regular fa-eye"></i> Dokumen
                                                         Pendukung</a></button>
+                                            @endif
+                                            @if ($complaint->supporting_url)
+                                                <p><i class="fa-solid fa-link"></i> URL Pendukung: <a
+                                                        href="{{ $complaint->supporting_url }}">{{ $complaint->supporting_url }}</a>
+                                                </p>
                                             @endif
                                             <p>Bukti Foto:</p>
                                             @foreach ($complaint->files as $file)
@@ -159,6 +166,12 @@
                                                                                 class="fa-solid fa-pencil"></i> Catatan:
                                                                             <br></span>
                                                                         {{ $item->notes }}
+                                                                        @if ($item->supporting_url != null)
+                                                                        <p><i class="fa-solid fa-link"></i> URL
+                                                                            Pendukung: <a
+                                                                                href="{{ $complaint->supporting_url }}">{{ $complaint->supporting_url }}</a>
+                                                                        </p>
+                                                                    @endif
                                                                     </div>
                                                                     <div class="timeline-footer">
                                                                         @if ($item->supporting_document != null)

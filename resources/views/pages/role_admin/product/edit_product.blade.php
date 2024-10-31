@@ -136,7 +136,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="product_name" class="form-label">Nama Produk</label>
-                        <input type="text" value="{{ $products->product_name }}" name="product_name" class="form-control"
+                        <input type="text" value="{{ $products->product_name }}" id="product_name" name="product_name" class="form-control"
                             placeholder="Masukkan Nama Produk">
                         @error('product_name')
                             <small class="text-danger">{{ $message }}</small>
@@ -144,7 +144,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="category_lubricant_id " class="form-label">Kategori</label>
+                            <label for="category_lubricant_id" class="form-label required">Kategori</label>
                             <select class="form-control" id="category_lubricant_id" name="category_lubricant_id">
                                 <option value="" class="text-center">.:: Pilih kategori ::.</option>
                                 @forelse ($categoryLubricants as $item)
@@ -156,11 +156,11 @@
                                 @endforelse
                             </select>
                             @error('category_lubricant_id ')
-                                <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger d-block">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="sub_category_lubricant_id " class="form-label">Sub Kategori</label>
+                            <label for="sub_category_lubricant_id" class="form-label required">Sub Kategori</label>
                             <select class="form-control" id="sub_category_lubricant_id" name="sub_category_lubricant_id">
                                 <option value="" class="text-center">.:: Pilih Sub Kategori ::.</option>
                                 @forelse ($subCategoryLubricants as $item)
@@ -176,14 +176,14 @@
                                 kategori sesuai dengan kategori
                             </small>
                             @error('sub_category_lubricant_id ')
-                                <small class="text-danger">{{ $message }}</small>
+                                <small class="text-danger d-block">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
                     <div class="mb-3">
                         <div class="form-group">
                             <label for="product_price" class="form-label">Harga Produk</label>
-                            <input type="number" value="{{ $products->product_price }}" name="product_price"
+                            <input type="number" value="{{ $products->product_price }}" id="product_price" name="product_price"
                                 class="form-control" placeholder="Masukkan Harga Produk">
                             @error('product_price')
                                 <small class="text-danger">{{ $message }}</small>
