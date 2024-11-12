@@ -15,11 +15,12 @@ use App\Models\ComplaintFile;
 use App\Models\ComplaintStatus;
 use App\Models\MainDistributor;
 use App\Models\CategoryComplaints;
+use Illuminate\Support\Facades\DB;
 use App\Models\ComplaintInteraction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\DB;
 
+use App\Mail\ComplaintStatusUpdateMail;
 use Illuminate\Support\Facades\Storage;
 
 class SalesManagerController extends Controller
@@ -43,16 +44,27 @@ class SalesManagerController extends Controller
             'name' => 'required|string|max:255',
             'no_telephone' => 'required',
             'address' => 'required',
+            'profile_pic' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ], [
             'name.required' => 'Nama tidak boleh kosong.',
             'no_telephone.required' => 'No. Telepon tidak boleh kosong.',
             'address.required' => 'Alamat tidak boleh kosong.',
+            'profile_pic.image' => 'File harus berupa gambar.',
+            'profile_pic.max' => 'File terlalu besar.',
+            'profile_pic.mimes' => 'File harus berupa jpeg, png, jpg',
             'name.max' => 'Nama tidak boleh melebihi 255 karakter.',
         ]);
+        if ($request->hasFile('profile_pic')) {
+            $profile_pic = $request->file('profile_pic')->store('profile_pic', 'public');
+            $image = basename($profile_pic);
+        } else {
+            $image = $user->profile_pic;
+        }
         $user->update([
             'name' => $request->name,
             'no_telephone' => $request->no_telephone,
             'address' => $request->address,
+            'profile_pic' => $image,
         ]);
         return redirect()->route('sales.profile')->with('success', 'Profil berhasil diperbarui.');
     }
@@ -216,7 +228,7 @@ class SalesManagerController extends Controller
             'complaint_category_ids' => 'required|array',
             'complaint_category_ids.*' => 'exists:category_complaints,id',
             'files' => 'required|array',
-            'files.*' => 'mimes:jpg,jpeg,png,mp4,mov,avi|max:10240',
+            'files.*' => 'mimes:jpg,jpeg,png|max:10240',
             'supporting_document' => 'required|mimes:pdf|max:2048',
             'supporting_url' => 'nullable',
         ], [
@@ -229,7 +241,7 @@ class SalesManagerController extends Controller
             'complaint_category_ids.*.exists' => 'Kategori komplain tidak ditemukan',
             'files.*.required' => 'File wajib diinputkan',
             'files.required' => 'Wajib input file foto sebagai validasi bukti',
-            'files.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png) atau video (mp4, mov, avi)',
+            'files.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png)',
             'files.*.max' => 'Ukuran file maksimal 10MB',
             'supporting_document.required' => 'File pendukung wajib diinput',
             'supporting_document.mimes' => 'File harus berupa PDF',
@@ -249,7 +261,8 @@ class SalesManagerController extends Controller
                 'complaint_title' => $validated['complaint_title'],
                 'complaint_description' => $validated['complaint_description'],
                 'complaint_hopeful_solution' => $validated['complaint_hopeful_solution'],
-                'supporting_document' => $request->file('supporting_document') ? $request->file('supporting_document')
+                'supporting_document' => $request->file('supporting_document') ? $request
+                    ->file('supporting_document')
                     ->store('supporting_document', 'public') : null,
                 'supporting_url' => $request->supporting_url ?? null,
                 'current_status_id' => 1,
@@ -283,8 +296,9 @@ class SalesManagerController extends Controller
                 'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
                 'updated_at' => Carbon::now()->timezone('Asia/Jakarta'),
             ]);
-            Mail::to('ferdinandargya@gmail.com')->send(new ComplaintMail($user, $complaint, $request
-                ->file('supporting_document')));
+            Mail::to('ferdinandargya@gmail.com')
+                ->send(new ComplaintMail($user, $complaint, $request
+                    ->file('supporting_document')));
             DB::commit();
             return redirect()->route('sales.complaint.index')
                 ->with('success', 'Aduan Feedback berhasil diajukan!');
@@ -308,7 +322,7 @@ class SalesManagerController extends Controller
             'complaint_category_ids' => 'required|array',
             'complaint_category_ids.*' => 'exists:category_complaints,id',
             'files' => 'required|array',
-            'files.*' => 'mimes:jpg,jpeg,png,mp4,mov,avi|max:10240',
+            'files.*' => 'mimes:jpg,jpeg,png|max:10240',
             'supporting_document' => 'required|mimes:pdf|max:2048',
             'supporting_url' => 'nullable',
         ], [
@@ -321,7 +335,7 @@ class SalesManagerController extends Controller
             'complaint_category_ids.*.exists' => 'Kategori komplain tidak ditemukan',
             'files.*.required' => 'File wajib diinputkan',
             'files.required' => 'Wajib input file foto sebagai validasi bukti',
-            'files.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png) atau video (mp4, mov, avi)',
+            'files.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png)',
             'files.*.max' => 'Ukuran file maksimal 10MB',
             'supporting_document.required' => 'File pendukung wajib diinput',
             'supporting_document.mimes' => 'File harus berupa PDF',
@@ -367,7 +381,8 @@ class SalesManagerController extends Controller
             'user_id' => $userId,
             'complaint_status_id' => 1,
             'notes' => 'Aduan telah diajukan dan menunggu diproses.',
-            'supporting_document' => $request->file('supporting_document') ? $request->file('supporting_document')
+            'supporting_document' => $request->file('supporting_document') ? $request
+                ->file('supporting_document')
                 ->store('supporting_document', 'public') : null,
             'supporting_url' => $request->supporting_url ? $request->supporting_url : null,
             'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
@@ -399,9 +414,6 @@ class SalesManagerController extends Controller
     }
     public function updateComplaint(Request $request, $id)
     {
-        Carbon::setLocale('id');
-        $user = Auth::user();
-        $userId = $user->id;
         $validated = $request->validate([
             'distributor_id' => 'required',
             'batch_number' => 'required',
@@ -410,54 +422,83 @@ class SalesManagerController extends Controller
             'complaint_hopeful_solution' => 'required',
             'complaint_category_ids' => 'required|array',
             'complaint_category_ids.*' => 'exists:category_complaints,id',
+            'files' => 'required|array',
             'files.*' => 'mimes:jpg,jpeg,png,mp4,mov,avi|max:10240',
             'supporting_document' => 'mimes:pdf|max:2048',
+            'supporting_url' => 'nullable',
+        ], [
+            'distributor_id.required' => 'Distributor wajib dipilih',
+            'batch_number.required' => 'Nomor batch wajib diisi',
+            'complaint_title.required' => 'Judul permasalahan wajib diisi',
+            'complaint_description.required' => 'Deskripsi permasalahan wajib diisi',
+            'complaint_hopeful_solution.required' => 'Solusi yang diharapkan wajib diisi',
+            'complaint_category_ids.required' => 'Kategori komplain wajib dipilih minimal 1',
+            'complaint_category_ids.*.exists' => 'Kategori komplain tidak ditemukan',
+            'files.*.required' => 'File wajib diinputkan',
+            'files.required' => 'Wajib input file foto sebagai validasi bukti',
+            'files.*.mimes' => 'File harus berupa gambar (jpg, jpeg, png) atau video (mp4, mov, avi)',
+            'files.*.max' => 'Ukuran file maksimal 10MB',
+            'supporting_document.required' => 'File pendukung wajib diinput',
+            'supporting_document.mimes' => 'File harus berupa PDF',
+            'supporting_document.max' => 'Ukuran file maksimal 2MB',
         ]);
-        $complaint = Complaints::findOrFail($id);
-        $complaint->update([
-            'distributor_id' => $validated['distributor_id'],
-            'batch_number' => $validated['batch_number'],
-            'complaint_title' => $validated['complaint_title'],
-            'complaint_description' => $validated['complaint_description'],
-            'complaint_hopeful_solution' => $validated['complaint_hopeful_solution'],
-            'supporting_document' => $request->file('supporting_document') ? $request->file('supporting_document')->store('supporting_document', 'public') : $complaint->supporting_document,
-            'current_status_id' => 10,
-            'updated_at' => Carbon::now()->timezone('Asia/Jakarta'),
-        ]);
-        $complaint->categories()->detach();
-        $categories = $request->complaint_category_ids;
-        foreach ($categories as $categoryId) {
-            $otherCategoryName = null;
-            if ($categoryId == 4 && $request->other_category_name) {
-                $otherCategoryName = $request->other_category_name;
-            }
-            $complaint->categories()->attach($categoryId, [
-                'other_category_name' => $otherCategoryName,
+        DB::beginTransaction();
+        try {
+            Carbon::setLocale('id');
+            $user = Auth::user();
+            $userId = $user->id;
+            $complaint = Complaints::findOrFail($id);
+            $complaint->update([
+                'distributor_id' => $validated['distributor_id'],
+                'batch_number' => $validated['batch_number'],
+                'complaint_title' => $validated['complaint_title'],
+                'complaint_description' => $validated['complaint_description'],
+                'complaint_hopeful_solution' => $validated['complaint_hopeful_solution'],
+                'supporting_document' => $request->file('supporting_document') ? $request
+                    ->file('supporting_document')->store('supporting_document', 'public') : $complaint->supporting_document,
+                'supporting_url' => $request->supporting_url ? $request->supporting_url : $complaint->supporting_url,
+                'current_status_id' => 10,
+                'updated_at' => Carbon::now()->timezone('Asia/Jakarta'),
             ]);
-        }
-        if ($request->hasFile('files')) {
-            foreach ($complaint->files as $file) {
-                Storage::delete('public/' . $file->file_path);
-                $file->delete();
-            }
-            foreach ($request->file('files') as $file) {
-                $filePath = $file->store('complaint_files', 'public');
-                ComplaintFile::create([
-                    'complaint_id' => $complaint->id,
-                    'file_path' => $filePath,
+            $complaint->categories()->detach();
+            $categories = $request->complaint_category_ids;
+            foreach ($categories as $categoryId) {
+                $otherCategoryName = null;
+                if ($categoryId == 4 && $request->other_category_name) {
+                    $otherCategoryName = $request->other_category_name;
+                }
+                $complaint->categories()->attach($categoryId, [
+                    'other_category_name' => $otherCategoryName,
                 ]);
             }
+            if ($request->hasFile('files')) {
+                foreach ($complaint->files as $file) {
+                    Storage::delete('public/' . $file->file_path);
+                    $file->delete();
+                }
+                foreach ($request->file('files') as $file) {
+                    $filePath = $file->store('complaint_files', 'public');
+                    ComplaintFile::create([
+                        'complaint_id' => $complaint->id,
+                        'file_path' => $filePath,
+                    ]);
+                }
+            }
+            ComplaintInteraction::create([
+                'complaint_id' => $complaint->id,
+                'user_id' => $userId,
+                'complaint_status_id' => 10,
+                'notes' => 'Aduan feedback telah direvisi. Periksa detail terbaru untuk tindak lanjut.',
+                'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
+                'updated_at' => Carbon::now()->timezone('Asia/Jakarta'),
+            ]);
+            DB::commit();
+            return redirect()->route('sales.complaint.index')
+                ->with('success', 'Komplain berhasil direvisi!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors('Gagal update aduan Feedback' . $e->getMessage());
         }
-        ComplaintInteraction::create([
-            'complaint_id' => $complaint->id,
-            'user_id' => $userId,
-            'complaint_status_id' => 10,
-            'notes' => 'Aduan feedback telah direvisi. Periksa detail terbaru untuk tindak lanjut.',
-            'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
-            'updated_at' => Carbon::now()->timezone('Asia/Jakarta'),
-        ]);
-        return redirect()->route('sales.complaint.index')
-            ->with('success', 'Komplain berhasil direvisi!');
     }
     public function closeComplaint($id)
     {
@@ -480,18 +521,25 @@ class SalesManagerController extends Controller
                 'created_at' => Carbon::now()->timezone('Asia/Jakarta'),
                 'updated_at' => Carbon::now()->timezone('Asia/Jakarta'),
             ]);
+            $latestInteraction = $complaint->complaintInteraction()->latest()->first();
+            Mail::to('ferdinandargya@gmail.com')->send(new ComplaintStatusUpdateMail($user, $complaint, $latestInteraction));
             DB::commit();
-            return redirect()->back()->with('success', 'Status Aduan berhasil diubah menjadi close!');
+            return redirect()->back()->with('success', 'Status aduan Feedback berhasil diubah menjadi close!');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors('Gagal close status komplain: ' . $e->getMessage());
+            return redirect()->back()->withErrors('Gagal close status aduan: ' . $e->getMessage());
         }
     }
     public function deleteComplaint($id)
     {
-        $complaint = Complaints::findOrFail($id);
-        $complaint->delete();
-        return redirect()->route('sales.complaint.index')
-            ->with('success', 'Komplain berhasil dihapus!');
+        try {
+            $complaint = Complaints::findOrFail($id);
+            $complaint->delete();
+            return redirect()->route('sales.complaint.index')
+                ->with('success', 'Aduan Feedback berhasil dihapus!');
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('Gagal menghapus aduan Feedback: ' .
+                $e->getMessage());
+        }
     }
 }

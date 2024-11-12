@@ -222,7 +222,7 @@
                         <div class="form-group">
                             <label for="supporting_url">URL Pendukung</label>
                             <input type="url" class="form-control" id="supporting_url" name="supporting_url"
-                                placeholder="Masukkan URL, contoh: https://example.com" autocomplete="off">
+                                placeholder="Masukkan URL, contoh: https://example.com" autocomplete="on">
                             <small class="text-muted"><i class="fas fa-info-circle"></i> (Opsional) Masukkan URL pendukung
                                 apabila ada</small></small>
                         </div>

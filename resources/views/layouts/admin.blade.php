@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -85,7 +84,6 @@
 
     th {
         border-top: 1px solid #dddddd;
-        /* border-bottom: 1px solid #dddddd; */
         border-right: 1px solid #dddddd;
     }
 
@@ -98,9 +96,7 @@
     <div id="loading">
         <div class="spinner"></div>
     </div>
-    <!-- Site wrapper -->
     <div class="wrapper">
-        <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <ul class="navbar-nav">
                 <li class="nav-item">
@@ -121,19 +117,21 @@
                     <a href="" class="nav-link bg-white dropdown-toggle " data-toggle="dropdown"
                         style="background-color: #ffffff; ">
                         <span class="d-none d-md-inline mr-2">{{ $user->name }}</span>
-                        <img src="{{ asset('images/user.jpg') }}" class="user-image img-circle elevation-2"
-                            alt="User Image">
+                        <img src="{{ $user->profile_pic ? asset('storage/profile_pic/' . $user->profile_pic) : asset('images/user.jpg') }}"
+                            class="user-image img-circle elevation-2" alt="User Image">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <li class="user-header">
-                            <img src="{{ asset('images/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                            <img src="{{ $user->profile_pic ? asset('storage/profile_pic/' . $user->profile_pic) : asset('images/user.jpg') }}"
+                                class="img-circle elevation-2" alt="User Image">
                             <p>
                                 {{ $user->name }}
                                 <small>{{ $user->email }}</small>
                             </p>
                         </li>
                         <li class="user-footer">
-                            <a href="{{ route('admin.profile') }}" class="btn btn-outline-info  rounded btn-flat ">Profil</a>
+                            <a href="{{ route('admin.profile') }}"
+                                class="btn btn-outline-info  rounded btn-flat ">Profil</a>
                             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-danger rounded btn-flat float-right">
@@ -149,19 +147,17 @@
                 </li>
             </ul>
         </nav>
-        <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-light-primary elevation-4">
-            <!-- Brand Logo -->
             <a href="" class="brand-link">
                 <img src="{{ asset('images/logoalp.jpg') }}" alt="Logo PT. ALP" class="brand-image "
                     style="opacity: .8">
                 <span class="brand-text font-weight-bold">ALP </span>Insight
             </a>
-            <!-- Sidebar -->
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ asset('images/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ $user->profile_pic ? asset('storage/profile_pic/' . $user->profile_pic) : asset('images/user.jpg') }}"
+                            class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
                         <a href="{{ route('admin.profile') }}" class="d-block">{{ $user->name }}</a>
@@ -251,11 +247,7 @@
         </aside>
         <div class="content-wrapper">
             @yield('content')
-
-
         </div>
-
-
         <footer class="main-footer">
             <div class="text-center d-none d-sm-block">
                 <strong>Copyright &copy; 2024 <a href="https://alppetro.co.id">ALP Petro Industry</a>.</strong> All
@@ -284,26 +276,19 @@
                 document.querySelector("#loading").style.display = "flex";
             }
         };
-
-        // Saat halaman selesai loading, sembunyikan loading spinner setelah delay
         window.onload = function() {
             setTimeout(function() {
                 document.querySelector("#loading").style.display = "none";
-            }, 500); // Delay sebelum loading hilang
+            }, 500);
         };
-
-        // Hilangkan spinner jika terjadi masalah render dobel
         window.onpageshow = function() {
             setTimeout(function() {
                 document.querySelector("#loading").style.display = "none";
-            }, 500); // Tambah delay untuk memastikan spinner tak tampil dobel
+            }, 500);
         };
     </script>
 
     @stack('scripts')
-    {{-- <script>
-        let table = new DataTable('#myTable');
-    </script> --}}
     <script src="https://kit.fontawesome.com/ba7a415507.js" crossorigin="anonymous"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>

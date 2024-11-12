@@ -64,9 +64,13 @@
                                             <p class="text-muted text-sm"><b>Main Distributor:
                                                     {{ $complaint->distributor->companyDistributor->distributor_name }}</b>
                                             </p>
+                                            <p class="text-muted text-sm"><b>Batch Number:
+                                                    {{ $complaint->batch_number }}</b>
+                                            </p>
                                             <p>Kategori Aduan: @foreach ($complaint->categories as $category)
                                                     @if ($category->id == 4 && $category->pivot->other_category_name)
-                                                        {{ $category->pivot->other_category_name }}
+                                                        {{ $category->category_name }}
+                                                        ({{ $category->pivot->other_category_name }})
                                                     @else
                                                         {{ $category->category_name }}
                                                         @endif @if (!$loop->last)
@@ -167,21 +171,24 @@
                                                                             <br></span>
                                                                         {{ $item->notes }}
                                                                         @if ($item->supporting_url != null)
-                                                                        <p><i class="fa-solid fa-link"></i> URL
-                                                                            Pendukung: <a
-                                                                                href="{{ $complaint->supporting_url }}">{{ $complaint->supporting_url }}</a>
-                                                                        </p>
-                                                                    @endif
+                                                                            <p><i class="fa-solid fa-link"></i> URL
+                                                                                Pendukung: <a
+                                                                                    href="{{ $item->supporting_url }}">{{ $item->supporting_url }}</a>
+                                                                            </p>
+                                                                        @endif
                                                                     </div>
                                                                     <div class="timeline-footer">
                                                                         @if ($item->supporting_document != null)
-                                                                            <button class="btn btn-info my-2 btn-sm"><a
-                                                                                    class="text-white"
+                                                                            <button class="my-2 btn-sm"
+                                                                                style="background-color: rgb(23, 71, 185); box-shadow: none; border: none;">
+                                                                                <a class="text-white"
                                                                                     href="{{ asset('storage/' . $item->supporting_document) }}"
-                                                                                    target="_blank"><i
-                                                                                        class="fa-regular fa-eye"></i>
-                                                                                    Dokumen
-                                                                                    Pendukung</a></button>
+                                                                                    target="_blank"
+                                                                                    style="text-decoration: none; box-shadow: none; outline: none;">
+                                                                                    <i class="fa-regular fa-eye"></i>
+                                                                                    Dokumen Pendukung
+                                                                                </a>
+                                                                            </button>
                                                                         @endif
                                                                         {{-- <a class="btn btn-primary btn-sm">Read more</a>
                                                                     <a class="btn btn-danger btn-sm">Delete</a> --}}

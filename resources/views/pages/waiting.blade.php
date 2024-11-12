@@ -33,7 +33,7 @@
                     akun sudah bisa digunakan.
                     <br>
                     Jika Anda memiliki pertanyaan atau mengalami kendala, jangan ragu untuk menghubungi tim dukungan
-                    kami melalui [Alamat Email] atau [Nomor Telepon].
+                    kami melalui italppetro@outlook.com atau 0343-853308.
                     <br>
                     Terima kasih.
                     <br><br>

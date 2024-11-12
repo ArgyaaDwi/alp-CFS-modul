@@ -41,7 +41,7 @@
                         </li>
                         <li class="breadcrumb-item"><a href="{{ route('fgm.complaint.index') }}"
                                 style="text-color: black">Feedback</a></li>
-                        <li class="breadcrumb-item"><span>{{ $complaint->id }}</span>
+                        <li class="breadcrumb-item"><span>{{ $complaint->complaint_ticket }}</span>
                         </li>
                     </ol>
                 </div>
@@ -56,7 +56,7 @@
                         <div class="col-12">
                             <div class="card bg-light d-flex flex-fill">
                                 <div class="card-header text-muted border-bottom-0">
-                                    <h4>{{ $complaint->batch_number }} / {{ $complaint->id }}</h4>
+                                    <h4>{{ $complaint->complaint_ticket }} - {{ $complaint->id }}</h4>
                                 </div>
                                 <div class="card-body d-flex flex-column pt-3">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -77,9 +77,13 @@
                                             <p class="text-muted text-sm"><b>Main Distributor:
                                                     {{ $complaint->distributor->companyDistributor->distributor_name }}</b>
                                             </p>
+                                            <p class="text-muted text-sm"><b>Batch Number:
+                                                    {{ $complaint->batch_number }}</b>
+                                            </p>
                                             <p>Kategori Aduan: @foreach ($complaint->categories as $category)
                                                     @if ($category->id == 4 && $category->pivot->other_category_name)
-                                                        {{ $category->pivot->other_category_name }}
+                                                        {{ $category->category_name }}
+                                                        ({{ $category->pivot->other_category_name }})
                                                     @else
                                                         {{ $category->category_name }}
                                                         @endif @if (!$loop->last)
@@ -156,18 +160,19 @@
                                                 Kembali</a>
                                             {{-- <a href="" class="btn btn-primary"><i
                                                     class="fa-regular fa-pen-to-square"></i> Perbarui Data</a> --}}
-                                            @if ($complaint->current_status_id == 4)
+                                            @if ($complaint->current_status_id == 4 || $complaint->current_status_id == 12)
                                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                                     data-target="#exampleModal"><i
                                                         class="fa-regular fa-pen-to-square"></i>
-                                                    Update Status</button>
+                                                    Verifikasi Aduan</button>
                                             @endif
                                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Perbarui Status
+                                                            <h5 class="modal-title" id="exampleModalLabel">Verifikasi
+
                                                             </h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Close">
@@ -181,16 +186,27 @@
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <div class="form-group">
+                                                                    <label for="id_status" class="form-label">Status
+                                                                        Sekarang</label>
+                                                                    <select class="form-control" id="id_status"
+                                                                        name="complaint_status_id" disabled>
+                                                                        <option value="" selected>
+                                                                            {{ $complaint->currentStatus->status_name }}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
                                                                     <label for="id_status"
-                                                                        class="form-label required">Status</label>
+                                                                        class="form-label required">Perbarui Status</label>
                                                                     <select class="form-control" id="id_status"
                                                                         name="complaint_status_id">
                                                                         <option value="" class="text-center">.::
                                                                             Pilih Status ::.</option>
                                                                         @forelse ($status as $item)
-                                                                            <option value="{{ $item->id }}"
-                                                                                {{ $complaint->current_status_id == $item->id ? 'selected' : '' }}>
-                                                                                {{ $item->status_name }}</option>
+                                                                            @if ($item->id != 4 && $item->id != 12)
+                                                                                <option value="{{ $item->id }}">
+                                                                                    {{ $item->status_name }}</option>
+                                                                            @endif
                                                                         @empty
                                                                             <option value="">Status tidak tersedia
                                                                             </option>
@@ -264,19 +280,22 @@
                                                                         @if ($item->supporting_url != null)
                                                                             <p><i class="fa-solid fa-link"></i> URL
                                                                                 Pendukung: <a
-                                                                                    href="{{ $complaint->supporting_url }}">{{ $complaint->supporting_url }}</a>
+                                                                                    href="{{ $item->supporting_url }}">{{ $item->supporting_url }}</a>
                                                                             </p>
                                                                         @endif
                                                                     </div>
                                                                     <div class="timeline-footer">
                                                                         @if ($item->supporting_document != null)
-                                                                            <button class="btn btn-info my-2 btn-sm"><a
-                                                                                    class="text-white"
+                                                                            <button class="my-2 btn-sm"
+                                                                                style="background-color: rgb(23, 71, 185); box-shadow: none; border: none;">
+                                                                                <a class="text-white"
                                                                                     href="{{ asset('storage/' . $item->supporting_document) }}"
-                                                                                    target="_blank"><i
-                                                                                        class="fa-regular fa-eye"></i>
-                                                                                    Dokumen
-                                                                                    Pendukung</a></button>
+                                                                                    target="_blank"
+                                                                                    style="text-decoration: none; box-shadow: none; outline: none;">
+                                                                                    <i class="fa-regular fa-eye"></i>
+                                                                                    Dokumen Pendukung
+                                                                                </a>
+                                                                            </button>
                                                                         @endif
                                                                         {{-- <a class="btn btn-primary btn-sm">Read more</a>
                                                                     <a class="btn btn-danger btn-sm">Delete</a> --}}

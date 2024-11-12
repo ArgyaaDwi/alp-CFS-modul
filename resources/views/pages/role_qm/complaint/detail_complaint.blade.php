@@ -82,7 +82,8 @@
                                             </p>
                                             <p>Kategori Aduan: @foreach ($complaint->categories as $category)
                                                     @if ($category->id == 4 && $category->pivot->other_category_name)
-                                                        {{ $category->pivot->other_category_name }}
+                                                        {{ $category->category_name }}
+                                                        ({{ $category->pivot->other_category_name }})
                                                     @else
                                                         {{ $category->category_name }}
                                                         @endif @if (!$loop->last)
@@ -162,12 +163,15 @@
                                                     <button type="button" class="btn btn-primary" data-toggle="modal"
                                                         data-target="#exampleModal"><i
                                                             class="fa-regular fa-pen-to-square"></i>
-                                                        Update Status</button>
+                                                        Verifikasi Aduan</button>
                                                 @elseif($complaint->current_status_id == 2)
                                                     <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                        data-target="#exampleModal"><i
-                                                            class="fa-regular fa-pen-to-square"></i>
+                                                        data-target="#toFGM"><i class="fa-solid fa-angles-right"></i>
                                                         Teruskan ke FGM</button>
+                                                @elseif($complaint->current_status_id == 9)
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                        data-target="#revFGM"><i class="fa-solid fa-file-pen"></i>
+                                                        Submit Revisi ke FGM</button>
                                                 @elseif($complaint->current_status_id == 5)
                                                     <form action="{{ route('qm.request.close', $complaint->id) }}"
                                                         method="POST" id="close-form-{{ $complaint->id }}">
@@ -180,12 +184,14 @@
                                                     </form>
                                                 @endif
                                             </div>
+                                            <!-- Modal Update Status-->
                                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
                                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title" id="exampleModalLabel">Perbarui Status
+                                                                Aduan Feedback
                                                             </h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Close">
@@ -198,18 +204,30 @@
                                                                 @csrf
                                                                 @method('PUT')
                                                                 <div class="form-group">
+                                                                    <label for="id_status" class="form-label">Status
+                                                                        Sekarang</label>
+                                                                    <select class="form-control" id="id_status"
+                                                                        name="complaint_status_id" disabled>
+                                                                        <option value="" selected>
+                                                                            {{ $complaint->currentStatus->status_name }}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
                                                                     <label for="id_status"
-                                                                        class="form-label required">Status</label>
+                                                                        class="form-label required">Perbarui Status</label>
                                                                     <select class="form-control" id="id_status"
                                                                         name="complaint_status_id">
                                                                         <option value="" class="text-center">.::
                                                                             Pilih Status ::.</option>
                                                                         @forelse ($status as $item)
-                                                                            <option value="{{ $item->id }}"
-                                                                                {{ $complaint->current_status_id == $item->id ? 'selected' : '' }}>
-                                                                                {{ $item->status_name }}</option>
+                                                                            @if ($item->id != 4 && $item->id != 1)
+                                                                                <option value="{{ $item->id }}">
+                                                                                    {{ $item->status_name }}</option>
+                                                                            @endif
                                                                         @empty
-                                                                            <option value="">Status tidak tersedia
+                                                                            <option value="">Status tidak
+                                                                                tersedia
                                                                             </option>
                                                                         @endforelse
                                                                     </select>
@@ -218,6 +236,143 @@
                                                                     <label for="message-text"
                                                                         class="col-form-label required">Catatan:</label>
                                                                     <textarea class="form-control" id="message-text" name="notes" placeholder="Masukkan catatan"></textarea>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="supporting_document"
+                                                                        class="form-label">Dokumen Pendukung (PDF)</label>
+                                                                    <input class="form-control" type="file"
+                                                                        id="supporting_document"
+                                                                        name="supporting_document" accept=".pdf">
+                                                                    <small class="text-muted"><i
+                                                                            class="fas fa-info-circle"></i> (Opsional)
+                                                                        Hanya
+                                                                        file PDF yang diperbolehkan.</small>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="supporting_document"
+                                                                        class="form-label">URL Pendukung</label>
+                                                                    <input class="form-control" type="url"
+                                                                        id="supporting_document" name="supporting_url"
+                                                                        placeholder="Masukkan URL, contoh: https://example.com">
+                                                                    <small class="text-muted"><i
+                                                                            class="fas fa-info-circle"></i> (Opsional)
+                                                                        Masukkan URL pendukung
+                                                                        apabila ada.</small>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-secondary"
+                                                                        data-dismiss="modal">Tutup</button>
+                                                                    <button type="submit" class="btn btn-primary"><i
+                                                                            class="fa-solid fa-floppy-disk"></i>
+                                                                        Simpan</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal Neruskan ke FGM-->
+                                            <div class="modal fade" id="toFGM" tabindex="-1" role="dialog"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Teruskan ke FGM
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('qm.to.fgm', $complaint->id) }}"
+                                                                method="POST" enctype="multipart/form-data">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="form-group">
+                                                                    <label for="id_status"
+                                                                        class="form-label">Status</label>
+                                                                    <select class="form-control" id="id_status"
+                                                                        name="complaint_status_id" disabled>
+                                                                        <option value="4" selected>
+                                                                            {{ $status->firstWhere('id', 4)->status_name }}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label required">Catatan:</label>
+                                                                    <textarea class="form-control" id="message-text" name="notes" placeholder="Masukkan catatan"></textarea>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="supporting_document"
+                                                                        class="form-label">Dokumen Pendukung (PDF)</label>
+                                                                    <input class="form-control" type="file"
+                                                                        id="supporting_document"
+                                                                        name="supporting_document" accept=".pdf">
+                                                                    <small class="text-muted"><i
+                                                                            class="fas fa-info-circle"></i> (Opsional)
+                                                                        Hanya
+                                                                        file PDF yang diperbolehkan.</small>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="supporting_document"
+                                                                        class="form-label">URL Pendukung</label>
+                                                                    <input class="form-control" type="url"
+                                                                        id="supporting_document" name="supporting_url"
+                                                                        placeholder="Masukkan URL, contoh: https://example.com">
+                                                                    <small class="text-muted"><i
+                                                                            class="fas fa-info-circle"></i> (Opsional)
+                                                                        Masukkan URL pendukung
+                                                                        apabila ada.</small>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button"
+                                                                        class="btn btn-outline-secondary"
+                                                                        data-dismiss="modal">Tutup</button>
+                                                                    <button type="submit" class="btn btn-primary"><i
+                                                                            class="fa-solid fa-floppy-disk"></i>
+                                                                        Simpan</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- END Modal Neruskan ke FGM-->
+                                            <div class="modal fade" id="revFGM" tabindex="-1" role="dialog"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Submit Revisi
+                                                                ke FGM
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form action="{{ route('qm.rev.fgm', $complaint->id) }}"
+                                                                method="POST" enctype="multipart/form-data">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                <div class="form-group">
+                                                                    <label for="id_status" class="form-label">Status
+                                                                        Sekarang</label>
+                                                                    <select class="form-control" id="id_status"
+                                                                        name="complaint_status_id" disabled>
+                                                                        <option value="12" selected>
+                                                                            {{ $status->firstWhere('id', 12)->status_name }}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="message-text"
+                                                                        class="col-form-label required">Catatan:</label>
+                                                                    <textarea class="form-control" id="message-text" name="notes" placeholder="Masukkan revisi catatan"></textarea>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="supporting_document"
@@ -275,7 +430,7 @@
                                                                 data-dismiss="modal">Batal</button>
                                                             <button type="button" class="btn btn-success"
                                                                 onclick="document.getElementById('close-form-{{ $complaint->id }}').submit();">
-                                                                <i class="fa-regular fa-circle-check"></i> Ajukan Close
+                                                                <i class="fa-regular fa-circle-xmark"></i> Ajukan Close
                                                             </button>
                                                         </div>
                                                     </div>
@@ -308,19 +463,22 @@
                                                                         @if ($item->supporting_url != null)
                                                                             <p><i class="fa-solid fa-link"></i> URL
                                                                                 Pendukung: <a
-                                                                                    href="{{ $complaint->supporting_url }}">{{ $complaint->supporting_url }}</a>
+                                                                                    href="{{ $item->supporting_url }}">{{ $item->supporting_url }}</a>
                                                                             </p>
                                                                         @endif
                                                                     </div>
                                                                     <div class="timeline-footer">
                                                                         @if ($item->supporting_document != null)
-                                                                            <button class="my-2 btn-sm" style="background-color: rgb(23, 71, 185)"><a
-                                                                                    class="text-white"
+                                                                            <button class="my-2 btn-sm"
+                                                                                style="background-color: rgb(23, 71, 185); box-shadow: none; border: none;">
+                                                                                <a class="text-white"
                                                                                     href="{{ asset('storage/' . $item->supporting_document) }}"
-                                                                                    target="_blank"><i
-                                                                                        class="fa-regular fa-eye"></i>
-                                                                                    Dokumen
-                                                                                    Pendukung</a></button>
+                                                                                    target="_blank"
+                                                                                    style="text-decoration: none; box-shadow: none; outline: none;">
+                                                                                    <i class="fa-regular fa-eye"></i>
+                                                                                    Dokumen Pendukung
+                                                                                </a>
+                                                                            </button>
                                                                         @endif
                                                                         {{-- <a class="btn btn-primary btn-sm">Read more</a>
                                                                     <a class="btn btn-danger btn-sm">Delete</a> --}}

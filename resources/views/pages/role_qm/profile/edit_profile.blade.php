@@ -1,4 +1,41 @@
 @extends('layouts.qm')
+@push('scripts')
+    <script type="text/javascript">
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview img').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+@endpush
+@push('styles')
+    <style>
+        .avatar-preview {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            background-color: #f8f9fa;
+            margin-top: 15px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #imagePreview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+    </style>
+@endpush
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
@@ -35,7 +72,7 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label" >Nama Lengkap</label>
+                                    <label for="inputName" class="col-sm-2 col-form-label">Nama Lengkap</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="inputName" name="name"
                                             value="{{ $user->name }}">
@@ -59,6 +96,25 @@
                                     <div class="col-sm-10">
                                         <textarea class="form-control" id="inputExperience" name="address">{{ $user->address }}</textarea>
                                         @error('address')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group row ">
+                                    <label for="profile_picture" class="col-sm-2 col-form-label">Profile</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="file" id="profile_picture" name="profile_pic"
+                                            accept=".jpg,.jpeg,.png" onchange="previewImage(this)">
+                                        <small class="text-muted"><i class="fas fa-info-circle"></i> (Opsional) Gunakan
+                                            gambar rasio 1:1 untuk hasil yang maksimal
+                                            dengan maks ukuran 1MB [JPG, JPEG, PNG]</small>
+                                        <div class="avatar-preview mb-3">
+                                            <div id="imagePreview">
+                                                <img src="{{ $user->profile_pic ? asset('storage/profile_pic/' . $user->profile_pic) : asset('path/to/default.jpg') }}"
+                                                    alt="Preview">
+                                            </div>
+                                        </div>
+                                        @error('profile_pic')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>

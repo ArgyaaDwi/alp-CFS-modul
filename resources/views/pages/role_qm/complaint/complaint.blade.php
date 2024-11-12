@@ -66,7 +66,7 @@
                                 <td>
                                     @foreach ($val->categories as $category)
                                         @if ($category->id == 4 && $category->pivot->other_category_name)
-                                            {{ $category->pivot->other_category_name }}
+                                            {{ $category->category_name }} ({{ $category->pivot->other_category_name }})
                                         @else
                                             {{ $category->category_name }}
                                         @endif
@@ -90,8 +90,8 @@
                                         <button type="button" disabled class="btn btn-outline-secondary btn-sm">Perlu
                                             Revisi dari FGM</button>
                                     @elseif($val->current_status_id == 5)
-                                        <button type="button" disabled class="btn btn-outline-secondary btn-sm">Ajukan
-                                            close aduan
+                                        <button type="button" disabled class="btn btn-outline-danger btn-sm">Ajukan
+                                            Close Aduan
                                         </button>
                                     @else
                                         <span>-</span>

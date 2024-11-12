@@ -67,7 +67,7 @@
             });
         });
     </script>
-    <script  src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @endpush
 @push('styles')
     <style>
@@ -122,7 +122,8 @@
     <section class="content">
         <div class="card mx-3">
             <div class="card-body">
-                <form action="{{ route('sales.complaint.update', $complaint->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('sales.complaint.update', $complaint->id) }}" method="POST"
+                    enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <div class="row mb-3">
@@ -212,6 +213,15 @@
                         </div>
                     </div>
                     <div class="mb-3">
+                        <div class="form-group">
+                            <label for="supporting_url">URL Pendukung</label>
+                            <input type="url" class="form-control" id="supporting_url" name="supporting_url"
+                                value="{{ $complaint->supporting_url }}" autocomplete="off">
+                            <small class="text-muted"><i class="fas fa-info-circle"></i> (Opsional) Masukkan URL pendukung
+                                apabila ada</small></small>
+                        </div>
+                    </div>
+                    <div class="mb-3">
                         <label for="supporting_document" class="form-label">Dokumen Pendukung (PDF)</label>
                         @if ($complaint->supporting_document)
                             <div class="mb-2">
@@ -245,7 +255,8 @@
                             @endif
                         @endforeach
                     </div>
-                    <small class="text-muted"><i class="fas fa-info-circle"></i> Upload gambar baru jika ingin mengganti</small><br><br>
+                    <small class="text-muted"><i class="fas fa-info-circle"></i> Upload gambar baru jika ingin
+                        mengganti</small><br><br>
                     <a href="{{ route('sales.complaint.index') }}" class="btn btn-secondary"><i
                             class="fa-solid fa-chevron-left"></i> Kembali</a>
                     <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i>

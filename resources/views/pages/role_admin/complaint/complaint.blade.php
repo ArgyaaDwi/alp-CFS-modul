@@ -65,7 +65,7 @@
                                 <td>
                                     @foreach ($val->categories as $category)
                                         @if ($category->id == 4 && $category->pivot->other_category_name)
-                                            {{ $category->pivot->other_category_name }}
+                                            {{ $category->category_name }} ({{ $category->pivot->other_category_name }})
                                         @else
                                             {{ $category->category_name }}
                                         @endif
@@ -74,15 +74,18 @@
                                         @endif
                                     @endforeach
                                 </td>
-                                <td>{{$val->user->name}}</td>
-                                <td>{{ Carbon\Carbon::parse($val->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}</td>
+                                <td>{{ $val->user->name }}</td>
+                                <td>{{ Carbon\Carbon::parse($val->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}
+                                </td>
                                 <td>{{ $val->currentStatus->status_name ?? 'Tidak ada status' }}</td>
                                 <td>
-                                    <form action="{{ route('sales.complaint.delete', $val->id) }}" method="POST" id="delete-form-{{ $val->id }}">
+                                    <form action="{{ route('sales.complaint.delete', $val->id) }}" method="POST"
+                                        id="delete-form-{{ $val->id }}">
                                         @csrf
                                         @method('DELETE')
                                         <div class="d-flex gap-2">
-                                            <a href="{{ route('admin.complaint.detail', $val->id) }}" class="btn btn-outline-info">
+                                            <a href="{{ route('admin.complaint.detail', $val->id) }}"
+                                                class="btn btn-outline-info">
                                                 <i class="fa-regular fa-eye"></i>
                                             </a>
                                             @auth

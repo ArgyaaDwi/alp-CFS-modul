@@ -6,6 +6,17 @@
         }, 2500);
     </script>
 @endpush
+@push('styles')
+    <style>
+        .profile-picture {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+    </style>
+@endpush
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
@@ -35,13 +46,18 @@
                 <div class="col-md-13 mb-4">
                     <div class="card  card-outline mx-1">
                         <div class="card-body box-profile">
+                            {{-- <div class="text-center">
+                                <img class="img-circle" src="{{ asset('storage/profile_pic/' . $user->profile_pic) }}"
+                                    alt="User profile picture" style="width: 160px">
+                            </div> --}}
                             <div class="text-center">
-                                <img class="img-circle" src="{{ asset('images/user.jpg') }}" alt="User profile picture"
-                                    style="width: 160px">
+                                <img class="profile-picture" src="{{ asset('storage/profile_pic/' . $user->profile_pic) }}"
+                                    alt="User profile picture">
                             </div>
+
                             <h3 class="profile-username text-center" style="font-size: 26px">{{ $user->name }}</h3>
-                            {{-- <p class="text-muted text-center" style="font-size: 18px">{{ $user->role->role_name }}
-                                {{ $user->distributor->distributor_name }}</p> --}}
+                            <p class="text-muted text-center" style="font-size: 18px">{{ $user->role->role_name }}
+                            </p>
                             <div class="card-body mx-5">
                                 <strong style="font-size: 19px"><i class="fas fa-envelope mr-1"></i> Email</strong>
                                 <p style="font-size: 19px" class="text-muted">

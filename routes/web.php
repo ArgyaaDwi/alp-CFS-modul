@@ -133,6 +133,8 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {
     Route::get('qm/view_complaint', [QMController::class, 'viewComplaint'])->name('qm.complaint.index');
     Route::get('qm/detail_complaint/{id}', [QMController::class, 'detailComplaint'])->name('qm.complaint.detail');
     Route::put('qm/updatestatuscomplaint/{id}', [QMController::class, 'updateComplaintStatus'])->name('qm.update.status');
+    Route::put('qm/toFGM/{id}', [QMController::class, 'toFGM'])->name('qm.to.fgm');
+    Route::put('qm/revFGM/{id}', [QMController::class, 'revFGM'])->name('qm.rev.fgm');
     Route::post('qm/requestCloseComplaint/{id}', [QMController::class, 'requestCloseComplaint'])->name('qm.request.close');
     // Route untuk kebutuhan kelola profile
     Route::get('qm/view_profile', [QMController::class, 'viewProfile'])->name('qm.profile');

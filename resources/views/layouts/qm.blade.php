@@ -119,12 +119,13 @@
                     <a href="" class="nav-link bg-white dropdown-toggle " data-toggle="dropdown"
                         style="background-color: #ffffff; ">
                         <span class="d-none d-md-inline mr-2">{{ $user->name }}</span>
-                        <img src="{{ asset('images/user.jpg') }}" class="user-image img-circle elevation-2"
-                            alt="User Image">
+                        <img src="{{ $user->profile_pic ? asset('storage/profile_pic/' . $user->profile_pic) : asset('images/user.jpg') }}"
+                            class="user-image img-circle elevation-2" alt="User Image">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <li class="user-header">
-                            <img src="{{ asset('images/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                            <img src="{{ $user->profile_pic ? asset('storage/profile_pic/' . $user->profile_pic) : asset('images/user.jpg') }}"
+                                class="img-circle elevation-2" alt="User Image">
                             <p>
                                 {{ $user->name }}
                                 <small>{{ $user->email }}</small>
@@ -160,10 +161,11 @@
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ asset('images/user.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                        <img src="{{ $user->profile_pic ? asset('storage/profile_pic/' . $user->profile_pic) : asset('images/user.jpg') }}"
+                            class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="" class="d-block">{{ $user->name }}</a>
+                        <a href="{{ route('qm.profile') }}" class="d-block">{{ $user->name }}</a>
                     </div>
                 </div>
                 <nav class="mt-2">

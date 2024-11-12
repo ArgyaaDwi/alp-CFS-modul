@@ -23,8 +23,21 @@ class MainController extends Controller
         $distributor = Distributor::all();
         $count = $distributors->count();
         $allFeedback = Complaints::all()->count();
+        $closedCount = Complaints::where('current_status_id', 6)->count();
+        $openCount = Complaints::where('current_status_id', '!=', 6)->count();
         $currentDate = Carbon::now()->locale('id')->translatedFormat('l, j F Y ');
-        return view('pages.role_sm.dashboard', compact('user', 'currentDate', 'distributors', 'count', 'complaints', 'counts', 'distributor', 'allFeedback'));
+        return view('pages.role_sm.dashboard', compact(
+            'user',
+            'currentDate',
+            'distributors',
+            'count',
+            'complaints',
+            'counts',
+            'distributor',
+            'allFeedback',
+            'openCount',
+            'closedCount'
+        ));
     }
     public function dashboardAdmin()
     {

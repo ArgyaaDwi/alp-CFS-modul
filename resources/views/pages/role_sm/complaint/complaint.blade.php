@@ -67,6 +67,7 @@
                             <th>Created By</th>
                             <th>Created At</th>
                             <th>Status</th>
+                            <th>Tindakan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -80,7 +81,7 @@
                                 <td>
                                     @foreach ($val->categories as $category)
                                         @if ($category->id == 4 && $category->pivot->other_category_name)
-                                            {{ $category->pivot->other_category_name }}
+                                            {{ $category->category_name }} ({{ $category->pivot->other_category_name }})
                                         @else
                                             {{ $category->category_name }}
                                         @endif
@@ -93,6 +94,17 @@
                                 <td>{{ Carbon\Carbon::parse($val->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}
                                 </td>
                                 <td>{{ $val->currentStatus->status_name ?? 'Tidak ada status' }}</td>
+                                <td>
+                                    @if ($val->current_status_id == 7)
+                                        <button type="button" disabled class="btn btn-outline-info btn-sm">Perlu
+                                            Revisi</button>
+                                    @elseif ($val->current_status_id == 11)
+                                        <button type="button" disabled class="btn btn-outline-success btn-sm">Konfirmasi
+                                            Close Aduan</button>
+                                    @else
+                                        <span>-</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <form action="{{ route('sales.complaint.delete', $val->id) }}" method="POST"
                                         id="delete-form-{{ $val->id }}">

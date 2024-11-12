@@ -27,7 +27,7 @@
 
             ],
             datasets: [{
-                data: [700, 500],
+                data: [{{$openCount}}, {{$closedCount}}],
                 backgroundColor: ['#00a65a', '#f56954', ],
             }]
         }
