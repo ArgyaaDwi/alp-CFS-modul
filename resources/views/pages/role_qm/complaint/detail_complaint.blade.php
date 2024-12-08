@@ -16,9 +16,50 @@
 @endpush
 @push('styles')
     <style>
+        /* body{
+            font-family: Arial, Helvetica, sans-serif
+        } */
         .required:after {
             content: ' *';
             color: red;
+        }
+
+        .timeline-container {
+            position: relative;
+            padding-left: 20px;
+            margin-top: 20px;
+            border-left: 3px solid #007bff;
+            border-left: 3px solid #21ae6a90;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 40px;
+        }
+        .timeline-content {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-content .timeline-header {
+            margin: 0 0 5px;
+        }
+
+        .timeline-footer {
+            margin-top: 10px;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: -1.5px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #21ae6a90;
         }
     </style>
 @endpush
@@ -56,7 +97,11 @@
                         <div class="col-12">
                             <div class="card bg-light d-flex flex-fill">
                                 <div class="card-header text-muted border-bottom-0">
-                                    <h4>{{ $complaint->complaint_ticket }} - {{ $complaint->id }}</h4>
+                                    <h4>
+                                        <button type="button" disabled
+                                            class="btn btn-outline-danger">{{ $complaint->complaint_ticket }}</button>
+
+                                    </h4>
                                 </div>
                                 <div class="card-body d-flex flex-column pt-3">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -66,7 +111,7 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="history-tab" data-toggle="tab" href="#history"
-                                                role="tab" aria-controls="history" aria-selected="false">Riwayat</a>
+                                                role="tab" aria-controls="history" aria-selected="false">Timeline</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="myTabContent">
@@ -441,63 +486,45 @@
                                             aria-labelledby="history-tab">
                                             <h5 class="mt-3 mb-3"><i class="fa-solid fa-clock-rotate-left"></i> Riwayat
                                                 Aktivitas Aduan</h5>
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    @forelse ($history as $item)
-                                                        <div class="timeline">
-                                                            <div>
-                                                                <div class="timeline-item">
-                                                                    <span class="time"><i class="fas fa-clock"></i>
-                                                                        {{ Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}</span>
-                                                                    <h3 class="timeline-header"><a
-                                                                            href="#">{{ $item->user->name }}</a>
-                                                                    </h3>
-                                                                    <div class="timeline-body">
-                                                                        <span class="text-bold ">Status:
-                                                                            {{ $item->complaintStatus->status_name }}</span><br>
-                                                                        <span>{{ $item->complaintStatus->status_description }}</span><br>
-                                                                        <span class=" "><i
-                                                                                class="fa-solid fa-pencil"></i> Catatan:
-                                                                            <br></span>
-                                                                        {{ $item->notes }}
-                                                                        @if ($item->supporting_url != null)
-                                                                            <p><i class="fa-solid fa-link"></i> URL
-                                                                                Pendukung: <a
-                                                                                    href="{{ $item->supporting_url }}">{{ $item->supporting_url }}</a>
-                                                                            </p>
-                                                                        @endif
-                                                                    </div>
-                                                                    <div class="timeline-footer">
-                                                                        @if ($item->supporting_document != null)
-                                                                            <button class="my-2 btn-sm"
-                                                                                style="background-color: rgb(23, 71, 185); box-shadow: none; border: none;">
-                                                                                <a class="text-white"
-                                                                                    href="{{ asset('storage/' . $item->supporting_document) }}"
-                                                                                    target="_blank"
-                                                                                    style="text-decoration: none; box-shadow: none; outline: none;">
-                                                                                    <i class="fa-regular fa-eye"></i>
-                                                                                    Dokumen Pendukung
-                                                                                </a>
-                                                                            </button>
-                                                                        @endif
-                                                                        {{-- <a class="btn btn-primary btn-sm">Read more</a>
-                                                                    <a class="btn btn-danger btn-sm">Delete</a> --}}
-                                                                    </div>
-                                                                </div>
+                                            <div class="timeline-container">
+                                                @forelse ($history as $item)
+                                                    <div class="timeline-item">
+                                                        <div class="timeline-content">
+                                                            <span class="time"><i class="fas fa-clock"></i>
+                                                                {{ Carbon\Carbon::parse($item->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}</span>
+                                                            <h4 class="timeline-header"><a
+                                                                    href="#">{{ $item->user->name }}</a></h4>
+                                                            <div class="timeline-body">
+                                                                <span class="text-bold">Status:
+                                                                    {{ $item->complaintStatus->status_name }}</span><br>
+                                                                <span>{{ $item->complaintStatus->status_description }}</span><br>
+                                                                <span><i class="fa-solid fa-pencil"></i> Catatan:
+                                                                    <br></span>
+                                                                {{ $item->notes }}
+                                                                @if ($item->supporting_url != null)
+                                                                    <p><i class="fa-solid fa-link"></i> URL Pendukung:
+                                                                        <a
+                                                                            href="{{ $item->supporting_url }}">{{ $item->supporting_url }}</a>
+                                                                    </p>
+                                                                @endif
                                                             </div>
+                                                            @if ($item->supporting_document != null)
+                                                                <div class="timeline-footer">
+                                                                    <a class="btn btn-primary btn-sm"
+                                                                        href="{{ asset('storage/' . $item->supporting_document) }}"
+                                                                        target="_blank">
+                                                                        <i class="fa-regular fa-eye"></i> Dokumen Pendukung
+                                                                    </a>
+                                                                </div>
+                                                            @endif
                                                         </div>
-                                                    @empty
-                                                        <p class="text-center">Tidak ada riwayat aktivitas
-                                                    @endforelse
-                                                    {{-- @if ($complaint->current_status_id == 1 || $complaint->current_status_id == 10)
-                                                        <button type="button" class="btn btn-primary"
-                                                            data-toggle="modal" data-target="#exampleModal"><i
-                                                                class="fa-regular fa-pen-to-square"></i>
-                                                            Update Status</button>
-                                                    @endif --}}
-                                                </div>
+                                                    </div>
+                                                @empty
+                                                    <p class="text-center">Tidak ada riwayat aktivitas</p>
+                                                @endforelse
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>

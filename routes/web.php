@@ -123,7 +123,6 @@ Route::middleware(['auth', 'user-access:2'])->group(function () {
     Route::delete('admin/delete_transaction/{id}', [TransactionController::class, 'deleteTransaction'])->name('admin.transaction.delete');
     // Ajax
     Route::get('/get-subcategory/{categoryId}', [ProductController::class, 'getSubCategoryLubricant'])->name('admin.ajax.getSubCategoryLubricant');
-
     // Route untuk kebutuhan kelola aduan
     Route::get('admin/view_complaint', [ComplaintController::class, 'viewComplaint'])->name('admin.complaint.index');
     Route::get('admin/detail_complaint/{id}', [ComplaintController::class, 'detailComplaint'])->name('admin.complaint.detail');
@@ -141,7 +140,6 @@ Route::middleware(['auth', 'user-access:3'])->group(function () {
     Route::get('qm/edit_profile', [QMController::class, 'editProfile'])->name('qm.profile.edit');
     Route::put('qm/edit_profile', [QMController::class, 'updateProfile'])->name('qm.profile.update');
     Route::get('qm/change_password', [QMController::class, 'changePassword'])->name('qm.password');
-
 });
 Route::middleware(['auth', 'user-access:4'])->group(function () {
     Route::get('/dashboard/fgm',  [MainController::class, 'dashboardFGM'])->name('dashboard.fgm');

@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Laporan Feedback Baru</title>
+    <title>Laporan Perubahan Status</title>
 </head>
+
 <body>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0"
+        style="background-color: #ffffff; padding: 20px 0;">
         <tr>
             <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" border="0">
+                <table width="600" cellpadding="0" cellspacing="0" border="0"
+                    style="background-color: #ffffff; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.1);">
                     <tr>
-                        <td align="center" style="padding: 20px;">
-                            <img src="https://res.cloudinary.com/dpr1oftgx/image/upload/v1729562619/upload/logoalp_bmdpec.jpg"
-                                height="100" alt="logo ALP">
+                        <td align="center" style="background-color: #0d427c; color: #fff7b0; padding: 20px;">
+                            <img src="https://res.cloudinary.com/dpr1oftgx/image/upload/v1732590742/upload/p6qftzlbhvgsvufukwdc.png"
+                                alt="logo ALP" style="height: 80px;">
+                            <h1 style="margin: 10px 0 0; font-size: 20px;">ALP Insight</h1>
                         </td>
                     </tr>
                     <tr>
-                        <td align="center"
-                            style="padding-top:-10px; padding-bottom: 10px; font-size: 20px; color: black;">
-                            <strong>ALP Insight</strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="center" style="padding: 10px; font-size: 18px;">
-                            Pemberitahuan
+                        <td align="center" style="padding: 10px; font-size: 28px;">
+                            <strong>Pemberitahuan</strong>
                         </td>
                     </tr>
                     <tr>
@@ -45,7 +43,13 @@
                             Status aduan feedback diperbarui pada:
                             <em>{{ Carbon\Carbon::parse($latestInteraction->created_at)->locale('id')->translatedFormat('l, j F Y H:i:s') }}</em>
                             <br> oleh {{ $latestInteraction->user->name }}<br><br>
-                            <span style="color: black"> Salam,<br>PT. ALP Petro Industry</span>
+                            <p style="color: black">Salam,<br><strong>PT. ALP Petro Industry</strong></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center"
+                            style="background-color: #f3f3f3; padding: 10px 20px; font-size: 14px; color: #000000;">
+                            &copy; 2024 PT. ALP Petro Industry. All rights reserved.
                         </td>
                     </tr>
                 </table>
@@ -53,4 +57,5 @@
         </tr>
     </table>
 </body>
+
 </html>

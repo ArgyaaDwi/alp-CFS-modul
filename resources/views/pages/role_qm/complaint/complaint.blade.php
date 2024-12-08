@@ -60,7 +60,8 @@
                         @forelse ($complaints as $val)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $val->complaint_ticket }}</td>
+                                <td><button type="button" disabled
+                                        class="btn btn-outline-danger btn-sm">{{ $val->complaint_ticket }}</button></td>
                                 <td>{{ $val->distributor->company_name }}</td>
                                 <td>{{ $val->distributor->companyDistributor->distributor_name }}</td>
                                 <td>

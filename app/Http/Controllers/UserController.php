@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
+use App\Models\Role;
+use App\Models\User;
+use App\Mail\UserVerif;
 use App\Models\Distributor;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Role;
 use App\Models\MainDistributor;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -124,19 +127,20 @@ class UserController extends Controller
     }
     public function verificationUser($id)
     {
-        $users = User::findOrFail($id);
-        $users->is_verified = !$users->is_verified;
-        $users->save();
-        return redirect()->route('admin.user.index')->with('success', 'Berhasil memverifikasi user <strong style="color:green;">' . e($users->name) . '</strong>.');
+        DB::beginTransaction();
+        try {
+            $users = User::findOrFail($id);
+            $users->is_verified = !$users->is_verified;
+            $users->save();
+            Mail::to('ferdinandargya@gmail.com')->send(new UserVerif($users));
+            DB::commit();
+            return redirect()->route('admin.user.index')->with('success', 'Berhasil memverifikasi user <strong style="color:green;">' . e($users->name) . '</strong>.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('admin.user.index')->with('error', 'Gagal memverifikasi user <strong style="color:red;">' . e($users->name) . '</strong>.');
+        }
     }
-    // public function updateStatusUser(Request $request, $id)
-    // {
-    //     $users = User::findOrFail($id);
-    //     $users->is_active = $request->input('status');
-    //     $users->save();
-    //     return redirect()->route('admin.user.index')
-    //         ->with('success', 'Status <strong style="color:green;">' . e($users->name) . '</strong> berhasil diubah.');
-    // }
+
     public function updateStatusUser(Request $request, $id)
     {
         $users = User::findOrFail($id);

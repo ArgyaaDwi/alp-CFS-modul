@@ -28,6 +28,7 @@ class User extends Authenticatable
         'is_verified',
         'is_active',
         'profile_pic',
+        'created_at',
     ];
 
     /**

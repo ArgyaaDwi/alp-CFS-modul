@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\User;
+use App\Mail\RegisterMail;
 use App\Models\Distributor;
 use Illuminate\Http\Request;
+use App\Models\MainDistributor;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
-use App\Models\User;
-use App\Models\MainDistributor;
 
 class AuthController extends Controller
 {
@@ -116,15 +120,24 @@ class AuthController extends Controller
             'password.min' => 'Password minimal 6 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak sesuai.',
         ]);
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'distributor_id' => $request->distributor_id,
-            'no_telephone' => $request->no_telephone,
-        ]);
-        // dd(vars: $user);
-        return redirect('/dashboard/user')->with('success', 'Registrasi berhasil.');
+        DB::beginTransaction();
+        try {
+
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'distributor_id' => $request->distributor_id,
+                'no_telephone' => $request->no_telephone,
+                'created_at' => Carbon::now()->timezone('Asia/Jakarta')
+            ]);
+            Mail::to('ferdinandargya@gmail.com')->send(new RegisterMail($user));
+            DB::commit();
+            return redirect('/login')->with('success', 'Registrasi berhasil silahkan login.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withErrors('Gagal membuat akun' . $e->getMessage());
+        }
     }
 
     public function logout(Request $request)
@@ -133,7 +146,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login')->with('success', 'Anda telah logout.');
+        return redirect('/login')->with('success', 'Berhasil Logout.');
     }
     private function redirectToDashboard()
     {

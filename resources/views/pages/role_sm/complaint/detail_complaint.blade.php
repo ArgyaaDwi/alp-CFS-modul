@@ -53,17 +53,21 @@
                         <div class="col-12">
                             <div class="card bg-light d-flex flex-fill">
                                 <div class="card-header text-muted border-bottom-0">
-                                    <h4>{{ $complaint->complaint_ticket }} - {{ $complaint->id }}</h4>
+                                    <h4>
+                                        <button type="button" disabled
+                                            class="btn btn-outline-danger">{{ $complaint->complaint_ticket }}</button>
+
+                                    </h4>
                                 </div>
                                 <div class="card-body d-flex flex-column pt-3">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                                         <li class="nav-item">
                                             <a class="nav-link active" id="info-tab" data-toggle="tab" href="#info"
-                                                role="tab" aria-controls="info" aria-selected="true">Informasi</a>
+                                                role="tab" aria-controls="info" aria-selected="true">Informasi Umum</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="history-tab" data-toggle="tab" href="#history"
-                                                role="tab" aria-controls="history" aria-selected="false">Riwayat</a>
+                                                role="tab" aria-controls="history" aria-selected="false">Riwayat Aktivitas</a>
                                         </li>
                                     </ul>
                                     <div class="tab-content" id="myTabContent">

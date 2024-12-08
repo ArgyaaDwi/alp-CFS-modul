@@ -75,7 +75,7 @@
                         @forelse ($complaints as $val)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $val->complaint_ticket }}</td>
+                                <td><button type="button" disabled class="btn btn-outline-danger btn-sm">{{ $val->complaint_ticket }}</button></td>
                                 <td>{{ $val->distributor->company_name }}</td>
                                 <td>{{ $val->distributor->companyDistributor->distributor_name }}</td>
                                 <td>
@@ -116,16 +116,16 @@
                                                 <i class="fa-regular fa-eye"></i>
                                             </a>
                                             @auth
-                                                @if ($val->currentStatus->id == 7 || $val->current_status_id == 1)
+                                                @if ($val->currentStatus->id == 7)
                                                     <a href="{{ route('sales.complaint.edit', $val->id) }}"
                                                         class="btn btn-warning mx-1">
                                                         <i class="fa-regular fa-pen-to-square"></i>
                                                     </a>
                                                 @endif
-                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                {{-- <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                                     data-bs-target="#confirmDeleteModal-{{ $val->id }}">
                                                     <i class="fa-solid fa-trash-can"></i>
-                                                </button>
+                                                </button> --}}
                                             @endauth
                                         </div>
                                     </form>
